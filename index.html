@@ -5,86 +5,131 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#10131c">
 <title>Hamster Empire — Business Edition</title>
-<!--
-ВАЖНО О ФОТО:
-Сохрани прикреплённое изображение рядом с index.html под именем hamster.png.
-Оно используется как базовое фото без загрузки через меню.
-Бинарные данные вложения недоступны в тексте сообщения, поэтому они не
-подменены выдуманным base64. Если файл отсутствует, показывается резервная
-иллюстрация. Для полностью автономного HTML загрузи это же фото в настройках
-и нажми «Скачать HTML с фото»: изображение будет встроено внутрь файла.
-
-ПРАВКИ:
-1. Базовое фото: hamster.png; главное окно, аватар, офлайн-награда.
-2. TON-кошелёк полностью удалён.
-3. Все указанные промокоды: +1 000 000, каждый уникальный код одноразовый.
-   Повтор COMPANY в исходном списке не создаёт вторую награду.
-4. Четвёртая вкладка «Империя»: https://t.me/rafoelka1, +10 000 однократно.
-   Без сервера фактическую подписку проверить невозможно; это явно указано.
-5. Перенос сохранений v1/v2, 60 бизнесов, энергия 1000/+250,
-   восстановление 1,5/с, офлайн максимум 1 час, языки и темы сохранены.
--->
 <style>
 :root{
- color-scheme:dark;--bg:#10131c;--surface:#191e2b;
- --panel:rgba(29,36,52,.88);--input:#131a28;--text:#f5f7ff;
- --muted:#95a3bb;--border:rgba(190,211,255,.1);--gold:#f4c45a;
+ color-scheme:dark;
+ --bg:#10131c;--surface:#191e2b;--panel:rgba(29,36,52,.9);
+ --input:#131a28;--text:#f5f7ff;--muted:#95a3bb;
+ --border:rgba(190,211,255,.11);--gold:#f4c45a;
  --blue:#58c9ff;--green:#65dfac;--nav:rgba(16,21,32,.96);
  --shadow:0 18px 48px #0003;--glow:rgba(58,103,214,.2)
 }
 [data-theme="light"]{
- color-scheme:light;--bg:#edf1f8;--surface:#fff;--panel:rgba(255,255,255,.92);
- --input:#eef2f9;--text:#182338;--muted:#687891;--border:rgba(39,64,106,.12);
- --gold:#bd8410;--blue:#087fc0;--green:#138859;--nav:rgba(255,255,255,.97);
+ color-scheme:light;
+ --bg:#edf1f8;--surface:#fff;--panel:rgba(255,255,255,.94);
+ --input:#eef2f9;--text:#182338;--muted:#687891;
+ --border:rgba(39,64,106,.13);--gold:#bd8410;
+ --blue:#087fc0;--green:#138859;--nav:rgba(255,255,255,.97);
  --shadow:0 15px 45px #243b6010;--glow:rgba(83,133,233,.13)
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;min-height:100%;overscroll-behavior:none}
-body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;transition:background .25s,color .25s}
+body{
+ background:var(--bg);color:var(--text);
+ font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+ transition:background .25s,color .25s
+}
 button,input,select{font:inherit}
-button{color:inherit;border:0;cursor:pointer;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+button{
+ color:inherit;border:0;cursor:pointer;touch-action:manipulation;
+ user-select:none;-webkit-user-select:none
+}
 button:disabled{opacity:.45;cursor:not-allowed}
-button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
-a{color:var(--blue)}
-.app{width:min(100%,540px);min-height:100dvh;margin:auto;position:relative;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 50% 22%,var(--glow),transparent 52%),var(--bg)}
+button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{
+ outline:3px solid var(--blue);outline-offset:3px
+}
+.app{
+ width:min(100%,540px);min-height:100dvh;margin:auto;
+ position:relative;isolation:isolate;overflow:hidden;
+ background:radial-gradient(ellipse at 50% 22%,var(--glow),transparent 52%),var(--bg)
+}
 .ambient{position:absolute;inset:0;pointer-events:none;z-index:-1;overflow:hidden}
-.ambient::before,.ambient::after{content:"";position:absolute;width:350px;height:350px;border-radius:50%;filter:blur(65px);opacity:.14;background:#3479ff;left:-190px;top:180px;animation:ambientMove 15s ease-in-out infinite alternate}
+.ambient::before,.ambient::after{
+ content:"";position:absolute;width:350px;height:350px;border-radius:50%;
+ filter:blur(65px);opacity:.14;background:#3479ff;left:-190px;top:180px;
+ animation:ambientMove 15s ease-in-out infinite alternate
+}
 .ambient::after{left:auto;right:-210px;top:460px;background:#e7a231;animation-delay:-7s}
 @keyframes ambientMove{to{transform:translate(70px,110px) scale(1.15)}}
 .header{padding:calc(17px + env(safe-area-inset-top)) 18px 10px}
 .profile{display:flex;align-items:center;gap:10px}
-.avatar{flex:none;width:46px;height:46px;border-radius:16px;display:grid;place-items:center;font-size:27px;overflow:hidden;background:linear-gradient(145deg,#f7d581,#9f6925);box-shadow:inset 0 0 0 1px #ffffff45,0 5px 17px #0002}
+.avatar{
+ flex:none;width:46px;height:46px;border-radius:16px;display:grid;
+ place-items:center;font-size:27px;overflow:hidden;
+ background:linear-gradient(145deg,#f7d581,#9f6925);
+ box-shadow:inset 0 0 0 1px #ffffff45,0 5px 17px #0002
+}
 .avatar img{width:100%;height:100%;object-fit:contain}
 .profile-info{min-width:0;flex:1}
 .profile-name{font-weight:850;font-size:14px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .sub{font-size:10px;color:var(--muted);margin-top:4px}
-.icon-button{flex:none;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--panel);border:1px solid var(--border);font-size:20px}
-.exchange-button{display:flex;align-items:center;gap:6px;padding:9px 8px;border:1px solid var(--border);border-radius:12px;background:var(--panel);font-size:10px}
-.exchange-logo{width:21px;height:21px;border-radius:7px;display:grid;place-items:center;font-weight:900;background:#f4c45a;color:#37270c;flex:none}
+.icon-button{
+ flex:none;width:38px;height:38px;border-radius:12px;display:grid;
+ place-items:center;background:var(--panel);border:1px solid var(--border);font-size:20px
+}
+.exchange-button{
+ display:flex;align-items:center;gap:6px;padding:9px 8px;
+ border:1px solid var(--border);border-radius:12px;background:var(--panel);font-size:10px
+}
+.exchange-logo{
+ width:21px;height:21px;border-radius:7px;display:grid;
+ place-items:center;font-weight:900;background:#f4c45a;color:#37270c;flex:none
+}
 .rank-row{display:flex;justify-content:space-between;align-items:center;font-size:11px;margin:16px 0 8px;gap:10px}
 .rank-row strong{font-size:12px}
 .progress{height:7px;border-radius:20px;background:var(--border);overflow:hidden}
-.progress i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#497aff,#58c9ff,#f4c45a);transition:width .3s linear}
+.progress i{
+ display:block;height:100%;width:0;border-radius:inherit;
+ background:linear-gradient(90deg,#497aff,#58c9ff,#f4c45a);transition:width .3s linear
+}
 main{padding:9px 16px calc(99px + env(safe-area-inset-bottom))}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .stat{background:var(--panel);border:1px solid var(--border);padding:12px 5px;border-radius:16px;text-align:center;min-width:0}
 .stat-label{font-size:10px;color:var(--muted);min-height:27px;line-height:1.4}
 .stat-value{font-size:15px;font-weight:850;margin-top:4px}
 .gold{color:var(--gold)}.green{color:var(--green)}.blue{color:var(--blue)}
-.balance{display:flex;align-items:center;justify-content:center;gap:11px;margin:23px 0 6px;font-size:clamp(26px,8vw,42px);font-weight:900;letter-spacing:-1.2px;font-variant-numeric:tabular-nums}
-.coin{flex:none;width:39px;height:39px;border-radius:50%;display:grid;place-items:center;font-size:23px;color:#936214;background:linear-gradient(140deg,#fff1b6,#fbc94e 55%,#d99720);border:3px solid #ffe38d;box-shadow:inset 0 0 0 2px #dba434,0 5px 20px #f3ba2f25}
+.balance{
+ display:flex;align-items:center;justify-content:center;gap:11px;
+ margin:23px 0 6px;font-size:clamp(26px,8vw,42px);font-weight:900;
+ letter-spacing:-1.2px;font-variant-numeric:tabular-nums
+}
+.coin{
+ flex:none;width:39px;height:39px;border-radius:50%;display:grid;place-items:center;
+ font-size:23px;color:#936214;background:linear-gradient(140deg,#fff1b6,#fbc94e 55%,#d99720);
+ border:3px solid #ffe38d;box-shadow:inset 0 0 0 2px #dba434,0 5px 20px #f3ba2f25
+}
 .balance-caption{text-align:center;font-size:11px;color:var(--muted)}
 .hero-wrap{width:min(100%,350px);margin:17px auto 11px;position:relative;aspect-ratio:1}
-.hero-wrap::before{content:"";position:absolute;inset:3px;border-radius:50%;border:1px dashed #789cff45;animation:orbit 55s linear infinite;pointer-events:none}
-.hero-wrap::after{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:0 0 45px #3977ff18;animation:breathe 4s ease-in-out infinite;pointer-events:none}
+.hero-wrap::before{
+ content:"";position:absolute;inset:3px;border-radius:50%;border:1px dashed #789cff45;
+ animation:orbit 55s linear infinite;pointer-events:none
+}
+.hero-wrap::after{
+ content:"";position:absolute;inset:0;border-radius:50%;box-shadow:0 0 45px #3977ff18;
+ animation:breathe 4s ease-in-out infinite;pointer-events:none
+}
 @keyframes orbit{to{transform:rotate(360deg)}}
 @keyframes breathe{50%{opacity:.4;transform:scale(1.035)}}
-.hero{position:absolute;inset:13px;width:calc(100% - 26px);border-radius:50%;padding:0;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;background:radial-gradient(ellipse at 50% 87%,#01061280,transparent 44%),radial-gradient(circle at 50% 32%,#405982,#223b65 45%,#111e37 85%);border:4px solid #5875a955;box-shadow:inset 0 0 38px #94bfff14,0 13px 40px #0002,0 0 0 6px #5579bd0c;transition:transform .13s ease-out,border-color .3s;will-change:transform}
+.hero{
+ position:absolute;inset:13px;width:calc(100% - 26px);border-radius:50%;
+ padding:0;overflow:hidden;touch-action:none;user-select:none;
+ background:radial-gradient(ellipse at 50% 87%,#01061280,transparent 44%),
+ radial-gradient(circle at 50% 32%,#405982,#223b65 45%,#111e37 85%);
+ border:4px solid #5875a955;
+ box-shadow:inset 0 0 38px #94bfff14,0 13px 40px #0002,0 0 0 6px #5579bd0c;
+ transition:transform .13s ease-out;will-change:transform
+}
 .hero.cipher{background:radial-gradient(circle at 50% 35%,#683c58,#281a32);border-color:#ca668a70}
-.hero::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg,#ffffff0b,transparent 48%)}
-.hero-photo{position:absolute;left:4%;bottom:2%;width:92%;height:92%;object-fit:contain;pointer-events:none;filter:drop-shadow(0 12px 8px #0005);animation:hamsterBreath 4.8s ease-in-out infinite;transform-origin:50% 95%}
+.hero-photo{
+ position:absolute;left:4%;bottom:2%;width:92%;height:92%;object-fit:contain;
+ pointer-events:none;filter:drop-shadow(0 12px 8px #0005);
+ animation:hamsterBreath 4.8s ease-in-out infinite;transform-origin:50% 95%
+}
 @keyframes hamsterBreath{50%{transform:translateY(-3px) scale(1.008)}}
-.photo-button{display:block;margin:0 auto 18px;font-size:11px;padding:8px 13px;border-radius:20px;background:var(--panel);border:1px solid var(--border);color:var(--muted)}
+.photo-button{
+ display:block;margin:0 auto 18px;font-size:11px;padding:8px 13px;border-radius:20px;
+ background:var(--panel);border:1px solid var(--border);color:var(--muted)
+}
 .status-row{display:flex;align-items:center;gap:13px}
 .energy{flex:1;min-width:0}
 .energy-label{display:flex;align-items:center;justify-content:space-between;gap:7px;margin-bottom:8px;font-weight:750;font-size:12px}
@@ -97,7 +142,11 @@ main{padding:9px 16px calc(99px + env(safe-area-inset-bottom))}
 .description{font-size:12px;line-height:1.75;color:var(--muted);margin:0 0 15px}
 .row{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .small{font-size:11px;line-height:1.65;color:var(--muted)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:43px;padding:12px 15px;border-radius:13px;background:linear-gradient(135deg,#f9d584,#eeb84d);color:#352509;font-size:12px;font-weight:850;text-decoration:none;transition:transform .15s}
+.btn{
+ display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:43px;
+ padding:12px 15px;border-radius:13px;background:linear-gradient(135deg,#f9d584,#eeb84d);
+ color:#352509;font-size:12px;font-weight:850;text-decoration:none;transition:transform .15s
+}
 .btn:not(:disabled):active{transform:scale(.97)}
 .btn.secondary{background:var(--input);color:var(--text);border:1px solid var(--border)}
 .btn.success{background:#66dbad;color:#0c3626}
@@ -108,12 +157,20 @@ main{padding:9px 16px calc(99px + env(safe-area-inset-bottom))}
 .tab.active{background:#f4c45a;color:#352509;font-weight:850;border-color:transparent}
 .search-row{display:flex;gap:8px;margin-bottom:13px}
 .field{width:100%;min-width:0;border:1px solid var(--border);background:var(--input);color:var(--text);border-radius:12px;padding:12px}
-.search-row select{max-width:150px;font-size:11px}
+.search-row select{max-width:145px;font-size:11px}
 .card-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
-.mine-card{display:flex;flex-direction:column;text-align:left;overflow:hidden;border-radius:17px;border:1px solid var(--border);background:var(--panel);padding:0;min-height:212px;transition:transform .16s,border-color .16s}
+.mine-card{
+ display:flex;flex-direction:column;text-align:left;overflow:hidden;border-radius:17px;
+ border:1px solid var(--border);background:var(--panel);padding:0;min-height:212px;
+ transition:transform .16s,border-color .16s
+}
 .mine-card:hover{border-color:#81aaff40}
 .mine-card:active{transform:scale(.98)}
-.card-art{position:relative;height:67px;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 100%,var(--card-glow,#428bff22),transparent 80%);font-size:35px;border-bottom:1px solid var(--border)}
+.card-art{
+ position:relative;height:67px;display:grid;place-items:center;
+ background:radial-gradient(ellipse at 50% 100%,var(--card-glow,#428bff22),transparent 80%);
+ font-size:35px;border-bottom:1px solid var(--border)
+}
 .card-level{position:absolute;right:8px;top:8px;border-radius:6px;background:var(--input);color:var(--muted);font-size:9px;padding:4px 6px}
 .card-body{padding:11px;flex:1}
 .card-name{font-size:12px;font-weight:850;min-height:30px;line-height:1.4}
@@ -121,24 +178,54 @@ main{padding:9px 16px calc(99px + env(safe-area-inset-bottom))}
 .card-footer{padding:11px;border-top:1px solid var(--border);font-size:12px;font-weight:850;min-height:39px}
 .lock-text{color:var(--muted);font-size:10px;line-height:1.5}
 .combo{display:flex;gap:7px;margin:13px 0}
-.combo-slot{flex:1;min-width:0;background:var(--input);border:1px dashed var(--border);border-radius:12px;padding:10px 4px;text-align:center;display:flex;flex-direction:column;gap:5px;justify-content:center;font-size:10px;min-height:76px}
+.combo-slot{
+ flex:1;min-width:0;background:var(--input);border:1px dashed var(--border);
+ border-radius:12px;padding:10px 4px;text-align:center;display:flex;flex-direction:column;
+ gap:5px;justify-content:center;font-size:10px;min-height:76px
+}
 .combo-slot b{font-size:24px}
 .combo-slot.found{border-color:var(--green);background:#22c55e0c}
-.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,540px);z-index:30;padding:9px 9px calc(10px + env(safe-area-inset-bottom));background:var(--nav);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.nav{
+ position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,540px);
+ z-index:30;padding:9px 9px calc(10px + env(safe-area-inset-bottom));
+ background:var(--nav);backdrop-filter:blur(20px);border-top:1px solid var(--border);
+ display:grid;grid-template-columns:repeat(4,1fr);gap:5px
+}
+.nav:empty{display:none}
 .nav button{position:relative;background:transparent;color:var(--muted);border-radius:14px;padding:9px 3px;font-size:10px}
 .nav button.active{background:#f4c45a0e;color:var(--gold)}
 .nav-icon{display:block;font-size:23px;margin-bottom:5px}
 .badge{position:absolute;top:5px;right:25%;width:6px;height:6px;border-radius:50%;background:var(--gold)}
-.overlay{position:fixed;inset:0;z-index:80;background:#0009;backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center;padding-top:25px;animation:fadeIn .18s}
-.modal{width:min(100%,540px);max-height:92dvh;overflow:auto;padding:18px 19px calc(24px + env(safe-area-inset-bottom));background:var(--surface);border:1px solid var(--border);border-radius:26px 26px 0 0;box-shadow:0 -20px 65px #0004;animation:slideIn .22s ease-out}
+.overlay{
+ position:fixed;inset:0;z-index:80;background:#0009;backdrop-filter:blur(8px);
+ display:flex;align-items:flex-end;justify-content:center;padding-top:25px;animation:fadeIn .18s
+}
+.modal{
+ width:min(100%,540px);max-height:92dvh;overflow:auto;
+ padding:18px 19px calc(24px + env(safe-area-inset-bottom));
+ background:var(--surface);border:1px solid var(--border);border-radius:26px 26px 0 0;
+ box-shadow:0 -20px 65px #0004;animation:slideIn .22s ease-out
+}
 .modal-handle{width:40px;height:4px;border-radius:5px;background:var(--muted);opacity:.3;margin:0 auto 18px}
 .modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}
 .modal-head h2{font-size:21px;margin:0}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes slideIn{from{opacity:0;transform:translateY(50px)}to{opacity:1;transform:none}}
-.toast{position:fixed;top:calc(18px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:120;width:max-content;max-width:min(90vw,440px);background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:13px 17px;font-size:12px;line-height:1.6;text-align:center;box-shadow:var(--shadow);pointer-events:none;animation:fadeIn .15s}
-.float-number{position:fixed;z-index:60;pointer-events:none;color:#fff;font-size:31px;font-weight:900;text-shadow:0 2px 4px #0008,0 0 15px #f4c45a60;animation:floatUp .8s ease-out forwards}
-@keyframes floatUp{0%{opacity:1;transform:translate(-50%,-50%) scale(.85)}20%{transform:translate(-50%,-80%) scale(1.06)}100%{opacity:0;transform:translate(-50%,-160px) scale(.94)}}
+.toast{
+ position:fixed;top:calc(18px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);
+ z-index:120;width:max-content;max-width:min(90vw,440px);background:var(--surface);
+ border:1px solid var(--border);border-radius:14px;padding:13px 17px;font-size:12px;
+ line-height:1.6;text-align:center;box-shadow:var(--shadow);pointer-events:none;animation:fadeIn .15s
+}
+.float-number{
+ position:fixed;z-index:60;pointer-events:none;color:#fff;font-size:31px;font-weight:900;
+ text-shadow:0 2px 4px #0008,0 0 15px #f4c45a60;animation:floatUp .8s ease-out forwards
+}
+@keyframes floatUp{
+ 0%{opacity:1;transform:translate(-50%,-50%) scale(.85)}
+ 20%{transform:translate(-50%,-80%) scale(1.06)}
+ 100%{opacity:0;transform:translate(-50%,-160px) scale(.94)}
+}
 .setting{padding:13px 0;border-bottom:1px solid var(--border)}
 .segment{display:flex;gap:7px;margin-top:10px}
 .segment button{flex:1}
@@ -167,9 +254,17 @@ summary{color:var(--text);cursor:pointer}
 .photo-preview{width:100%;height:230px;object-fit:contain;border-radius:15px;background:radial-gradient(circle at 50% 35%,#405982,#162742)}
 .photo-options{display:flex;align-items:center;gap:9px;font-size:12px;margin:12px 0}
 .photo-options input{width:19px;height:19px}
-.puzzle-board{display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(6,1fr);aspect-ratio:1;padding:6px;gap:4px;margin:15px 0;border:2px solid var(--border);border-radius:16px;background:var(--input);position:relative}
+.puzzle-board{
+ display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(6,1fr);
+ aspect-ratio:1;padding:6px;gap:4px;margin:15px 0;border:2px solid var(--border);
+ border-radius:16px;background:var(--input);position:relative
+}
 .puzzle-cell{background:var(--border);opacity:.3;border-radius:5px;grid-row:var(--r);grid-column:var(--c)}
-.vehicle{z-index:2;display:grid;place-items:center;font-size:20px;border-radius:8px;color:white;border:2px solid #ffffff40;background:linear-gradient(145deg,#32b17c,#116342);box-shadow:0 4px 8px #0002}
+.vehicle{
+ z-index:2;display:grid;place-items:center;font-size:20px;border-radius:8px;
+ color:white;border:2px solid #ffffff40;background:linear-gradient(145deg,#32b17c,#116342);
+ box-shadow:0 4px 8px #0002
+}
 .vehicle.red{background:linear-gradient(145deg,#de687d,#92364b)}
 .vehicle.key{background:linear-gradient(145deg,#ffdf8c,#cb922c);color:#523a10}
 .vehicle.selected{outline:3px solid #58c9ff}
@@ -180,14 +275,48 @@ summary{color:var(--text);cursor:pointer}
 .stat-list{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .stat-list .panel{margin:0;padding:12px}
 .stat-list strong{display:block;margin-top:5px;font-size:16px}
-.promo-panel{position:relative;overflow:hidden;background:radial-gradient(circle at 100% 0,#f4c45a17,transparent 60%),var(--panel)}
 .promo-input{text-transform:uppercase;font-weight:800;letter-spacing:1.5px}
 .promo-message{min-height:20px;margin-top:10px;font-size:12px;line-height:1.6}
-.channel-panel{background:radial-gradient(circle at 100% 0,#58c9ff18,transparent 65%),var(--panel)}
-@media(min-width:700px){.app{box-shadow:0 0 90px #0002}.overlay{align-items:center;padding:25px}.modal{border-radius:25px;max-height:89dvh}}
-@media(max-height:750px){.hero-wrap{width:min(100%,285px);margin-top:10px}.balance{margin-top:16px}}
-@media(max-width:360px){.header{padding-left:12px;padding-right:12px}.exchange-button{font-size:9px;gap:3px;padding:8px 5px}main{padding-left:12px;padding-right:12px}.stat-value{font-size:13px}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+.account-panel{margin-top:25px;border-color:#58c9ff30}
+.account-login{font-size:14px;font-weight:850;overflow-wrap:anywhere}
+.account-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.auth-screen{padding-top:10px}
+.auth-logo{
+ width:110px;height:110px;display:grid;place-items:center;margin:12px auto 20px;
+ font-size:65px;border-radius:32px;
+ background:linear-gradient(145deg,#f7d581,#9f6925);box-shadow:0 15px 50px #f4c45a15
+}
+.auth-title{text-align:center;font-size:30px;letter-spacing:-1px;margin:0 0 8px}
+.auth-label{display:block;font-size:12px;color:var(--muted);margin:15px 0 7px}
+.auth-error{min-height:22px;color:#ef7a8b;font-size:12px;line-height:1.6;margin-top:12px}
+.auth-note{text-align:center;font-size:11px;color:var(--muted);line-height:1.8;margin-top:15px}
+.password-row{position:relative}
+.password-row input{padding-right:52px}
+.password-eye{
+ position:absolute;right:6px;top:6px;width:36px;height:34px;
+ background:transparent;border-radius:8px;color:var(--muted)
+}
+@media(min-width:700px){
+ .app{box-shadow:0 0 90px #0002}
+ .overlay{align-items:center;padding:25px}
+ .modal{border-radius:25px;max-height:89dvh}
+}
+@media(max-height:750px){
+ .hero-wrap{width:min(100%,285px);margin-top:10px}
+ .balance{margin-top:16px}
+}
+@media(max-width:360px){
+ .header{padding-left:12px;padding-right:12px}
+ .exchange-button{font-size:9px;gap:3px;padding:8px 5px}
+ main{padding-left:12px;padding-right:12px}
+ .stat-value{font-size:13px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{
+  animation-duration:.01ms!important;animation-iteration-count:1!important;
+  transition-duration:.01ms!important
+ }
+}
 </style>
 </head>
 <body>
@@ -203,15 +332,22 @@ summary{color:var(--text);cursor:pointer}
 <script>
 "use strict";
 
-const STORAGE_KEY="hamster-empire-browser-v1";
-const ASSET_KEY="hamster-empire-assets-v2";
-const VERSION=3;
+/*
+ Аккаунты и прогресс хранятся только в этом браузере.
+ Старое общее сохранение hamster-empire-browser-v1 не используется.
+ Каждый новый аккаунт получает отдельное чистое сохранение.
+ Пароль не хранится открытым текстом.
+ Для реальной защиты аккаунтов необходим сервер.
+*/
+
+const VERSION=4;
+const ACCOUNT_PREFIX="hamster-empire-account-v4:";
+const SAVE_PREFIX="hamster-empire-save-v4:";
+const ASSET_PREFIX="hamster-empire-assets-v4:";
 const OFFLINE_LIMIT=3600;
 const ENERGY_BASE=1000,ENERGY_STEP=250,ENERGY_REGEN=1.5;
 const PRICE_GROWTH=1.78,PROFIT_GROWTH=1.10,PROFIT_FACTOR=.55;
 const PROMO_REWARD=1000000;
-const CHANNEL_URL="https://t.me/rafoelka1";
-const CHANNEL_REWARD=10000;
 const DEFAULT_PHOTO="hamster.png";
 
 const $=s=>document.querySelector(s);
@@ -232,14 +368,13 @@ const FALLBACK_PHOTO="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(`
   <stop offset="1" stop-color="#815027"/>
  </radialGradient>
  <radialGradient id="cream"><stop stop-color="#f9e8bf"/><stop offset="1" stop-color="#d2ac72"/></radialGradient>
- <radialGradient id="ear"><stop stop-color="#c2987a"/><stop offset="1" stop-color="#855329"/></radialGradient>
 </defs>
 <ellipse cx="140" cy="279" rx="91" ry="10" fill="#000" opacity=".15"/>
 <ellipse cx="140" cy="185" rx="107" ry="98" fill="url(#fur)"/>
 <circle cx="74" cy="48" r="31" fill="url(#fur)"/>
 <circle cx="206" cy="48" r="31" fill="url(#fur)"/>
-<circle cx="75" cy="48" r="21" fill="url(#ear)"/>
-<circle cx="205" cy="48" r="21" fill="url(#ear)"/>
+<circle cx="75" cy="48" r="21" fill="#a77660"/>
+<circle cx="205" cy="48" r="21" fill="#a77660"/>
 <path d="M55 106Q55 37 140 34Q225 37 225 106Q238 171 140 180Q42 171 55 106" fill="url(#fur)"/>
 <ellipse cx="140" cy="205" rx="72" ry="67" fill="url(#cream)"/>
 <ellipse cx="100" cy="92" rx="10" ry="13" fill="#18100b"/>
@@ -256,8 +391,8 @@ const FALLBACK_PHOTO="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(`
 </g>
 <ellipse cx="98" cy="219" rx="22" ry="34" transform="rotate(-27 98 219)" fill="url(#fur)"/>
 <ellipse cx="182" cy="219" rx="22" ry="34" transform="rotate(27 182 219)" fill="url(#fur)"/>
-<ellipse cx="110" cy="230" rx="14" ry="18" transform="rotate(-27 110 230)" fill="#ddb98e"/>
-<ellipse cx="170" cy="230" rx="14" ry="18" transform="rotate(27 170 230)" fill="#ddb98e"/>
+<ellipse cx="110" cy="230" rx="14" ry="18" fill="#ddb98e"/>
+<ellipse cx="170" cy="230" rx="14" ry="18" fill="#ddb98e"/>
 <ellipse cx="83" cy="278" rx="26" ry="10" fill="#b88f7a"/>
 <ellipse cx="197" cy="278" rx="26" ry="10" fill="#b88f7a"/>
 </svg>`);
@@ -372,12 +507,6 @@ const CARDS=Object.entries(CARD_DATA).flatMap(([cat,rows])=>rows.map(
  ([id,ru,en,icon,cost,profit,dep,event])=>({id,cat,ru,en,icon,cost,profit,dep,event:!!event})
 ));
 const CARD_BY_ID=Object.fromEntries(CARDS.map(c=>[c.id,c]));
-const TASKS=[
- {id:"telegram",icon:"✈️",ru:"Telegram-канал · демо",en:"Telegram channel · demo",reward:5000,url:"https://telegram.org/"},
- {id:"x",icon:"𝕏",ru:"Сообщество в X · демо",en:"X community · demo",reward:5000,url:"https://x.com/"},
- {id:"youtube",icon:"▶️",ru:"YouTube-канал · демо",en:"YouTube channel · demo",reward:5000,url:"https://www.youtube.com/"},
- {id:"video",icon:"🎬",ru:"Видео дня · демо",en:"Daily video · demo",reward:100000,url:"https://www.youtube.com/"}
-];
 const CHECKIN=[500,1000,2500,5000,15000,25000,100000,500000,1000000,5000000];
 const WORDS=["COIN","TON","MINE","GOLD","BLOCK","TRADE","TOKEN"];
 const MORSE={
@@ -400,22 +529,19 @@ function newState(){
   comboDay:comboDay(),comboFound:[],comboClaimed:false,
   cipherDay:comboDay(),cipherClaimed:false,
   boostDay:calendarDay(),boostUsed:0,boostLast:0,
-  checkinLast:null,checkinStreak:0,tasks:{},videoStart:0,videoDay:comboDay(),
-  keys:0,puzzleDay:null,usedPromos:[],channelOpened:false,channelClaimed:false,
+  checkinLast:null,checkinStreak:0,keys:0,puzzleDay:null,usedPromos:[],
   stats:{taps:0,spent:0,playSeconds:0}
  };
 }
 function normalizeState(data){
- const d=newState();
- if(!data||typeof data!=="object"||Array.isArray(data))return d;
- const s={...d};
+ const s=newState();
+ if(!data||typeof data!=="object"||Array.isArray(data))return s;
  s.language=["ru","en"].includes(data.language)?data.language:"ru";
  s.theme=["dark","light"].includes(data.theme)?data.theme:"dark";
  s.sound=typeof data.sound==="boolean"?data.sound:true;
- s.nickname=String(data.nickname||d.nickname).slice(0,24);
+ s.nickname=String(data.nickname||s.nickname).slice(0,24);
  s.exchange=EXCHANGES.includes(data.exchange)?data.exchange:"Binance";
  s.avatar=[...AVATARS,"photo","custom"].includes(data.avatar)?data.avatar:"photo";
- if(data.version<3&&data.avatar==="🐹")s.avatar="photo";
  s.tapLevel=Math.floor(safeNumber(data.tapLevel,100));
  s.energyLevel=Math.floor(safeNumber(data.energyLevel,100));
  s.balance=safeNumber(data.balance);
@@ -426,8 +552,8 @@ function normalizeState(data){
  s.keys=Math.floor(safeNumber(data.keys,1e9));
  const cards=data.cards&&typeof data.cards==="object"?data.cards:{};
  for(const c of CARDS)s.cards[c.id]=Math.floor(safeNumber(cards[c.id],100));
- for(const k of ["comboDay","cipherDay","boostDay","videoDay"]){
-  s[k]=Number.isFinite(Number(data[k]))?Math.floor(Number(data[k])):d[k];
+ for(const k of ["comboDay","cipherDay","boostDay"]){
+  if(data[k]!=null&&Number.isFinite(Number(data[k])))s[k]=Math.floor(Number(data[k]));
  }
  s.comboFound=Array.isArray(data.comboFound)?
   [...new Set(data.comboFound.filter(id=>CARD_BY_ID[id]))].slice(0,3):[];
@@ -435,58 +561,31 @@ function normalizeState(data){
  s.cipherClaimed=!!data.cipherClaimed;
  s.boostUsed=Math.floor(safeNumber(data.boostUsed,6));
  s.boostLast=clamp(finite(data.boostLast),0,now());
- s.checkinLast=data.checkinLast==null?null:Math.floor(finite(data.checkinLast,calendarDay()-2));
+ s.checkinLast=data.checkinLast==null?null:Math.floor(finite(data.checkinLast));
  s.checkinStreak=Math.floor(safeNumber(data.checkinStreak,1e9));
- const tasks=data.tasks&&typeof data.tasks==="object"?data.tasks:{};
- for(const task of TASKS)s.tasks[task.id]=tasks[task.id]===true;
- s.videoStart=clamp(finite(data.videoStart),0,now());
  s.puzzleDay=data.puzzleDay==null?null:Math.floor(finite(data.puzzleDay));
  s.usedPromos=Array.isArray(data.usedPromos)?[...new Set(
   data.usedPromos.filter(v=>typeof v==="string")
    .map(v=>v.trim().toUpperCase()).filter(v=>PROMO_CODES.has(v))
  )]:[];
- s.channelClaimed=data.channelClaimed===true;
- s.channelOpened=s.channelClaimed||data.channelOpened===true;
  const stats=data.stats&&typeof data.stats==="object"?data.stats:{};
  for(const k of Object.keys(s.stats))s.stats[k]=safeNumber(stats[k]);
  return s;
 }
-let migrationNotice=false,storageWarning=false;
-function loadState(){
- try{
-  const raw=localStorage.getItem(STORAGE_KEY);
-  if(!raw)return newState();
-  const data=JSON.parse(raw);
-  if(![1,2,3].includes(data.version))return newState();
-  migrationNotice=data.version<3;
-  return normalizeState(data);
- }catch{return newState()}
-}
-function validImageData(v){
- return typeof v==="string"&&v.length<5500000&&
-  /^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=\s]+$/.test(v);
-}
-function normalizeAssets(d){
- return {photo:validImageData(d?.photo)?d.photo:"",avatar:validImageData(d?.avatar)?d.avatar:""};
-}
-function loadAssets(){
- let embedded={photo:"",avatar:""};
- try{embedded=normalizeAssets(JSON.parse($("#embedded-assets").textContent))}catch{}
- try{
-  const stored=normalizeAssets(JSON.parse(localStorage.getItem(ASSET_KEY)||"{}"));
-  return {photo:stored.photo||embedded.photo,avatar:stored.avatar||embedded.avatar};
- }catch{return embedded}
-}
-let state=loadState(),assets=loadAssets();
+
+let state=newState(),assets={photo:"",avatar:""};
+let currentAccount=null,active=false,sessionEpoch=0;
+let authMode="register",authBusy=false,passwordBusy=false;
 let tab="home",mineCategory="markets",mineSearch="",mineSort="default";
 let modalName="",modalData=null,previousFocus=null;
-let active=!document.hidden,displayedBalance=state.balance,lastFrame=performance.now();
-let lastHUD=0,lastRenderedRank=0,profitCache=null,soundContext=null;
-let toastTimer=null,tiltTimer=null,cipherMode=false,cipherSymbols="",cipherLetters="";
-let cipherTimer=null,statTapTimes=[],lastAcceptedTap=-Infinity,puzzle=null;
-let photoBusy=false,settleClock=state.lastSeen,defaultPhotoFailed=false;
-let defaultPhotoData="";
+let displayedBalance=0,lastFrame=performance.now(),lastHUD=0,lastRenderedRank=0;
+let profitCache=null,soundContext=null,toastTimer=null,tiltTimer=null;
+let cipherMode=false,cipherSymbols="",cipherLetters="",cipherTimer=null;
+let statTapTimes=[],lastAcceptedTap=-Infinity,puzzle=null;
+let photoBusy=false,settleClock=now(),storageWarning=false;
+let defaultPhotoFailed=false,defaultPhotoData="";
 const activePointers=new Map();
+
 const T=(ru,en)=>state.language==="ru"?ru:en;
 const trName=o=>state.language==="ru"?o.ru:o.en;
 function fmt(n){return Math.floor(finite(n)).toLocaleString(state.language==="ru"?"ru-RU":"en-US").replace(/\u00a0/g," ")}
@@ -502,6 +601,326 @@ function timeText(ms){
  return h?`${h}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`:
   `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
 }
+function setText(selector,text){
+ const e=$(selector);if(e&&e.textContent!==text)e.textContent=text;
+}
+function toast(message){
+ clearTimeout(toastTimer);
+ $("#toast-root").innerHTML=`<div class="toast">${esc(message)}</div>`;
+ toastTimer=setTimeout(()=>$("#toast-root").innerHTML="",3500);
+}
+
+/* SHA-256 для резервного режима браузеров без Web Crypto. */
+const SHA_K=[
+ 0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+ 0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+ 0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+ 0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+ 0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+ 0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+ 0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+ 0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
+];
+function sha256(text){
+ const bytes=new TextEncoder().encode(text);
+ const length=Math.ceil((bytes.length+9)/64)*64;
+ const buffer=new Uint8Array(length);buffer.set(bytes);buffer[bytes.length]=128;
+ const view=new DataView(buffer.buffer),bits=bytes.length*8;
+ view.setUint32(length-8,Math.floor(bits/4294967296));
+ view.setUint32(length-4,bits>>>0);
+ const h=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+ const w=new Uint32Array(64),r=(x,n)=>(x>>>n)|(x<<(32-n));
+ for(let offset=0;offset<length;offset+=64){
+  for(let i=0;i<16;i++)w[i]=view.getUint32(offset+i*4);
+  for(let i=16;i<64;i++){
+   const a=w[i-15],b=w[i-2];
+   w[i]=(w[i-16]+(r(a,7)^r(a,18)^(a>>>3))+w[i-7]+(r(b,17)^r(b,19)^(b>>>10)))>>>0;
+  }
+  let [a,b,c,d,e,f,g,j]=h;
+  for(let i=0;i<64;i++){
+   const t1=(j+(r(e,6)^r(e,11)^r(e,25))+((e&f)^(~e&g))+SHA_K[i]+w[i])>>>0;
+   const t2=((r(a,2)^r(a,13)^r(a,22))+((a&b)^(a&c)^(b&c)))>>>0;
+   j=g;g=f;f=e;e=(d+t1)>>>0;d=c;c=b;b=a;a=(t1+t2)>>>0;
+  }
+  [a,b,c,d,e,f,g,j].forEach((v,i)=>h[i]=(h[i]+v)>>>0);
+ }
+ return h.map(v=>v.toString(16).padStart(8,"0")).join("");
+}
+function createSalt(){
+ const bytes=new Uint8Array(24);
+ if(globalThis.crypto?.getRandomValues)crypto.getRandomValues(bytes);
+ else for(let i=0;i<bytes.length;i++)bytes[i]=Math.floor(Math.random()*256);
+ return [...bytes].map(v=>v.toString(16).padStart(2,"0")).join("");
+}
+async function passwordHash(password,salt,algorithm){
+ if(algorithm==="pbkdf2-sha256"){
+  if(!globalThis.crypto?.subtle)throw new Error(
+   T("Для этого аккаунта нужен браузер с Web Crypto. Открой файл в современном браузере или через localhost.",
+   "This account requires Web Crypto. Use a modern browser or localhost.")
+  );
+  const encoder=new TextEncoder();
+  const key=await crypto.subtle.importKey("raw",encoder.encode(password),"PBKDF2",false,["deriveBits"]);
+  const bits=await crypto.subtle.deriveBits({
+   name:"PBKDF2",salt:encoder.encode(salt),iterations:150000,hash:"SHA-256"
+  },key,256);
+  return [...new Uint8Array(bits)].map(v=>v.toString(16).padStart(2,"0")).join("");
+ }
+ if(algorithm!=="sha256-local-v1")throw new Error(T("Неизвестный формат аккаунта.","Unknown account format."));
+ let hash=sha256(salt+"\0"+password);
+ for(let i=0;i<4096;i++){
+  hash=sha256(hash+"\0"+salt+"\0"+password);
+  if(i%512===0)await new Promise(resolve=>setTimeout(resolve,0));
+ }
+ return hash;
+}
+function sameHash(a,b){
+ if(typeof a!=="string"||typeof b!=="string"||a.length!==b.length)return false;
+ let result=0;for(let i=0;i<a.length;i++)result|=a.charCodeAt(i)^b.charCodeAt(i);
+ return result===0;
+}
+const normalizeLogin=login=>String(login).trim().toLowerCase();
+const accountKey=login=>ACCOUNT_PREFIX+encodeURIComponent(login);
+const saveKey=login=>SAVE_PREFIX+encodeURIComponent(login);
+const assetKey=login=>ASSET_PREFIX+encodeURIComponent(login);
+
+function readAccount(login){
+ const raw=localStorage.getItem(accountKey(login));
+ if(raw===null)return null;
+ const account=JSON.parse(raw);
+ if(!account||account.login!==login||typeof account.hash!=="string"||typeof account.salt!=="string")
+  throw new Error(T("Данные аккаунта повреждены.","Account data is damaged."));
+ return account;
+}
+function checkStorage(){
+ const key="hamster-storage-test:"+now();
+ localStorage.setItem(key,"1");localStorage.removeItem(key);
+}
+function passwordField(id,autocomplete="current-password"){
+ return `<div class="password-row">
+  <input id="${id}" class="field" type="password" minlength="4" maxlength="128"
+   autocomplete="${autocomplete}" required>
+  <button type="button" class="password-eye" data-action="password-show" data-id="${id}"
+   aria-label="${T("Показать или скрыть пароль","Show or hide password")}">◉</button>
+ </div>`;
+}
+function renderAuth(){
+ applySettings();
+ $("#header").innerHTML="";
+ $("#nav").innerHTML="";
+ $("#main").innerHTML=`
+ <div class="auth-screen">
+  <div class="auth-logo">🐹</div>
+  <h1 class="auth-title">Hamster Empire</h1>
+  <p class="description" style="text-align:center">${T("Твоя личная бизнес-империя","Your personal business empire")}</p>
+  <div class="panel">
+   <div class="segment">
+    <button type="button" class="btn ${authMode==="register"?"":"secondary"}" data-action="auth-mode" data-id="register">${T("Регистрация","Register")}</button>
+    <button type="button" class="btn ${authMode==="login"?"":"secondary"}" data-action="auth-mode" data-id="login">${T("Вход","Log in")}</button>
+   </div>
+   <h2 style="font-size:19px;margin:20px 0 8px">${authMode==="register"?T("Создать чистый аккаунт","Create a fresh account"):T("Войти в свой аккаунт","Log in to your account")}</h2>
+   <form id="auth-form">
+    <label class="auth-label" for="auth-login">${T("Логин","Login")}</label>
+    <input id="auth-login" class="field" type="text" minlength="3" maxlength="24"
+     autocomplete="username" autocapitalize="none" spellcheck="false" required>
+    <div class="small" style="margin-top:6px">${T("3–24 символа: английские буквы, цифры, _ или -.","3–24 characters: English letters, digits, _ or -.")}</div>
+    <label class="auth-label" for="auth-password">${T("Пароль","Password")}</label>
+    ${passwordField("auth-password",authMode==="register"?"new-password":"current-password")}
+    ${authMode==="register"?`
+     <label class="auth-label" for="auth-confirm">${T("Повтори пароль","Repeat password")}</label>
+     ${passwordField("auth-confirm","new-password")}`:""}
+    <div class="small" style="margin-top:7px">${T("Минимум 4 символа. Не используй пароль от важных сервисов.","At least 4 characters. Do not reuse a password from important services.")}</div>
+    <button id="auth-submit" type="submit" class="btn wide">${authMode==="register"?T("Создать аккаунт и начать","Create account & start"):T("Войти","Log in")}</button>
+    <div id="auth-error" class="auth-error" role="alert"></div>
+   </form>
+  </div>
+  <div class="panel account-panel">
+   <strong>👤 ${T("Локальные аккаунты","Local accounts")}</strong>
+   <p class="small">${T(
+    "Новый аккаунт: 0 монет, 0 дохода, без бизнесов и улучшений. Сохранения разных логинов не смешиваются. При следующем открытии войди тем же логином и паролем.",
+    "New accounts have 0 coins, 0 profit and no businesses or upgrades. Saves are separate. Use the same login and password next time."
+   )}</p>
+   <div class="notice">${T(
+    "Без сервера: аккаунт доступен только в этом браузере и на этом устройстве. Очистка данных браузера удаляет его. Экспорт JSON сохраняет игровой прогресс, но не пароль.",
+    "No server: accounts are available only in this browser and on this device. Clearing browser data removes them. JSON exports progress, not passwords."
+   )}</div>
+   <div class="segment">
+    <button class="btn secondary" data-action="auth-language" data-id="ru">Русский</button>
+    <button class="btn secondary" data-action="auth-language" data-id="en">English</button>
+   </div>
+  </div>
+ </div>`;
+}
+async function submitAuth(){
+ if(authBusy||currentAccount)return;
+ const login=normalizeLogin($("#auth-login")?.value||"");
+ const password=$("#auth-password")?.value||"";
+ const confirmation=$("#auth-confirm")?.value||"";
+ const mode=authMode;
+ const error=message=>setText("#auth-error",message);
+ if(!/^[a-z0-9_-]{3,24}$/.test(login)){
+  error(T("Логин: 3–24 английских буквы, цифры, _ или -.","Login: 3–24 English letters, digits, _ or -."));return;
+ }
+ if(password.length<4||password.length>128){
+  error(T("Пароль должен содержать от 4 до 128 символов.","Password must contain 4–128 characters."));return;
+ }
+ if(mode==="register"&&password!==confirmation){
+  error(T("Пароли не совпадают.","Passwords do not match."));return;
+ }
+ authBusy=true;
+ $("#auth-submit").disabled=true;
+ $("#auth-submit").textContent=T("Подожди…","Please wait…");
+ error("");
+ let created=false;
+ try{
+  checkStorage();
+  let account=readAccount(login);
+  if(mode==="register"){
+   if(account)throw new Error(T("Этот логин уже занят. Войди или выбери другой.","This login is taken. Log in or choose another."));
+   const algorithm=globalThis.crypto?.subtle?"pbkdf2-sha256":"sha256-local-v1";
+   const salt=createSalt();
+   const hash=await passwordHash(password,salt,algorithm);
+   if(localStorage.getItem(accountKey(login))!==null)
+    throw new Error(T("Этот логин уже зарегистрирован.","This login has already been registered."));
+   account={login,salt,hash,algorithm,createdAt:now()};
+   const fresh=newState();
+   fresh.language=state.language;
+   fresh.nickname=login;
+   const newAssets=embeddedAssets();
+   try{
+    localStorage.setItem(saveKey(login),JSON.stringify(fresh));
+    localStorage.setItem(assetKey(login),JSON.stringify(newAssets));
+    localStorage.setItem(accountKey(login),JSON.stringify(account));
+    created=true;
+   }catch(e){
+    localStorage.removeItem(saveKey(login));
+    localStorage.removeItem(assetKey(login));
+    localStorage.removeItem(accountKey(login));
+    throw e;
+   }
+  }else{
+   if(!account)throw new Error(T("Неверный логин или пароль.","Incorrect login or password."));
+   const hash=await passwordHash(password,account.salt,account.algorithm);
+   if(!sameHash(hash,account.hash))
+    throw new Error(T("Неверный логин или пароль.","Incorrect login or password."));
+  }
+  enterAccount(account);
+  toast(created?T("Аккаунт создан. Начинаем с нуля!","Account created. Starting fresh!"):T("С возвращением!","Welcome back!"));
+ }catch(e){
+  error(e.message||T("Не удалось открыть аккаунт. Проверь настройки хранения браузера.","Could not open account. Check browser storage settings."));
+ }finally{
+  authBusy=false;
+  if($("#auth-submit")){
+   $("#auth-submit").disabled=false;
+   $("#auth-submit").textContent=mode==="register"?T("Создать аккаунт и начать","Create account & start"):T("Войти","Log in");
+  }
+ }
+}
+function enterAccount(account){
+ const raw=localStorage.getItem(saveKey(account.login));
+ let loaded=newState();
+ if(raw!==null){
+  const parsed=JSON.parse(raw);
+  if(!parsed||parsed.version!==VERSION)throw new Error(T("Сохранение аккаунта повреждено.","Account save is damaged."));
+  loaded=normalizeState(parsed);
+ }else loaded.nickname=account.login;
+ const loadedAssets=loadAssets(account.login);
+ currentAccount=account;sessionEpoch++;
+ state=loaded;assets=loadedAssets;profitCache=null;storageWarning=false;
+ settleClock=state.lastSeen;displayedBalance=state.balance;
+ tab="home";mineCategory="markets";mineSearch="";mineSort="default";
+ cipherMode=false;clearCipher();puzzle=null;statTapTimes=[];
+ active=false;settle(true);rollDays();
+ active=!document.hidden;lastFrame=performance.now();
+ lastRenderedRank=rankIndex();
+ if(state.avatar==="custom"&&!assets.avatar)state.avatar="photo";
+ writeSave();render();
+ if(state.pendingOffline>=1){
+  const epoch=sessionEpoch;
+  setTimeout(()=>{
+   if(currentAccount&&sessionEpoch===epoch&&!modalName)openModal("offline");
+  },350);
+ }
+}
+function logout(){
+ if(!currentAccount)return;
+ if(active)settle(false);
+ writeSave();
+ active=false;currentAccount=null;sessionEpoch++;
+ closeModal();cipherMode=false;clearCipher();puzzle=null;
+ state=newState();assets={photo:"",avatar:""};profitCache=null;
+ displayedBalance=0;settleClock=now();authMode="login";
+ $$(".float-number").forEach(n=>n.remove());
+ renderAuth();window.scrollTo({top:0,behavior:"auto"});
+}
+async function changePassword(){
+ if(passwordBusy||!currentAccount)return;
+ const oldPassword=$("#old-password")?.value||"";
+ const newPassword=$("#new-password")?.value||"";
+ const repeat=$("#repeat-password")?.value||"";
+ const epoch=sessionEpoch,login=currentAccount.login;
+ const message=text=>setText("#password-error",text);
+ if(newPassword.length<4||newPassword.length>128){
+  message(T("Новый пароль: от 4 до 128 символов.","New password: 4–128 characters."));return;
+ }
+ if(newPassword!==repeat){message(T("Пароли не совпадают.","Passwords do not match."));return}
+ passwordBusy=true;
+ const button=$('[data-action="password-save"]');if(button)button.disabled=true;
+ try{
+  const account=readAccount(login);
+  if(!account)throw new Error(T("Аккаунт не найден.","Account not found."));
+  const oldHash=await passwordHash(oldPassword,account.salt,account.algorithm);
+  if(!sameHash(oldHash,account.hash))throw new Error(T("Текущий пароль неверный.","Current password is incorrect."));
+  const algorithm=globalThis.crypto?.subtle?"pbkdf2-sha256":"sha256-local-v1";
+  const salt=createSalt(),hash=await passwordHash(newPassword,salt,algorithm);
+  if(epoch!==sessionEpoch||!currentAccount)return;
+  const updated={...account,algorithm,salt,hash};
+  localStorage.setItem(accountKey(login),JSON.stringify(updated));
+  currentAccount=updated;closeModal();toast(T("Пароль изменён.","Password changed."));
+ }catch(e){message(e.message||T("Не удалось изменить пароль.","Could not change password."))}
+ finally{
+  passwordBusy=false;
+  const b=$('[data-action="password-save"]');if(b)b.disabled=false;
+ }
+}
+
+function validImageData(v){
+ return typeof v==="string"&&v.length<5500000&&
+  /^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=\s]+$/.test(v);
+}
+function normalizeAssets(d){
+ return {photo:validImageData(d?.photo)?d.photo:"",avatar:validImageData(d?.avatar)?d.avatar:""};
+}
+function embeddedAssets(){
+ try{return normalizeAssets(JSON.parse($("#embedded-assets").textContent))}
+ catch{return {photo:"",avatar:""}}
+}
+function loadAssets(login){
+ const embedded=embeddedAssets();
+ try{
+  const stored=normalizeAssets(JSON.parse(localStorage.getItem(assetKey(login))||"{}"));
+  return {photo:stored.photo||embedded.photo,avatar:stored.avatar||embedded.avatar};
+ }catch{return embedded}
+}
+function writeSave(){
+ if(!currentAccount)return false;
+ try{
+  localStorage.setItem(saveKey(currentAccount.login),JSON.stringify(state));
+  return true;
+ }catch{
+  if(!storageWarning){
+   storageWarning=true;
+   toast(T("Сохранение недоступно. Проверь место и настройки браузера.","Saving unavailable. Check storage space and browser settings."));
+  }
+  return false;
+ }
+}
+function save(){if(!currentAccount)return false;if(active)settle(false);return writeSave()}
+function saveAssets(){
+ if(!currentAccount)return false;
+ try{localStorage.setItem(assetKey(currentAccount.login),JSON.stringify(assets));return true}
+ catch{toast(T("Изображение не сохранилось. Освободи место или экспортируй HTML.","Image not saved. Free storage or export HTML."));return false}
+}
+
 const maxEnergy=()=>ENERGY_BASE+state.energyLevel*ENERGY_STEP;
 const tapValue=()=>1+state.tapLevel;
 function rankIndex(){
@@ -513,7 +932,7 @@ function cardIncome(c){
 }
 const cardIncrease=c=>c.profit*PROFIT_FACTOR*Math.pow(PROFIT_GROWTH,state.cards[c.id]||0);
 function profitPerHour(){
- if(profitCache===null)profitCache=CARDS.reduce((s,c)=>s+cardIncome(c),0);
+ if(profitCache===null)profitCache=CARDS.reduce((sum,c)=>sum+cardIncome(c),0);
  return profitCache;
 }
 const cardPrice=c=>Math.ceil(c.cost*Math.pow(PRICE_GROWTH,state.cards[c.id]||0));
@@ -525,18 +944,17 @@ function dailyCombo(){
 }
 const dailyWord=()=>WORDS[((comboDay()%WORDS.length)+WORDS.length)%WORDS.length];
 function credit(n){
- if(!Number.isFinite(n)||n<=0)return;
+ if(!currentAccount||!Number.isFinite(n)||n<=0)return;
  state.balance=Math.min(1e100,state.balance+n);
  state.earned=Math.min(1e100,state.earned+n);
 }
 function spend(n){
- if(!Number.isFinite(n)||n<0||state.balance+1e-7<n)return false;
+ if(!currentAccount||!Number.isFinite(n)||n<0||state.balance+1e-7<n)return false;
  state.balance=Math.max(0,state.balance-n);
- state.stats.spent=Math.min(1e100,state.stats.spent+n);
- return true;
+ state.stats.spent=Math.min(1e100,state.stats.spent+n);return true;
 }
-
 function settle(offline=false){
+ if(!currentAccount)return;
  const t=now(),seconds=Math.max(0,(t-settleClock)/1000);
  settleClock=t;state.lastSeen=t;
  if(!seconds)return;
@@ -546,61 +964,42 @@ function settle(offline=false){
  state.energy=clamp(state.energy+seconds*ENERGY_REGEN,0,maxEnergy());
  if(!offline)state.stats.playSeconds+=Math.min(seconds,60);
 }
-function writeSave(){
- try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));return true}
- catch{
-  if(!storageWarning){
-   storageWarning=true;
-   toast(T("Сохранение недоступно. Проверь свободное место и настройки браузера.","Saving unavailable. Check browser settings and free space."));
-  }return false;
- }
-}
-function save(){if(active)settle(false);return writeSave()}
-function saveAssets(){
- try{localStorage.setItem(ASSET_KEY,JSON.stringify(assets));return true}
- catch{toast(T("Изображение не сохранилось. Экспортируй HTML или освободи место.","Image not saved. Export HTML or free storage."));return false}
-}
 function clearCipher(){
  clearTimeout(cipherTimer);cipherSymbols="";cipherLetters="";activePointers.clear();
 }
 function rollDays(){
- let changed=false;
- const d=comboDay();
+ let changed=false;const d=comboDay();
  if(state.comboDay!==d){state.comboDay=d;state.comboFound=[];state.comboClaimed=false;changed=true}
  if(state.cipherDay!==d){state.cipherDay=d;state.cipherClaimed=false;cipherMode=false;clearCipher();changed=true}
- if(state.videoDay!==d){state.videoDay=d;state.videoStart=0;state.tasks.video=false;changed=true}
  if(state.boostDay!==calendarDay()){state.boostDay=calendarDay();state.boostUsed=0;changed=true}
- const combo=dailyCombo();state.comboFound=state.comboFound.filter(id=>combo.includes(id));
+ state.comboFound=state.comboFound.filter(id=>dailyCombo().includes(id));
  return changed;
 }
 function sound(kind="tap"){
- if(!state.sound||!active)return;
+ if(!state.sound||!active||!currentAccount)return;
  try{
   const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return;
   if(!soundContext)soundContext=new Audio();
   if(soundContext.state==="suspended")soundContext.resume().catch(()=>{});
   const start=soundContext.currentTime;
   const frequencies=kind==="reward"?[523,659,784,1047]:kind==="buy"?[440,660]:kind==="error"?[160]:[740];
-  frequencies.forEach((f,i)=>{
-   const o=soundContext.createOscillator(),g=soundContext.createGain(),t=start+i*.075;
-   o.connect(g);g.connect(soundContext.destination);o.type=kind==="tap"?"sine":"triangle";
-   o.frequency.setValueAtTime(f,t);
-   if(kind==="tap")o.frequency.exponentialRampToValueAtTime(380,t+.065);
-   g.gain.setValueAtTime(.0001,t);
-   g.gain.exponentialRampToValueAtTime(kind==="tap"?.07:.1,t+.008);
-   g.gain.exponentialRampToValueAtTime(.0001,t+.12);o.start(t);o.stop(t+.14);
+  frequencies.forEach((frequency,i)=>{
+   const oscillator=soundContext.createOscillator(),gain=soundContext.createGain(),t=start+i*.075;
+   oscillator.connect(gain);gain.connect(soundContext.destination);
+   oscillator.type=kind==="tap"?"sine":"triangle";
+   oscillator.frequency.setValueAtTime(frequency,t);
+   if(kind==="tap")oscillator.frequency.exponentialRampToValueAtTime(380,t+.065);
+   gain.gain.setValueAtTime(.0001,t);
+   gain.gain.exponentialRampToValueAtTime(kind==="tap"?.07:.1,t+.008);
+   gain.gain.exponentialRampToValueAtTime(.0001,t+.12);
+   oscillator.start(t);oscillator.stop(t+.14);
   });
  }catch{}
 }
 function haptic(){try{navigator.vibrate?.(8)}catch{}}
-function toast(message){
- clearTimeout(toastTimer);
- $("#toast-root").innerHTML=`<div class="toast">${esc(message)}</div>`;
- toastTimer=setTimeout(()=>$("#toast-root").innerHTML="",3500);
-}
-function floatNumber(x,y,v){
+function floatNumber(x,y,value){
  if($$(".float-number").length>=30)return;
- const n=document.createElement("div");n.className="float-number";n.textContent=v;
+ const n=document.createElement("div");n.className="float-number";n.textContent=value;
  n.style.left=x+"px";n.style.top=y+"px";document.body.appendChild(n);
  n.addEventListener("animationend",()=>n.remove(),{once:true});setTimeout(()=>n.remove(),1000);
 }
@@ -612,8 +1011,8 @@ function photoHTML(className="",alt=null){
  return `<img class="${className}" src="${esc(photoSource())}" data-hamster
   alt="${esc(alt||T("Хомяк","Hamster"))}" draggable="false">`;
 }
-document.addEventListener("error",e=>{
- const img=e.target;
+document.addEventListener("error",event=>{
+ const img=event.target;
  if(!(img instanceof HTMLImageElement)||!img.hasAttribute("data-hamster"))return;
  if(img.src===FALLBACK_PHOTO)return;
  if(!assets.photo&&!defaultPhotoData)defaultPhotoFailed=true;
@@ -621,7 +1020,7 @@ document.addEventListener("error",e=>{
 },true);
 function avatarHTML(){
  if(state.avatar==="photo")return photoHTML("",T("Аватар игрока","Player avatar"));
- if(state.avatar==="custom"&&assets.avatar)return `<img src="${assets.avatar}" alt="${T("Аватар игрока","Player avatar")}">`;
+ if(state.avatar==="custom"&&assets.avatar)return `<img src="${esc(assets.avatar)}" alt="${T("Аватар игрока","Player avatar")}">`;
  return esc(AVATARS.includes(state.avatar)?state.avatar:"🐹");
 }
 async function processImage(file,removeWhite=false,avatar=false){
@@ -631,7 +1030,8 @@ async function processImage(file,removeWhite=false,avatar=false){
  try{
   const image=await new Promise((resolve,reject)=>{
    const img=new Image();img.onload=()=>resolve(img);
-   img.onerror=()=>reject(new Error(T("Не удалось открыть фото.","Could not open image.")));img.src=url;
+   img.onerror=()=>reject(new Error(T("Не удалось открыть фото.","Could not open image.")));
+   img.src=url;
   });
   if(!image.naturalWidth||!image.naturalHeight)throw new Error(T("Пустое изображение.","Empty image."));
   const canvas=document.createElement("canvas");
@@ -647,14 +1047,15 @@ async function processImage(file,removeWhite=false,avatar=false){
   }else ctx.drawImage(image,0,0,w,h);
   if(removeWhite&&!avatar){
    const pixels=ctx.getImageData(0,0,w,h),data=pixels.data,count=w*h;
-   const marked=new Uint8Array(count),queue=new Int32Array(count);let head=0,tail=0;
-   const isBg=i=>{
+   const marked=new Uint8Array(count),queue=new Int32Array(count);
+   let head=0,tail=0;
+   const isBackground=i=>{
     const o=i*4;if(data[o+3]<15)return true;
     const min=Math.min(data[o],data[o+1],data[o+2]),max=Math.max(data[o],data[o+1],data[o+2]);
     return min>=214&&max-min<=29;
    };
    const add=i=>{
-    if(i<0||i>=count||marked[i]||!isBg(i))return;
+    if(i<0||i>=count||marked[i]||!isBackground(i))return;
     marked[i]=1;queue[tail++]=i;
    };
    for(let x=0;x<w;x++){add(x);add((h-1)*w+x)}
@@ -668,12 +1069,14 @@ async function processImage(file,removeWhite=false,avatar=false){
    for(let y=1;y<h-1;y++)for(let x=1;x<w-1;x++){
     const i=y*w+x;if(marked[i])continue;
     let near=false;
-    for(let dy=-1;dy<=1&&!near;dy++)for(let dx=-1;dx<=1;dx++)if(marked[i+dy*w+dx]){near=true;break}
+    for(let dy=-1;dy<=1&&!near;dy++)for(let dx=-1;dx<=1;dx++){
+     if(marked[i+dy*w+dx]){near=true;break}
+    }
     if(!near)continue;
     const o=i*4,min=Math.min(data[o],data[o+1],data[o+2]),max=Math.max(data[o],data[o+1],data[o+2]);
     if(min>160&&max-min<80){
-     const a=clamp((255-min)/85,.08,1);data[o+3]=Math.round(data[o+3]*a);
-     if(a<1)for(let c=0;c<3;c++)data[o+c]=clamp(Math.round((data[o+c]-255*(1-a))/a),0,255);
+     const alpha=clamp((255-min)/85,.08,1);data[o+3]=Math.round(data[o+3]*alpha);
+     if(alpha<1)for(let c=0;c<3;c++)data[o+c]=clamp(Math.round((data[o+c]-255*(1-alpha))/alpha),0,255);
     }
    }
    ctx.putImageData(pixels,0,0);
@@ -682,9 +1085,9 @@ async function processImage(file,removeWhite=false,avatar=false){
     minX=Math.min(minX,x);minY=Math.min(minY,y);maxX=Math.max(maxX,x);maxY=Math.max(maxY,y);
    }
    if(maxX>=minX&&maxY>=minY){
-    const out=document.createElement("canvas"),p=12;
-    out.width=maxX-minX+1+p*2;out.height=maxY-minY+1+p*2;
-    out.getContext("2d").drawImage(canvas,minX,minY,maxX-minX+1,maxY-minY+1,p,p,maxX-minX+1,maxY-minY+1);
+    const out=document.createElement("canvas"),padding=12;
+    out.width=maxX-minX+1+padding*2;out.height=maxY-minY+1+padding*2;
+    out.getContext("2d").drawImage(canvas,minX,minY,maxX-minX+1,maxY-minY+1,padding,padding,maxX-minX+1,maxY-minY+1);
     return out.toDataURL("image/png");
    }
   }
@@ -692,42 +1095,40 @@ async function processImage(file,removeWhite=false,avatar=false){
  }finally{URL.revokeObjectURL(url)}
 }
 async function uploadImage(avatar=false){
- if(photoBusy)return;
+ if(photoBusy||!currentAccount)return;
  const file=$(avatar?"#avatar-file":"#photo-file")?.files?.[0];
  if(!file){toast(T("Сначала выбери изображение.","Choose an image first."));return}
- const removeWhite=!avatar&&!!$("#photo-remove-white")?.checked;
- photoBusy=true;
- const button=$(avatar?'[data-action="avatar-upload"]':'[data-action="photo-upload"]');
- if(button){button.disabled=true;button.textContent=T("Обрабатываю…","Processing…")}
+ const removeWhite=!avatar&&!!$("#photo-remove-white")?.checked,epoch=sessionEpoch;
+ photoBusy=true;renderModal();
  try{
   const data=await processImage(file,removeWhite,avatar);
-  if(avatar){assets.avatar=data;state.avatar="custom"}
-  else assets.photo=data;
-  saveAssets();save();render();
-  toast(T("Изображение сохранено.","Image saved."));
- }catch(e){toast(e.message||T("Ошибка обработки.","Processing failed."))}
- finally{photoBusy=false;if(modalName==="avatar"||modalName==="photo")renderModal()}
+  if(epoch!==sessionEpoch||!currentAccount)return;
+  if(avatar){assets.avatar=data;state.avatar="custom"}else assets.photo=data;
+  saveAssets();save();render();toast(T("Изображение обработано.","Image processed."));
+ }catch(e){if(epoch===sessionEpoch)toast(e.message||T("Ошибка обработки.","Processing failed."))}
+ finally{
+  photoBusy=false;
+  if(epoch===sessionEpoch&&["avatar","photo"].includes(modalName))renderModal();
+ }
 }
 async function embedDefaultPhoto(){
  if(assets.photo)return assets.photo;
  if(defaultPhotoData)return defaultPhotoData;
- if(defaultPhotoFailed)throw new Error(T(
-  "Для автономного HTML сначала загрузи прикреплённое фото в настройках.",
-  "Upload the attached photo in settings first to create a standalone HTML."
- ));
  const image=await new Promise((resolve,reject)=>{
-  const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>reject(new Error(T("Не найден hamster.png.","hamster.png not found.")));
+  const img=new Image();img.onload=()=>resolve(img);
+  img.onerror=()=>reject(new Error(T("Не найден hamster.png. Загрузи фото через настройки.","hamster.png not found. Upload an image in settings.")));
   img.src=DEFAULT_PHOTO;
  });
  const canvas=document.createElement("canvas");
  canvas.width=image.naturalWidth;canvas.height=image.naturalHeight;
  canvas.getContext("2d").drawImage(image,0,0);
  try{defaultPhotoData=canvas.toDataURL("image/png");return defaultPhotoData}
- catch{throw new Error(T("Браузер запрещает встраивание локального файла. Загрузи фото через настройки.","Browser blocked embedding the local file. Upload the image through settings."))}
+ catch{throw new Error(T("Загрузи фото через настройки: браузер заблокировал встраивание локального файла.","Upload an image in settings: the browser blocked embedding the local file."))}
 }
 
 function applySettings(){
- document.documentElement.lang=state.language;document.documentElement.dataset.theme=state.theme;
+ document.documentElement.lang=state.language;
+ document.documentElement.dataset.theme=state.theme;
  $('meta[name="theme-color"]').content=state.theme==="dark"?"#10131c":"#edf1f8";
  $("#nav").setAttribute("aria-label",T("Навигация","Navigation"));
 }
@@ -735,8 +1136,10 @@ function renderHeader(){
  $("#header").innerHTML=`
  <div class="profile">
   <button class="avatar" data-action="avatar" aria-label="${T("Изменить аватар","Change avatar")}">${avatarHTML()}</button>
-  <div class="profile-info"><div class="profile-name">${esc(state.nickname)}</div>
-   <div class="sub">${T("CEO · бизнес и криптобиржа","CEO · business & crypto exchange")}</div></div>
+  <div class="profile-info">
+   <div class="profile-name">${esc(state.nickname)}</div>
+   <div class="sub">${T("CEO · бизнес и криптобиржа","CEO · business & crypto exchange")}</div>
+  </div>
   <button class="exchange-button" data-action="exchange"><span class="exchange-logo">${state.exchange[0]}</span>${esc(state.exchange)} ⌄</button>
   <button class="icon-button" data-action="settings" aria-label="${T("Настройки","Settings")}">⚙</button>
  </div>
@@ -744,25 +1147,50 @@ function renderHeader(){
  <div class="progress"><i id="rank-progress"></i></div>`;
 }
 function renderNav(){
- const items=[["home","🐹",T("Главная","Home")],["mine","💼",T("Бизнес","Business")],
-  ["earn","🎁",T("Награды","Rewards")],["airdrop","📊",T("Империя","Empire")]];
+ const items=[
+  ["home","🐹",T("Главная","Home")],["mine","💼",T("Бизнес","Business")],
+  ["earn","🎁",T("Награды","Rewards")],["empire","📊",T("Империя","Empire")]
+ ];
  $("#nav").innerHTML=items.map(([id,icon,label])=>`
  <button data-action="tab" data-id="${id}" class="${tab===id?"active":""}" ${tab===id?'aria-current="page"':""}>
   <span class="nav-icon">${icon}</span>${label}
   ${id==="earn"&&state.checkinLast!==calendarDay()?'<i class="badge"></i>':""}
  </button>`).join("");
 }
+function accountHTML(){
+ return `<section class="panel account-panel">
+  <div class="row">
+   <div><div class="small">${T("Твой аккаунт","Your account")}</div>
+    <div class="account-login">👤 ${esc(currentAccount.login)}</div></div>
+   <span class="small green">${T("Локальный","Local")}</span>
+  </div>
+  <p class="small">${T(
+   "Прогресс сохраняется отдельно для этого логина. Новый аккаунт начинает с нуля.",
+   "Progress is saved separately for this login. New accounts start fresh."
+  )}</p>
+  <div class="account-buttons">
+   <button class="btn secondary" data-action="password-change">🔐 ${T("Сменить пароль","Change password")}</button>
+   <button class="btn secondary" data-action="logout-confirm">↪ ${T("Выйти / другой аккаунт","Log out / switch")}</button>
+  </div>
+  <div class="small" style="margin-top:10px">${T("Аккаунты находятся только в этом браузере. Для резервной копии прогресса используй экспорт JSON.","Accounts exist only in this browser. Export JSON to back up your progress.")}</div>
+ </section>`;
+}
+function appendAccount(){ $("#main").insertAdjacentHTML("beforeend",accountHTML()) }
 function render(){
+ if(!currentAccount){renderAuth();return}
  applySettings();renderHeader();renderNav();
- if(tab==="home")renderHome();else if(tab==="mine")renderMine();
- else if(tab==="earn")renderEarn();else renderEmpire();
+ if(tab==="home")renderHome();
+ else if(tab==="mine")renderMine();
+ else if(tab==="earn")renderEarn();
+ else renderEmpire();
  updateHUD();
 }
 function renderHome(){
  $("#main").innerHTML=`
  <div class="stats">
   <button class="stat" data-action="stat-tap" title="${T("Три нажатия открывают шифр","Triple tap opens cipher")}">
-   <div class="stat-label gold">${T("Монет за нажатие","Coins per tap")}</div><div class="stat-value gold" id="tap-value"></div>
+   <div class="stat-label gold">${T("Монет за нажатие","Coins per tap")}</div>
+   <div class="stat-value gold" id="tap-value"></div>
   </button>
   <div class="stat"><div class="stat-label blue">${T("До следующей лиги","Until next league")}</div><div class="stat-value" id="to-next"></div></div>
   <div class="stat"><div class="stat-label green">${T("Доход в час","Profit per hour")}</div><div class="stat-value green" id="pph"></div></div>
@@ -772,40 +1200,46 @@ function renderHome(){
  <div class="hero-wrap"><button id="hero" class="hero ${cipherMode?"cipher":""}" aria-label="${T("Нажать на хомяка","Tap hamster")}">${photoHTML("hero-photo")}</button></div>
  <button class="photo-button" data-action="photo">${T("Изменить фото хомяка","Change hamster photo")}</button>
  <div class="status-row">
-  <div class="energy"><div class="energy-label"><span>⚡ <span id="energy-number"></span></span><span class="small">+${T("1,5/с","1.5/s")}</span></div>
-   <div class="progress"><i id="energy-progress"></i></div></div>
+  <div class="energy">
+   <div class="energy-label"><span>⚡ <span id="energy-number"></span></span><span class="small">+${T("1,5/с","1.5/s")}</span></div>
+   <div class="progress"><i id="energy-progress"></i></div>
+  </div>
   <button class="boost" data-action="boosts">🚀 ${T("Бусты","Boosts")}</button>
  </div>
  ${cipherMode?`
-  <div class="cipher-box">
-   <div class="small">${T("Короткое нажатие — точка. Удержание >300 мс — тире.","Short press: dot. Hold >300 ms: dash.")}</div>
-   <div id="cipher-code" class="cipher-code"></div><div id="cipher-word" class="cipher-word"></div>
-   <div class="small">${T("Пауза 0,9 с завершает букву.","A 0.9-second pause completes a letter.")}</div>
-   <div class="segment">
-    <button class="btn secondary" data-action="cipher-help">${T("Подсказка","Hint")}</button>
-    <button class="btn secondary" data-action="cipher-clear">${T("Очистить","Clear")}</button>
-    <button class="btn secondary" data-action="cipher-toggle">${T("Выйти","Exit")}</button>
-   </div>
-  </div>`:`
-  <div class="quick-actions">
-   <button class="btn secondary" data-action="cipher-toggle">🔴 ${T("Шифр дня","Daily cipher")}</button>
-   <button class="btn secondary" data-action="puzzle">🔑 ${T("Мини-игра","Mini-game")}</button>
-  </div>`}
+ <div class="cipher-box">
+  <div class="small">${T("Короткое нажатие — точка. Удержание >300 мс — тире.","Short press: dot. Hold >300 ms: dash.")}</div>
+  <div id="cipher-code" class="cipher-code"></div><div id="cipher-word" class="cipher-word"></div>
+  <div class="small">${T("Пауза 0,9 с завершает букву.","A 0.9-second pause completes a letter.")}</div>
+  <div class="segment">
+   <button class="btn secondary" data-action="cipher-help">${T("Подсказка","Hint")}</button>
+   <button class="btn secondary" data-action="cipher-clear">${T("Очистить","Clear")}</button>
+   <button class="btn secondary" data-action="cipher-toggle">${T("Выйти","Exit")}</button>
+  </div>
+ </div>`:`
+ <div class="quick-actions">
+  <button class="btn secondary" data-action="cipher-toggle">🔴 ${T("Шифр дня","Daily cipher")}</button>
+  <button class="btn secondary" data-action="puzzle">🔑 ${T("Мини-игра","Mini-game")}</button>
+ </div>`}
  <div class="panel no-shadow" style="margin-top:14px">
-  <div class="row"><div><strong style="font-size:13px">🧩 ${T("Комбо дня","Daily combo")}</strong>
-   <div class="small">${T("Награда","Reward")}: <span class="gold">5 000 000</span></div></div>
-   <button class="btn secondary" data-action="combo">${T("Открыть","Open")}</button></div>
+  <div class="row"><div>
+   <strong style="font-size:13px">🧩 ${T("Комбо дня","Daily combo")}</strong>
+   <div class="small">${T("Награда","Reward")}: <span class="gold">5 000 000</span></div>
+  </div><button class="btn secondary" data-action="combo">${T("Открыть","Open")}</button></div>
  </div>
- <button class="btn secondary wide" data-action="tab" data-id="airdrop">🎟️ ${T("Промокоды и задание канала","Promo codes & channel task")}</button>
+ <button class="btn secondary wide" data-action="tab" data-id="empire">🎟️ ${T("Промокоды","Promo codes")}</button>
  <div class="small" style="text-align:center;margin-top:12px">${T("Офлайн: до 1 часа · 60 бизнес-направлений","Offline: up to 1 hour · 60 business directions")}</div>`;
- bindHero();updateCipherUI();
+ appendAccount();bindHero();updateCipherUI();
 }
 function lockReason(c){
  if(c.dep){
-  const [id,l]=c.dep;
-  if((state.cards[id]||0)<l)return `${trName(CARD_BY_ID[id])} · ${T("ур.","lvl")} ${l}`;
+  const [id,level]=c.dep;
+  if((state.cards[id]||0)<level)return `${trName(CARD_BY_ID[id])} · ${T("ур.","lvl")} ${level}`;
  }
- if(c.event){const h=new Date().getUTCHours();if(h>=3&&h<9)return T("Доступно с 12:00 до 06:00 МСК","Available 12:00–06:00 Moscow time")}
+ if(c.event){
+  const hour=new Date().getUTCHours();
+  if(hour>=3&&hour<9)return T("Доступно с 12:00 до 06:00 МСК","Available 12:00–06:00 Moscow time");
+ }
  return "";
 }
 function comboHTML(){
@@ -816,8 +1250,10 @@ function comboHTML(){
   return `<div class="combo-slot ${found?"found":""}"><b>${found?c.icon:"?"}</b><span>${found?esc(trName(c)):T("Скрытый бизнес","Hidden business")}</span>${found?"✓":""}</div>`;
  }).join("")}</div>
  <div class="row"><strong class="gold">🪙 5 000 000</strong>
-  <button class="btn ${state.comboFound.length===3&&!state.comboClaimed?"success":"secondary"}" data-action="combo-claim"
-   ${state.comboFound.length!==3||state.comboClaimed?"disabled":""}>${state.comboClaimed?T("Получено","Claimed"):T("Забрать","Claim")}</button>
+  <button class="btn ${state.comboFound.length===3&&!state.comboClaimed?"success":"secondary"}"
+   data-action="combo-claim" ${state.comboFound.length!==3||state.comboClaimed?"disabled":""}>
+   ${state.comboClaimed?T("Получено","Claimed"):T("Забрать","Claim")}
+  </button>
  </div>
  <details><summary>${T("Как собрать комбо?","How to complete combo?")}</summary>
   ${T("Купи или улучши три направления дня. Сброс в 15:00 МСК. Подсказка:","Buy or upgrade today's three businesses. Resets at 15:00 Moscow time. Hint:")}
@@ -827,8 +1263,11 @@ function comboHTML(){
 function renderMine(){
  $("#main").innerHTML=`
  <h1 class="section-title">${T("Твоя бизнес-империя","Your business empire")}</h1>
- <p class="description">${T("60 направлений: от кофейни до собственной криптобиржи. Доход начисляется постоянно, офлайн — максимум за 1 час.","60 directions, from a coffee shop to a crypto exchange. Offline earnings are capped at 1 hour.")}</p>
- <div class="panel no-shadow row"><span class="small">${T("Баланс","Balance")}: <strong class="gold" data-balance></strong></span><span class="small"><strong class="green" data-pph></strong>/${T("ч","h")}</span></div>
+ <p class="description">${T("60 направлений: от кофейни до собственной криптобиржи. Офлайн-доход — максимум за 1 час.","60 directions, from a coffee shop to a crypto exchange. Offline earnings are capped at 1 hour.")}</p>
+ <div class="panel no-shadow row">
+  <span class="small">${T("Баланс","Balance")}: <strong class="gold" data-balance></strong></span>
+  <span class="small"><strong class="green" data-pph></strong>/${T("ч","h")}</span>
+ </div>
  ${comboHTML()}
  <div class="tabs">
   <button class="tab ${mineCategory==="all"?"active":""}" data-action="category" data-id="all">${T("Все · 60","All · 60")}</button>
@@ -837,192 +1276,205 @@ function renderMine(){
  <div class="search-row">
   <input id="mine-search" class="field" value="${esc(mineSearch)}" placeholder="${T("Поиск бизнеса…","Search businesses…")}" aria-label="${T("Поиск","Search")}">
   <select id="mine-sort" class="field" aria-label="${T("Сортировка","Sort")}">
-   ${[["default",T("По порядку","Default order")],["price",T("По цене","By price")],["profit",T("По доходу","By profit")],["roi",T("По окупаемости","By payback")]].map(([id,name])=>`<option value="${id}" ${mineSort===id?"selected":""}>${name}</option>`).join("")}
+   ${[
+    ["default",T("По порядку","Default order")],["price",T("По цене","By price")],
+    ["profit",T("По доходу","By profit")],["roi",T("По окупаемости","By payback")]
+   ].map(([id,name])=>`<option value="${id}" ${mineSort===id?"selected":""}>${name}</option>`).join("")}
   </select>
  </div><div id="business-list"></div>`;
- renderBusinessList();
+ renderBusinessList();appendAccount();
 }
 function renderBusinessList(){
- const q=mineSearch.trim().toLocaleLowerCase();
- const list=CARDS.filter(c=>(mineCategory==="all"||c.cat===mineCategory)&&(!q||(c.ru+" "+c.en).toLocaleLowerCase().includes(q)));
+ const query=mineSearch.trim().toLocaleLowerCase();
+ const list=CARDS.filter(c=>(mineCategory==="all"||c.cat===mineCategory)&&
+  (!query||(c.ru+" "+c.en).toLocaleLowerCase().includes(query)));
  if(mineSort==="price")list.sort((a,b)=>cardPrice(a)-cardPrice(b));
  if(mineSort==="profit")list.sort((a,b)=>cardIncrease(b)-cardIncrease(a));
  if(mineSort==="roi")list.sort((a,b)=>cardPrice(a)/cardIncrease(a)-cardPrice(b)/cardIncrease(b));
  const root=$("#business-list");if(!root)return;
  if(!list.length){root.innerHTML=`<div class="empty">${T("Ничего не найдено.","Nothing found.")}</div>`;return}
  root.innerHTML=`<div class="card-grid">${list.map(c=>{
-  const reason=lockReason(c),l=state.cards[c.id]||0,cat=CATEGORIES.find(x=>x.id===c.cat);
+  const reason=lockReason(c),level=state.cards[c.id]||0,category=CATEGORIES.find(x=>x.id===c.cat);
   return `<button class="mine-card" data-action="card" data-id="${c.id}">
-   <div class="card-art" style="--card-glow:${cat.color}">${c.icon}<span class="card-level">${T("Ур.","Lvl")} ${l}</span></div>
-   <div class="card-body"><div class="card-name">${esc(trName(c))}</div><div class="card-profit">+${compact(cardIncrease(c))}/${T("час","hour")}</div>
-    <div class="small">${T("Текущий доход","Current profit")}: ${compact(cardIncome(c))}</div></div>
-   <div class="card-footer">${l>=100?"MAX":reason?`<span class="lock-text">🔒 ${esc(reason)}</span>`:`🪙 ${compact(cardPrice(c))}`}</div>
+   <div class="card-art" style="--card-glow:${category.color}">${c.icon}<span class="card-level">${T("Ур.","Lvl")} ${level}</span></div>
+   <div class="card-body">
+    <div class="card-name">${esc(trName(c))}</div>
+    <div class="card-profit">+${compact(cardIncrease(c))}/${T("час","hour")}</div>
+    <div class="small">${T("Текущий доход","Current profit")}: ${compact(cardIncome(c))}</div>
+   </div>
+   <div class="card-footer">${level>=100?"MAX":reason?`<span class="lock-text">🔒 ${esc(reason)}</span>`:`🪙 ${compact(cardPrice(c))}`}</div>
   </button>`;
  }).join("")}</div>`;
 }
 function checkinInfo(){
- const today=calendarDay(),streak=state.checkinLast===today||state.checkinLast===today-1?state.checkinStreak:0;
+ const today=calendarDay();
+ const streak=state.checkinLast===today||state.checkinLast===today-1?state.checkinStreak:0;
  const claimed=state.checkinLast===today;
  return {today,streak,claimed,next:claimed?((Math.max(1,streak)-1)%10)+1:streak%10+1};
 }
 function renderEarn(){
  const info=checkinInfo();
  $("#main").innerHTML=`
- <h1 class="section-title">${T("Награды и задания","Rewards & tasks")}</h1>
- <p class="description">${T("Ежедневный вход, шифр, комбо и ключи помогают развивать империю.","Daily check-ins, ciphers, combos and keys help your empire grow.")}</p>
+ <h1 class="section-title">${T("Ежедневные награды","Daily rewards")}</h1>
+ <p class="description">${T("Награды за вход, шифр, комбо и мини-игру. Заданий соцсетей и демо-видео больше нет.","Check-in, cipher, combo and mini-game rewards. No social media or demo video tasks.")}</p>
  <div class="panel">
   <div class="row"><strong style="font-size:14px">🗓 ${T("Ежедневный вход","Daily check-in")}</strong><span class="small">${T("Серия","Streak")}: ${info.streak}</span></div>
   <div class="calendar">${CHECKIN.map((reward,i)=>{
    const position=info.claimed?info.next:info.streak%10;
-   return `<div class="day ${i<position?"done":""} ${info.next===i+1?"current":""}">${T("День","Day")} ${i+1}<br><span style="font-size:20px">${i<position?"✓":"🪙"}</span><br><b class="gold">${compact(reward)}</b></div>`;
+   return `<div class="day ${i<position?"done":""} ${info.next===i+1?"current":""}">
+    ${T("День","Day")} ${i+1}<br><span style="font-size:20px">${i<position?"✓":"🪙"}</span>
+    <br><b class="gold">${compact(reward)}</b></div>`;
   }).join("")}</div>
   <button class="btn wide" data-action="checkin" ${info.claimed?"disabled":""}>${info.claimed?T("Сегодня уже получено","Already claimed today"):`${T("Забрать","Claim")} +${fmt(CHECKIN[info.next-1])}`}</button>
   <div class="small" style="margin-top:9px">${T("Пропуск дня сбрасывает серию. После 10-го дня цикл повторяется. Дни считаются по МСК.","Missing a day resets your streak. The cycle repeats after day 10. Moscow time.")}</div>
  </div>
- <div class="notice">${T("Ниже — демо-задания без проверки подписок. Задание настоящего канала @rafoelka1 находится во вкладке «Империя».","The tasks below are demos without subscription verification. The @rafoelka1 channel task is in the Empire tab.")}</div>
- <div class="panel">${TASKS.map(task=>{
-  const done=!!state.tasks[task.id];
-  return `<div class="task"><div class="task-icon">${task.icon}</div><div class="task-info">
-   <div class="task-title">${trName(task)}</div><div class="small gold">+${fmt(task.reward)} · ${task.id==="video"?T("ежедневно","daily"):T("однократно","one-time")}</div>
-   ${task.id==="video"&&state.videoStart&&!done?'<div class="small" data-video-status></div>':""}
-   </div><button class="btn secondary" data-action="task" data-id="${task.id}" ${done?"disabled":""}>${done?"✓":T("Открыть","Open")}</button></div>`;
- }).join("")}</div>
- <button class="btn secondary wide" data-action="tab" data-id="airdrop">🎟️ ${T("Промокоды и Telegram-задание","Promo codes & Telegram task")}</button>`;
+ <div class="panel">
+  <div class="row"><strong>🔴 ${T("Шифр дня","Daily cipher")}</strong><strong class="gold">+1 000 000</strong></div>
+  <button class="btn secondary wide" data-action="cipher-toggle" ${state.cipherClaimed?"disabled":""}>${state.cipherClaimed?T("Сегодня разгадан","Solved today"):T("Разгадать шифр","Solve cipher")}</button>
+ </div>
+ ${comboHTML()}
+ <div class="panel">
+  <div class="row"><strong>🔑 ${T("Мини-игра","Mini-game")}</strong><span class="gold">+1 ${T("ключ","key")}</span></div>
+  <button class="btn secondary wide" data-action="puzzle" ${state.puzzleDay===comboDay()?"disabled":""}>${state.puzzleDay===comboDay()?T("Ключ получен","Key claimed"):T("Играть","Play")}</button>
+ </div>`;
+ appendAccount();
 }
 function renderEmpire(){
  const owned=CARDS.filter(c=>(state.cards[c.id]||0)>0).length;
- const levels=CARDS.reduce((s,c)=>s+(state.cards[c.id]||0),0);
- const tasksDone=TASKS.filter(t=>state.tasks[t.id]).length+(state.channelClaimed?1:0);
+ const levels=CARDS.reduce((sum,c)=>sum+(state.cards[c.id]||0),0);
  $("#main").innerHTML=`
  <h1 class="section-title">${T("Обзор империи","Empire overview")}</h1>
- <p class="description">${T("Промокоды, задание канала и твой игровой прогресс. Монеты игровые: торговли, вывода денег и реальных токенов нет.","Promo codes, channel task and your progress. Coins are fictional: no real trading, cash withdrawals or tokens.")}</p>
- <div class="panel promo-panel">
+ <p class="description">${T("Промокоды и твой игровой прогресс. Монеты игровые: реальной торговли и вывода денег нет.","Promo codes and your progress. Coins are fictional: no real trading or cash withdrawals.")}</p>
+ <div class="panel">
   <div class="row"><strong>🎟️ ${T("Промокоды","Promo codes")}</strong><span class="small">${state.usedPromos.length}/${PROMO_CODES.size}</span></div>
-  <p class="small">${T("Каждый действующий промокод даёт","Each valid promo code grants")} <strong class="gold">+1 000 000</strong> ${T("монет один раз. Регистр букв не важен.","coins once. Codes are case-insensitive.")}</p>
+  <p class="small">${T("Каждый действующий промокод даёт","Each valid promo code grants")}
+   <strong class="gold">+1 000 000</strong> ${T("монет один раз для этого аккаунта. Регистр букв не важен.","coins once for this account. Codes are case-insensitive.")}</p>
   <label for="promo-input" class="small">${T("Введи промокод","Enter a promo code")}</label>
-  <input id="promo-input" class="field promo-input" maxlength="40" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="BUSINESS" style="margin-top:8px">
+  <input id="promo-input" class="field promo-input" maxlength="40" autocomplete="off"
+   autocapitalize="characters" spellcheck="false" style="margin-top:8px">
   <button class="btn wide" data-action="promo-activate">🎁 ${T("Активировать · +1 000 000","Activate · +1,000,000")}</button>
   <div id="promo-message" class="promo-message" role="status"></div>
   ${state.usedPromos.length?`<details><summary>${T("Использованные промокоды","Used promo codes")}</summary><div class="mono" style="margin-top:8px">${state.usedPromos.map(esc).join(" · ")}</div></details>`:""}
  </div>
- <div class="panel channel-panel">
-  <div class="row"><strong>✈️ ${T("Задание Telegram","Telegram task")}</strong><strong class="gold">+10 000</strong></div>
-  <p class="small">${T("Подпишись на канал","Subscribe to the channel")} <strong class="blue">@rafoelka1</strong>.</p>
-  <a class="btn secondary wide" href="${CHANNEL_URL}" target="_blank" rel="noopener noreferrer" data-action="channel-open">↗ ${T("Открыть канал и подписаться","Open channel & subscribe")}</a>
-  <button class="btn ${state.channelClaimed?"secondary":"success"} wide" data-action="channel-claim" ${state.channelClaimed||!state.channelOpened?"disabled":""}>
-   ${state.channelClaimed?`✓ ${T("Награда получена","Reward claimed")}`:T("Я подписался · забрать 10 000","I subscribed · claim 10,000")}
-  </button>
-  <div class="small" style="margin-top:10px">${T("Награда однократная. Сначала открой канал. В этой локальной игре нет сервера и Telegram-авторизации: подписка автоматически не проверяется, подтверждение — на твоё усмотрение.","One-time reward. Open the channel first. This local game has no server or Telegram authentication: subscription is not automatically verified; confirmation is self-reported.")}</div>
- </div>
  <div class="stat-list" style="margin-bottom:13px">
-  ${[[T("Открыто бизнесов","Businesses owned"),`${owned}/60`],
+  ${[
+   [T("Открыто бизнесов","Businesses owned"),`${owned}/60`],
    [T("Всего уровней","Total upgrades"),fmt(levels)],
    [T("Всего заработано","Total earned"),compact(state.earned)],
-   [T("Доход в час","Hourly profit"),compact(profitPerHour())]].map(([label,value])=>`<div class="panel no-shadow"><span class="small">${label}</span><strong class="gold">${value}</strong></div>`).join("")}
+   [T("Доход в час","Hourly profit"),compact(profitPerHour())]
+  ].map(([label,value])=>`<div class="panel no-shadow"><span class="small">${label}</span><strong class="gold">${value}</strong></div>`).join("")}
  </div>
  <div class="panel">
-  ${[["🔑",T("Игровые крипто-ключи","Game crypto keys"),fmt(state.keys)],
-   ["✅",T("Выполненные задания","Completed tasks"),fmt(tasksDone)],
+  ${[
+   ["🔑",T("Игровые ключи","Game keys"),fmt(state.keys)],
    ["🎟️",T("Активировано промокодов","Promo codes used"),fmt(state.usedPromos.length)],
    ["👆",T("Нажатий","Taps"),fmt(state.stats.taps)],
    ["🏆",T("Текущая лига","Current league"),RANKS[rankIndex()][0]],
-   ["⏱️",T("Активное время","Active time"),timeText(state.stats.playSeconds*1000)]].map(([icon,label,value])=>`
-    <div class="task"><span class="task-icon">${icon}</span><div class="task-info"><div class="task-title">${label}</div></div><strong class="gold" style="font-size:13px">${value}</strong></div>`).join("")}
+   ["⏱️",T("Активное время","Active time"),timeText(state.stats.playSeconds*1000)]
+  ].map(([icon,label,value])=>`
+   <div class="task"><span class="task-icon">${icon}</span>
+    <div class="task-info"><div class="task-title">${label}</div></div>
+    <strong class="gold" style="font-size:13px">${value}</strong>
+   </div>`).join("")}
  </div>`;
+ appendAccount();
 }
-function setText(s,t){const e=$(s);if(e&&e.textContent!==t)e.textContent=t}
 function updateHUD(){
- const r=rankIndex(),next=RANKS[r+1],p=next?(state.earned-RANKS[r][1])/(next[1]-RANKS[r][1])*100:100;
- setText("#rank-name",`${RANK_ICONS[r]} ${RANKS[r][0]}`);setText("#rank-level",`${T("Уровень","Level")} ${r+1}/11`);
- if($("#rank-progress"))$("#rank-progress").style.width=clamp(p,0,100)+"%";
- setText("#tap-value","🪙 +"+fmt(tapValue()));setText("#to-next",next?compact(Math.max(0,next[1]-state.earned)):"MAX");
- setText("#pph","+"+compact(profitPerHour()));setText("#energy-number",`${fmt(state.energy)} / ${fmt(maxEnergy())}`);
+ if(!currentAccount)return;
+ const rank=rankIndex(),next=RANKS[rank+1];
+ const progress=next?(state.earned-RANKS[rank][1])/(next[1]-RANKS[rank][1])*100:100;
+ setText("#rank-name",`${RANK_ICONS[rank]} ${RANKS[rank][0]}`);
+ setText("#rank-level",`${T("Уровень","Level")} ${rank+1}/11`);
+ if($("#rank-progress"))$("#rank-progress").style.width=clamp(progress,0,100)+"%";
+ setText("#tap-value","🪙 +"+fmt(tapValue()));
+ setText("#to-next",next?compact(Math.max(0,next[1]-state.earned)):"MAX");
+ setText("#pph","+"+compact(profitPerHour()));
+ setText("#energy-number",`${fmt(state.energy)} / ${fmt(maxEnergy())}`);
  if($("#energy-progress"))$("#energy-progress").style.width=state.energy/maxEnergy()*100+"%";
  $$("[data-balance]").forEach(e=>e.textContent=fmt(state.balance));
  $$("[data-pph]").forEach(e=>e.textContent=compact(profitPerHour()));
  $$("[data-countdown]").forEach(e=>e.textContent=timeText(Number(e.dataset.countdown)-now()));
- $$("[data-video-status]").forEach(e=>e.textContent=now()-state.videoStart>=3600000?T("Можно вводить код.","Code entry available."):`${T("До проверки","Until verification")}: ${timeText(state.videoStart+3600000-now())}`);
  if(puzzle)setText("#puzzle-timer",timeText(puzzle.deadline-now()));
  setText("#boost-cooldown",timeText(state.boostLast+3600000-now()));
 }
-
 function promoMessage(text,ok=false){
- const e=$("#promo-message");if(e){e.textContent=text;e.style.color=ok?"var(--green)":"#ef7a8b"}
+ const e=$("#promo-message");
+ if(e){e.textContent=text;e.style.color=ok?"var(--green)":"#ef7a8b"}
 }
 function activatePromo(){
- const input=$("#promo-input"),code=(input?.value||"").trim().toUpperCase();
+ const code=($("#promo-input")?.value||"").trim().toUpperCase();
  if(!code){promoMessage(T("Введи промокод.","Enter a promo code."));sound("error");return}
  if(!PROMO_CODES.has(code)){promoMessage(T("Такого промокода нет.","Promo code not found."));sound("error");return}
  if(state.usedPromos.includes(code)){promoMessage(T("Этот промокод уже использован.","This promo code has already been used."));sound("error");return}
- settle(false);
- state.usedPromos.push(code);
- credit(PROMO_REWARD);
- save();
- sound("reward");haptic();
- checkRank();
- render();
+ settle(false);state.usedPromos.push(code);credit(PROMO_REWARD);
+ save();sound("reward");haptic();checkRank();render();
  promoMessage(T("Промокод активирован! +1 000 000 монет.","Promo code activated! +1,000,000 coins."),true);
  $("#promo-input")?.focus({preventScroll:true});
- toast(T("Промокод ","Promo code ")+code+T(": +1 000 000 монет",": +1,000,000 coins"));
-}
-function openChannel(){
- state.channelOpened=true;save();
- const b=$('[data-action="channel-claim"]');
- if(b&&!state.channelClaimed)b.disabled=false;
-}
-function claimChannel(){
- if(state.channelClaimed)return;
- if(!state.channelOpened){toast(T("Сначала открой канал.","Open the channel first."));return}
- settle(false);
- state.channelClaimed=true;credit(CHANNEL_REWARD);save();sound("reward");haptic();
- render();toast(T("Награда за канал: +10 000 монет","Channel reward: +10,000 coins"));
 }
 
 function bindHero(){
  const hero=$("#hero");if(!hero)return;activePointers.clear();
- hero.addEventListener("pointerdown",e=>{
-  if(modalName||!active||(e.pointerType==="mouse"&&e.button!==0))return;
-  e.preventDefault();if(activePointers.size>=4||(cipherMode&&activePointers.size))return;
-  const entry={start:performance.now(),x:e.clientX,y:e.clientY};
-  activePointers.set(e.pointerId,entry);try{hero.setPointerCapture(e.pointerId)}catch{}
-  const rect=hero.getBoundingClientRect(),x=(e.clientX-rect.left)/rect.width-.5,y=(e.clientY-rect.top)/rect.height-.5;
+ hero.addEventListener("pointerdown",event=>{
+  if(modalName||!active||(event.pointerType==="mouse"&&event.button!==0))return;
+  event.preventDefault();
+  if(activePointers.size>=4||(cipherMode&&activePointers.size))return;
+  const entry={start:performance.now(),x:event.clientX,y:event.clientY};
+  activePointers.set(event.pointerId,entry);
+  try{hero.setPointerCapture(event.pointerId)}catch{}
+  const rect=hero.getBoundingClientRect();
+  const x=(event.clientX-rect.left)/rect.width-.5,y=(event.clientY-rect.top)/rect.height-.5;
   hero.style.transform=`perspective(600px) rotateX(${-y*12}deg) rotateY(${x*12}deg) scale(.967)`;
   clearTimeout(tiltTimer);tiltTimer=setTimeout(()=>hero.style.transform="",135);
   if(cipherMode)clearTimeout(cipherTimer);else doTap(entry.x,entry.y);
  });
- hero.addEventListener("pointerup",e=>{
-  const entry=activePointers.get(e.pointerId);if(!entry)return;
-  activePointers.delete(e.pointerId);
+ hero.addEventListener("pointerup",event=>{
+  const entry=activePointers.get(event.pointerId);if(!entry)return;
+  activePointers.delete(event.pointerId);
   if(cipherMode)addCipherSymbol(performance.now()-entry.start>300?"-":".",entry);
  });
- hero.addEventListener("pointercancel",e=>{activePointers.delete(e.pointerId);hero.style.transform=""});
- hero.addEventListener("lostpointercapture",e=>activePointers.delete(e.pointerId));
- hero.addEventListener("keydown",e=>{
-  if(!["Space","Enter"].includes(e.code)||modalName||!active)return;
-  e.preventDefault();if(e.repeat)return;
-  const rect=hero.getBoundingClientRect(),entry={start:performance.now(),x:rect.left+rect.width/2,y:rect.top+rect.height/2};
-  if(cipherMode){if(activePointers.size)return;activePointers.set("keyboard",entry);clearTimeout(cipherTimer)}
-  else doTap(entry.x,entry.y);
+ hero.addEventListener("pointercancel",event=>{
+  activePointers.delete(event.pointerId);hero.style.transform="";
  });
- hero.addEventListener("keyup",e=>{
-  if(!["Space","Enter"].includes(e.code))return;e.preventDefault();
-  const entry=activePointers.get("keyboard");if(!entry)return;activePointers.delete("keyboard");
+ hero.addEventListener("lostpointercapture",event=>activePointers.delete(event.pointerId));
+ hero.addEventListener("keydown",event=>{
+  if(!["Space","Enter"].includes(event.code)||modalName||!active)return;
+  event.preventDefault();if(event.repeat)return;
+  const rect=hero.getBoundingClientRect();
+  const entry={start:performance.now(),x:rect.left+rect.width/2,y:rect.top+rect.height/2};
+  if(cipherMode){
+   if(activePointers.size)return;
+   activePointers.set("keyboard",entry);clearTimeout(cipherTimer);
+  }else doTap(entry.x,entry.y);
+ });
+ hero.addEventListener("keyup",event=>{
+  if(!["Space","Enter"].includes(event.code))return;
+  event.preventDefault();
+  const entry=activePointers.get("keyboard");if(!entry)return;
+  activePointers.delete("keyboard");
   if(cipherMode)addCipherSymbol(performance.now()-entry.start>300?"-":".",entry);
  });
  hero.addEventListener("blur",()=>activePointers.delete("keyboard"));
 }
 function doTap(x,y){
+ if(!active||!currentAccount)return;
  settle(false);
  const t=performance.now();if(t-lastAcceptedTap<4)return;lastAcceptedTap=t;
  const gain=tapValue();
- if(state.energy+1e-8<gain){sound("error");toast(T("Не хватает энергии. Подожди или используй буст.","Not enough energy. Wait or use a boost."));return}
- state.energy=Math.max(0,state.energy-gain);credit(gain);state.stats.taps++;
+ if(state.energy+1e-8<gain){
+  sound("error");toast(T("Не хватает энергии. Подожди или используй буст.","Not enough energy. Wait or use a boost."));return;
+ }
+ state.energy=Math.max(0,state.energy-gain);
+ credit(gain);state.stats.taps++;
  sound();haptic();floatNumber(x,y,"+"+fmt(gain));checkRank();updateHUD();
 }
 function addCipherSymbol(symbol,entry){
  clearTimeout(cipherTimer);cipherSymbols+=symbol;sound();haptic();
  floatNumber(entry.x,entry.y,symbol==="."?"•":"—");
- if(cipherSymbols.length>4){cipherSymbols="";sound("error");toast(T("В букве не больше четырёх сигналов.","A letter has at most four signals."));updateCipherUI();return}
+ if(cipherSymbols.length>4){
+  cipherSymbols="";sound("error");
+  toast(T("В букве не больше четырёх сигналов.","A letter has at most four signals."));
+  updateCipherUI();return;
+ }
  updateCipherUI();cipherTimer=setTimeout(finishCipherLetter,900);
 }
 function updateCipherUI(){
@@ -1030,15 +1482,24 @@ function updateCipherUI(){
  setText("#cipher-word",cipherLetters||"_");
 }
 function finishCipherLetter(){
- if(!cipherMode||!active)return;
+ if(!cipherMode||!active||!currentAccount)return;
  rollDays();if(!cipherMode)return;
  const letter=MORSE[cipherSymbols];cipherSymbols="";
- if(!letter){sound("error");toast(T("Неизвестный сигнал. Повтори букву.","Unknown signal. Repeat letter."));updateCipherUI();return}
+ if(!letter){
+  sound("error");toast(T("Неизвестный сигнал. Повтори букву.","Unknown signal. Repeat the letter."));
+  updateCipherUI();return;
+ }
  cipherLetters+=letter;
- if(!dailyWord().startsWith(cipherLetters)){sound("error");toast(T("Неверная последовательность. Начни заново.","Incorrect sequence. Start again."));cipherLetters="";updateCipherUI();return}
+ if(!dailyWord().startsWith(cipherLetters)){
+  sound("error");toast(T("Неверная последовательность. Начни заново.","Incorrect sequence. Start again."));
+  cipherLetters="";updateCipherUI();return;
+ }
  updateCipherUI();
  if(cipherLetters===dailyWord()){
-  if(!state.cipherClaimed){settle(false);state.cipherClaimed=true;credit(1000000);save();sound("reward");toast(T("Шифр разгадан! +1 000 000","Cipher solved! +1,000,000"))}
+  if(!state.cipherClaimed){
+   settle(false);state.cipherClaimed=true;credit(1000000);
+   save();sound("reward");toast(T("Шифр разгадан! +1 000 000","Cipher solved! +1,000,000"));
+  }
   cipherMode=false;clearCipher();render();
  }
 }
@@ -1049,6 +1510,7 @@ function toggleCipher(){
 }
 
 function openModal(name,data=null){
+ if(!currentAccount)return;
  if(!modalName)previousFocus=document.activeElement;
  if(modalName==="puzzle"&&name!=="puzzle"&&puzzle&&!puzzle.finished)puzzle.finished=true;
  activePointers.clear();clearTimeout(cipherTimer);cipherSymbols="";updateCipherUI();
@@ -1058,10 +1520,11 @@ function openModal(name,data=null){
 function closeModal(){
  if(modalName==="puzzle"&&puzzle&&!puzzle.finished)puzzle.finished=true;
  modalName="";modalData=null;$("#modal-root").innerHTML="";document.body.style.overflow="";
- if(previousFocus?.isConnected)previousFocus.focus({preventScroll:true});previousFocus=null;
+ if(previousFocus?.isConnected)previousFocus.focus({preventScroll:true});
+ previousFocus=null;
 }
 function renderModal(){
- if(!modalName)return;
+ if(!modalName||!currentAccount)return;
  let title="",content="";
  if(modalName==="settings"){
   title=T("Настройки","Settings");
@@ -1074,151 +1537,187 @@ function renderModal(){
    <button class="btn ${state.theme==="dark"?"":"secondary"}" data-action="theme" data-id="dark">🌙 ${T("Тёмная","Dark")}</button>
    <button class="btn ${state.theme==="light"?"":"secondary"}" data-action="theme" data-id="light">☀️ ${T("Светлая","Light")}</button>
   </div></div>
-  <div class="setting row"><strong>${T("Звук","Sound")}</strong><button class="btn secondary" data-action="sound">${state.sound?T("Включён","On"):T("Выключен","Off")}</button></div>
+  <div class="setting row"><strong>${T("Звук","Sound")}</strong>
+   <button class="btn secondary" data-action="sound">${state.sound?T("Включён","On"):T("Выключен","Off")}</button>
+  </div>
   <div class="setting"><strong>${T("Имя игрока","Player name")}</strong>
    <input id="nickname-input" class="field" maxlength="24" value="${esc(state.nickname)}" style="margin-top:10px">
    <button class="btn secondary wide" data-action="nickname-save">${T("Сохранить имя","Save name")}</button>
+   <div class="small" style="margin-top:8px">${T("Это отображаемое имя, а не логин для входа.","This is your display name, not your login.")}</div>
   </div>
   <div class="setting"><strong>${T("Персонализация","Personalization")}</strong><div class="segment">
    <button class="btn secondary" data-action="avatar">${T("Аватар","Avatar")}</button>
    <button class="btn secondary" data-action="photo">${T("Фото хомяка","Hamster photo")}</button>
   </div></div>
-  <div class="setting"><strong>${T("Статистика","Statistics")}</strong><div class="small" style="margin-top:9px">
-   ${T("Всего заработано","Total earned")}: ${fmt(state.earned)}<br>
-   ${T("Всего потрачено","Total spent")}: ${fmt(state.stats.spent)}<br>
-   ${T("Нажатий","Taps")}: ${fmt(state.stats.taps)}<br>
-   ${T("Активное время","Active time")}: ${timeText(state.stats.playSeconds*1000)}<br>
-   ${T("Промокодов использовано","Promo codes used")}: ${state.usedPromos.length}/${PROMO_CODES.size}<br>
-   ${T("Ключей","Keys")}: ${fmt(state.keys)}
-  </div></div>
-  <div class="notice">${T("Прогресс хранится в этом браузере. JSON переносит прогресс, использованные промокоды и изображения. HTML встраивает фото, но не переносит баланс. Очистка данных сайта удаляет сохранение.","Progress is stored in this browser. JSON transfers progress, used promo codes and images. HTML embeds images but not balance. Clearing site data deletes your save.")}</div>
-  <div class="segment"><button class="btn secondary" data-action="export">${T("Экспорт JSON","Export JSON")}</button><button class="btn secondary" data-action="import">${T("Импорт JSON","Import JSON")}</button></div>
+  <div class="setting"><strong>${T("Статистика","Statistics")}</strong>
+   <div class="small" style="margin-top:9px">
+    ${T("Всего заработано","Total earned")}: ${fmt(state.earned)}<br>
+    ${T("Всего потрачено","Total spent")}: ${fmt(state.stats.spent)}<br>
+    ${T("Нажатий","Taps")}: ${fmt(state.stats.taps)}<br>
+    ${T("Активное время","Active time")}: ${timeText(state.stats.playSeconds*1000)}<br>
+    ${T("Промокодов использовано","Promo codes used")}: ${state.usedPromos.length}/${PROMO_CODES.size}<br>
+    ${T("Ключей","Keys")}: ${fmt(state.keys)}
+   </div>
+  </div>
+  <div class="notice">${T(
+   "JSON переносит игровой прогресс и изображения, но не логин и пароль. Импорт заменяет прогресс текущего аккаунта. HTML встраивает фото, но не аккаунты.",
+   "JSON transfers progress and images, not login credentials. Import replaces the current account's progress. HTML embeds images, not accounts."
+  )}</div>
+  <div class="segment">
+   <button class="btn secondary" data-action="export">${T("Экспорт JSON","Export JSON")}</button>
+   <button class="btn secondary" data-action="import">${T("Импорт JSON","Import JSON")}</button>
+  </div>
   <button class="btn secondary wide" data-action="export-html">${T("Скачать HTML с фото","Download HTML with photo")}</button>
-  <button class="btn danger wide" data-action="reset-confirm">${T("Сбросить прогресс","Reset progress")}</button>`;
+  <button class="btn danger wide" data-action="reset-confirm">${T("Сбросить прогресс аккаунта","Reset account progress")}</button>`;
  }
  if(modalName==="avatar"){
   title=T("Твой аватар","Your avatar");
   content=`
-  <p class="description">${T("Выбери значок, базовое фото хомяка или своё изображение.","Choose an icon, the default hamster photo or your own image.")}</p>
+  <p class="description">${T("Выбери значок, фото хомяка или своё изображение.","Choose an icon, the hamster photo or your own image.")}</p>
   <div class="avatar-grid">
    <button class="avatar-choice ${state.avatar==="photo"?"selected":""}" data-action="avatar-select" data-id="photo" aria-label="${T("Фото хомяка","Hamster photo")}">${photoHTML()}</button>
    ${AVATARS.map(a=>`<button class="avatar-choice ${state.avatar===a?"selected":""}" data-action="avatar-select" data-id="${a}" aria-label="${a}">${a}</button>`).join("")}
-   ${assets.avatar?`<button class="avatar-choice ${state.avatar==="custom"?"selected":""}" data-action="avatar-select" data-id="custom"><img src="${assets.avatar}" alt="${T("Свой аватар","Custom avatar")}"></button>`:""}
+   ${assets.avatar?`<button class="avatar-choice ${state.avatar==="custom"?"selected":""}" data-action="avatar-select" data-id="custom"><img src="${esc(assets.avatar)}" alt="${T("Свой аватар","Custom avatar")}"></button>`:""}
   </div>
   <label class="small" for="avatar-file">${T("Собственное изображение","Custom image")}</label>
   <input id="avatar-file" type="file" accept="image/*" class="field" style="margin-top:8px">
-  <button class="btn wide" data-action="avatar-upload" ${photoBusy?"disabled":""}>${T("Загрузить аватар","Upload avatar")}</button>`;
+  <button class="btn wide" data-action="avatar-upload" ${photoBusy?"disabled":""}>${photoBusy?T("Обрабатываю…","Processing…"):T("Загрузить аватар","Upload avatar")}</button>`;
  }
  if(modalName==="photo"){
   title=T("Фото хомяка","Hamster photo");
   content=`
   ${photoHTML("photo-preview")}
-  <p class="small">${T("По умолчанию используется hamster.png рядом с HTML. Загрузи прикреплённое фото здесь, чтобы сохранить его в браузере и встроить при экспорте HTML. Уже прозрачный фон удалять не нужно.","The default image is hamster.png beside the HTML. Upload the attached photo here to save it and embed it in exported HTML. Do not remove white from an already transparent image.")}</p>
-  ${defaultPhotoFailed&&!assets.photo?`<div class="notice">${T("Файл hamster.png не найден: сейчас показана резервная иллюстрация. Сохрани приложенное фото рядом с HTML или загрузи ниже.","hamster.png was not found: a fallback illustration is shown. Save the attached photo beside the HTML or upload it below.")}</div>`:""}
+  <p class="small">${T(
+   "По умолчанию используется hamster.png рядом с HTML. Загрузи фото здесь, чтобы сохранить его для этого аккаунта. Для уже прозрачного изображения не включай удаление белого фона.",
+   "The default image is hamster.png beside the HTML. Upload a photo here to save it for this account. Do not remove white from an already transparent image."
+  )}</p>
+  ${defaultPhotoFailed&&!assets.photo?`<div class="notice">${T("hamster.png не найден. Показана резервная иллюстрация.","hamster.png was not found. A fallback illustration is shown.")}</div>`:""}
   <input id="photo-file" type="file" accept="image/*" class="field">
   <label class="photo-options"><input id="photo-remove-white" type="checkbox"><span>${T("Удалить белый фон, если он есть","Remove white background, if present")}</span></label>
   <button class="btn wide" data-action="photo-upload" ${photoBusy?"disabled":""}>${photoBusy?T("Обрабатываю…","Processing…"):T("Обработать и сохранить","Process and save")}</button>
-  <button class="btn secondary wide" data-action="export-html">${T("Скачать автономный HTML с фото","Download standalone HTML with photo")}</button>
+  <button class="btn secondary wide" data-action="export-html">${T("Скачать HTML с фото","Download HTML with photo")}</button>
   ${assets.photo?`<button class="btn secondary wide" data-action="photo-remove">${T("Вернуть базовое фото","Restore default photo")}</button>`:""}
-  <div class="notice">${T("Фото используется на главной, в аватаре и в окне офлайн-дохода. Обработка выполняется только в браузере.","The photo appears on the home screen, as an avatar and in the offline dialog. Processing happens only in your browser.")}</div>`;
+  <div class="notice">${T("Фото используется на главной, в аватаре и в окне офлайн-дохода.","The photo appears on the home screen, as an avatar and in the offline dialog.")}</div>`;
  }
  if(modalName==="exchange"){
   title=T("Выбрать биржу","Choose exchange");
   content=`<p class="small">${T("Косметический выбор. Реальной торговли нет.","Cosmetic choice. No real trading.")}</p>`+
-   EXCHANGES.map(n=>`<button class="btn secondary wide" data-action="exchange-select" data-id="${n}"><span class="exchange-logo">${n[0]}</span>${n}${state.exchange===n?" ✓":""}</button>`).join("");
+   EXCHANGES.map(name=>`<button class="btn secondary wide" data-action="exchange-select" data-id="${name}"><span class="exchange-logo">${name[0]}</span>${name}${state.exchange===name?" ✓":""}</button>`).join("");
  }
  if(modalName==="boosts"){
   title=T("Ускорители","Boosts");
   const ready=state.boostUsed<6&&now()-state.boostLast>=3600000;
   content=`
-  <div class="panel no-shadow"><div class="row"><strong>⚡ ${T("Полная энергия","Full energy")}</strong><span class="gold">${6-state.boostUsed}/6</span></div>
+  <div class="panel no-shadow">
+   <div class="row"><strong>⚡ ${T("Полная энергия","Full energy")}</strong><span class="gold">${6-state.boostUsed}/6</span></div>
    <p class="small">${T("Бесплатно до 6 раз в сутки. Перезарядка — 60 минут.","Free up to 6 times daily. Cooldown: 60 minutes.")}</p>
    ${!ready&&state.boostUsed<6?`<div class="small">${T("Перезарядка","Cooldown")}: <span id="boost-cooldown"></span></div>`:""}
    ${state.boostUsed>=6?`<div class="small">${T("Сброс через","Reset in")} <span data-countdown="${calendarResetAt()}"></span></div>`:""}
    <button class="btn wide" data-action="full-energy" ${ready?"":"disabled"}>${T("Восстановить энергию","Restore energy")}</button>
   </div>
-  ${[["tap","👆",T("Мультитап","Multitap"),T("+1 монета за нажатие на уровне","+1 coin per tap per level"),state.tapLevel],
-   ["energy","🔋",T("Лимит энергии","Energy limit"),T("+250 максимальной энергии на уровне","+250 maximum energy per level"),state.energyLevel]].map(([id,icon,name,description,l])=>`
-   <div class="panel no-shadow"><div class="row"><strong>${icon} ${name}</strong><span class="small">${T("Ур.","Lvl")} ${l}</span></div>
-    <p class="small">${description}</p><button class="btn wide" data-action="boost-buy" data-id="${id}" ${l>=100?"disabled":""}>${l>=100?"MAX":"🪙 "+fmt(boostPrice(id))}</button>
+  ${[
+   ["tap","👆",T("Мультитап","Multitap"),T("+1 монета за нажатие на уровне","+1 coin per tap per level"),state.tapLevel],
+   ["energy","🔋",T("Лимит энергии","Energy limit"),T("+250 максимальной энергии на уровне","+250 maximum energy per level"),state.energyLevel]
+  ].map(([id,icon,name,description,level])=>`
+   <div class="panel no-shadow">
+    <div class="row"><strong>${icon} ${name}</strong><span class="small">${T("Ур.","Lvl")} ${level}</span></div>
+    <p class="small">${description}</p>
+    <button class="btn wide" data-action="boost-buy" data-id="${id}" ${level>=100?"disabled":""}>${level>=100?"MAX":"🪙 "+fmt(boostPrice(id))}</button>
    </div>`).join("")}
-  <div class="small">${T("Базовая энергия 1000, регенерация 1,5/с. Нажатие расходует столько энергии, сколько приносит монет. Цена улучшений ×1,75.","Base energy 1000, recovery 1.5/s. Taps consume as much energy as they earn coins. Upgrade prices grow ×1.75.")}</div>`;
+  <div class="small">${T("Базовая энергия 1000, регенерация 1,5/с. Нажатие расходует столько энергии, сколько приносит монет.","Base energy 1000, recovery 1.5/s. Taps consume as much energy as they earn coins.")}</div>`;
  }
  if(modalName==="combo"){title=T("Комбо дня","Daily combo");content=comboHTML()}
  if(modalName==="cipher-help"){
   title=T("Шифр дня","Daily cipher");
-  content=`<div class="notice">${T("Слово дня","Today's word")}: <strong class="gold">${dailyWord()}</strong></div>
-   <p class="small">${T("Короткое нажатие — точка. Удержание >300 мс — тире. Пауза 0,9 с завершает букву. В режиме шифра энергия не расходуется.","Short press: dot. Hold >300 ms: dash. A 0.9-second pause completes a letter. Cipher taps do not consume energy.")}</p>
-   <div class="panel no-shadow">${[...dailyWord()].map(l=>{
-    const c=Object.keys(MORSE).find(k=>MORSE[k]===l);
-    return `<div class="row" style="padding:8px 0"><strong>${l}</strong><strong class="gold mono" style="font-size:22px">${c.replace(/\./g,"•").replace(/-/g,"—")}</strong></div>`;
-   }).join("")}</div>
-   <details><summary>${T("Весь алфавит","Full alphabet")}</summary>${Object.entries(MORSE).sort((a,b)=>a[1].localeCompare(b[1])).map(([c,l])=>`${l}: ${c.replace(/\./g,"•").replace(/-/g,"—")}`).join(" · ")}</details>`;
+  content=`
+  <div class="notice">${T("Слово дня","Today's word")}: <strong class="gold">${dailyWord()}</strong></div>
+  <p class="small">${T("Короткое нажатие — точка. Удержание >300 мс — тире. Пауза 0,9 с завершает букву. Энергия не расходуется.","Short press: dot. Hold >300 ms: dash. A 0.9-second pause completes a letter. No energy is consumed.")}</p>
+  <div class="panel no-shadow">${[...dailyWord()].map(letter=>{
+   const code=Object.keys(MORSE).find(k=>MORSE[k]===letter);
+   return `<div class="row" style="padding:8px 0"><strong>${letter}</strong><strong class="gold mono" style="font-size:22px">${code.replace(/\./g,"•").replace(/-/g,"—")}</strong></div>`;
+  }).join("")}</div>
+  <details><summary>${T("Весь алфавит","Full alphabet")}</summary>${Object.entries(MORSE).sort((a,b)=>a[1].localeCompare(b[1])).map(([code,letter])=>`${letter}: ${code.replace(/\./g,"•").replace(/-/g,"—")}`).join(" · ")}</details>`;
  }
  if(modalName==="offline"){
   title=T("Империя работала без тебя","Your empire kept working");
   content=`
   ${photoHTML("offline-photo")}
-  <p class="description" style="text-align:center">${T("Начислен доход максимум за 1 час отсутствия.","Income is calculated for up to 1 hour of absence.")}</p>
+  <p class="description" style="text-align:center">${T("За каждый период отсутствия начисляется доход максимум за 1 час.","Each absence earns income for up to 1 hour.")}</p>
   <div class="balance" style="font-size:30px"><span class="coin">$</span>+${fmt(state.pendingOffline)}</div>
   <button class="btn wide" data-action="offline-claim">${T("Забрать доход","Claim earnings")}</button>
-  <p class="small" style="text-align:center">${T("До получения награда хранится отдельно от баланса.","Until claimed, this reward is stored separately from your balance.")}</p>`;
+  <p class="small" style="text-align:center">${T("Награда хранится отдельно от баланса до получения.","The reward is stored separately until claimed.")}</p>`;
  }
  if(modalName==="card"){
   const c=CARD_BY_ID[modalData];if(!c){closeModal();return}
-  const reason=lockReason(c),l=state.cards[c.id]||0;title=trName(c);
-  content=`<div style="font-size:72px;text-align:center;padding:15px">${c.icon}</div>
-   <div class="panel no-shadow">
-   ${[[T("Уровень","Level"),`${l} → ${Math.min(100,l+1)}`],
-    [T("Текущий доход в час","Current hourly profit"),compact(cardIncome(c))],
-    [T("Прирост дохода в час","Additional hourly profit"),"+"+compact(cardIncrease(c))],
-    [T("Стоимость","Cost"),"🪙 "+compact(cardPrice(c))],
-    [T("Окупаемость улучшения","Upgrade payback"),compact(cardPrice(c)/cardIncrease(c))+" "+T("ч","h")]].map(([label,v],i)=>`${i?'<div class="separator"></div>':""}<div class="row"><span class="small">${label}</span><strong class="${i===2?"green":i===3?"gold":""}">${v}</strong></div>`).join("")}
-   </div>
-   ${reason?`<div class="notice">🔒 ${T("Сначала","First")}: ${esc(reason)}</div>`:""}
-   <button class="btn wide" data-action="card-buy" data-id="${c.id}" ${reason||l>=100?"disabled":""}>${l>=100?"MAX":T("Улучшить бизнес","Upgrade business")}</button>
-   <div class="small" style="margin-top:12px">${T("Цена ×1,78 за уровень. Следующий прирост дохода ×1,10. Доход всех купленных уровней суммируется. Максимум 100 уровней.","Price grows ×1.78 per level. Each next profit increment grows ×1.10. Purchased increments add up. Maximum 100 levels.")}</div>`;
- }
- if(modalName==="task"){
-  const task=TASKS.find(t=>t.id===modalData);if(!task){closeModal();return}
-  title=trName(task);
+  const reason=lockReason(c),level=state.cards[c.id]||0;title=trName(c);
   content=`
-  <div class="notice">${T("Локальная симуляция, а не проверка подписки или просмотра.","Local simulation, not subscription or view verification.")}</div>
-  <div style="text-align:center;font-size:60px;margin:15px">${task.icon}</div>
-  <a class="btn secondary wide" href="${task.url}" target="_blank" rel="noopener noreferrer">${T("Открыть сервис","Open service")} ↗</a>
-  ${task.id==="video"?`
-   <p class="small">${T("Запусти таймер, подожди 1 час и введи демо-код HAMSTER.","Start the timer, wait 1 hour and enter demo code HAMSTER.")}</p>
-   ${!state.videoStart?`<button class="btn wide" data-action="video-start">${T("Запустить таймер","Start timer")}</button>`:`
-    <div class="notice" data-video-status></div>
-    <input id="video-code" class="field" autocomplete="off" placeholder="${T("Код: HAMSTER","Code: HAMSTER")}">
-    <button class="btn wide" data-action="video-claim">${T("Проверить и забрать","Verify and claim")} +${fmt(task.reward)}</button>`}`:`
-   <p class="small">${T("Тестовая награда без проверки.","Test reward without verification.")}</p>
-   <button class="btn wide" data-action="task-claim" data-id="${task.id}">${T("Завершить демо-задание","Complete demo task")} +${fmt(task.reward)}</button>`}`;
+  <div style="font-size:72px;text-align:center;padding:15px">${c.icon}</div>
+  <div class="panel no-shadow">${[
+   [T("Уровень","Level"),`${level} → ${Math.min(100,level+1)}`],
+   [T("Текущий доход в час","Current hourly profit"),compact(cardIncome(c))],
+   [T("Прирост дохода в час","Additional hourly profit"),"+"+compact(cardIncrease(c))],
+   [T("Стоимость","Cost"),"🪙 "+compact(cardPrice(c))],
+   [T("Окупаемость улучшения","Upgrade payback"),compact(cardPrice(c)/cardIncrease(c))+" "+T("ч","h")]
+  ].map(([label,value],i)=>`${i?'<div class="separator"></div>':""}<div class="row"><span class="small">${label}</span><strong class="${i===2?"green":i===3?"gold":""}">${value}</strong></div>`).join("")}</div>
+  ${reason?`<div class="notice">🔒 ${T("Сначала","First")}: ${esc(reason)}</div>`:""}
+  <button class="btn wide" data-action="card-buy" data-id="${c.id}" ${reason||level>=100?"disabled":""}>${level>=100?"MAX":T("Улучшить бизнес","Upgrade business")}</button>
+  <div class="small" style="margin-top:12px">${T("Цена ×1,78 за уровень. Следующий прирост дохода ×1,10. Максимум 100 уровней.","Price grows ×1.78 per level. The next profit increment grows ×1.10. Maximum 100 levels.")}</div>`;
  }
  if(modalName==="reset"){
-  title=T("Удалить игровой прогресс?","Delete game progress?");
-  content=`<p class="description">${T("Баланс, бизнесы, ключи, использованные промокоды и задания будут сброшены. Фото, аватар, имя, язык и тема останутся. Для восстановления сначала экспортируй JSON.","Balance, businesses, keys, used promo codes and tasks will be reset. Images, avatar, name, language and theme remain. Export JSON first for a backup.")}</p>
-   <button class="btn danger wide" data-action="reset">${T("Да, сбросить","Yes, reset")}</button>
-   <button class="btn secondary wide" data-action="close">${T("Отмена","Cancel")}</button>`;
+  title=T("Сбросить прогресс аккаунта?","Reset account progress?");
+  content=`
+  <p class="description">${T(
+   "Баланс, бизнесы, улучшения, ключи и использованные промокоды этого аккаунта будут сброшены. Логин и пароль останутся. Другие аккаунты не изменятся. Фото, имя, язык и тема сохранятся.",
+   "This account's balance, businesses, upgrades, keys and used promo codes will be reset. Login credentials remain. Other accounts are unaffected. Images, name, language and theme remain."
+  )}</p>
+  <button class="btn danger wide" data-action="reset">${T("Да, сбросить","Yes, reset")}</button>
+  <button class="btn secondary wide" data-action="close">${T("Отмена","Cancel")}</button>`;
  }
  if(modalName==="import"){
   title=T("Импорт сохранения","Import save");
-  content=`<p class="small">${T("Поддерживаются v1, v2 и v3. Текущий прогресс будет заменён. В v3 сохраняются использованные промокоды и награда канала.","Supports v1, v2 and v3. Current progress will be replaced. v3 includes used promo codes and the channel reward.")}</p>
-   <input id="import-file" type="file" accept=".json,application/json" class="field">
-   <button class="btn wide" data-action="import-apply">${T("Загрузить сохранение","Load save")}</button>`;
+  content=`
+  <p class="small">${T("Поддерживаются игровые сохранения v1–v4. Прогресс текущего аккаунта будет заменён. Логин и пароль не изменятся. Старые задания соцсетей игнорируются.","Supports game saves v1–v4. Current account progress will be replaced. Login credentials remain unchanged. Old social tasks are ignored.")}</p>
+  <input id="import-file" type="file" accept=".json,application/json" class="field">
+  <button class="btn wide" data-action="import-apply">${T("Загрузить сохранение","Load save")}</button>`;
+ }
+ if(modalName==="logout"){
+  title=T("Выйти из аккаунта?","Log out?");
+  content=`
+  <p class="description">${T("Прогресс сохранится. Затем можно войти другим логином или зарегистрировать новый чистый аккаунт.","Progress will be saved. You can then log in to another account or register a new one.")}</p>
+  <button class="btn wide" data-action="logout">${T("Сохранить и выйти","Save & log out")}</button>
+  <button class="btn secondary wide" data-action="close">${T("Отмена","Cancel")}</button>`;
+ }
+ if(modalName==="password"){
+  title=T("Смена пароля","Change password");
+  content=`
+  <div class="small">${T("Аккаунт","Account")}: <strong>${esc(currentAccount.login)}</strong></div>
+  <label class="auth-label" for="old-password">${T("Текущий пароль","Current password")}</label>
+  ${passwordField("old-password")}
+  <label class="auth-label" for="new-password">${T("Новый пароль","New password")}</label>
+  ${passwordField("new-password","new-password")}
+  <label class="auth-label" for="repeat-password">${T("Повтори новый пароль","Repeat new password")}</label>
+  ${passwordField("repeat-password","new-password")}
+  <div id="password-error" class="auth-error" role="alert"></div>
+  <button class="btn wide" data-action="password-save" ${passwordBusy?"disabled":""}>${T("Сохранить пароль","Save password")}</button>`;
  }
  if(modalName==="puzzle"){title=T("Ключ от империи","Key to the empire");content=puzzleHTML()}
  $("#modal-root").innerHTML=`
- <div id="overlay" class="overlay"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-  <div class="modal-handle"></div><div class="modal-head"><h2 id="modal-title">${esc(title)}</h2>
-   <button class="icon-button" data-action="close" aria-label="${T("Закрыть","Close")}">×</button></div>${content}
- </section></div>`;
+ <div id="overlay" class="overlay">
+  <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+   <div class="modal-handle"></div>
+   <div class="modal-head"><h2 id="modal-title">${esc(title)}</h2>
+    <button class="icon-button" data-action="close" aria-label="${T("Закрыть","Close")}">×</button>
+   </div>${content}
+  </section>
+ </div>`;
  document.body.style.overflow="hidden";updateHUD();
 }
 
 function startPuzzle(){
  rollDays();
- if(state.puzzleDay===comboDay()){toast(T("Ключ за сегодня уже получен. Новый — после 15:00 МСК.","Today's key is already claimed. Next one after 15:00 Moscow time."));return}
+ if(state.puzzleDay===comboDay()){
+  toast(T("Ключ за сегодня уже получен. Новый — после 15:00 МСК.","Today's key is already claimed. Next one after 15:00 Moscow time."));return;
+ }
  puzzle={deadline:now()+60000,selected:"key",finished:false,won:false,moves:0,vehicles:[
   {id:"key",x:0,y:2,len:2,axis:"h",kind:"key"},
   {id:"a",x:2,y:1,len:2,axis:"v",kind:"red"},
@@ -1242,46 +1741,56 @@ function puzzleHTML(){
  <p class="small">${T("Выбери блок и двигай стрелками. Проведи золотой ключ к выходу справа. Работает клавиатура.","Select a block and move it with arrows. Guide the gold key to the right exit. Keyboard arrows also work.")}</p>
  <div class="puzzle-board">
   ${Array.from({length:36},(_,i)=>`<div class="puzzle-cell" style="--r:${Math.floor(i/6)+1};--c:${i%6+1}"></div>`).join("")}
-  ${puzzle.vehicles.map(v=>`<button class="vehicle ${v.kind==="red"?"red":v.kind==="key"?"key":""} ${puzzle.selected===v.id?"selected":""}"
-   data-action="puzzle-select" data-id="${v.id}" aria-label="${v.id==="key"?T("Ключ","Key"):T("Блок ","Block ")+v.id}"
-   style="grid-column:${v.x+1}/span ${v.axis==="h"?v.len:1};grid-row:${v.y+1}/span ${v.axis==="v"?v.len:1}">${v.id==="key"?"🔑":v.axis==="h"?"↔":"↕"}</button>`).join("")}
+  ${puzzle.vehicles.map(v=>`
+   <button class="vehicle ${v.kind==="red"?"red":v.kind==="key"?"key":""} ${puzzle.selected===v.id?"selected":""}"
+    data-action="puzzle-select" data-id="${v.id}" aria-label="${v.id==="key"?T("Ключ","Key"):T("Блок ","Block ")+v.id}"
+    style="grid-column:${v.x+1}/span ${v.axis==="h"?v.len:1};grid-row:${v.y+1}/span ${v.axis==="v"?v.len:1}">
+    ${v.id==="key"?"🔑":v.axis==="h"?"↔":"↕"}
+   </button>`).join("")}
   <div class="puzzle-exit">➜</div>
  </div>
- <div class="arrows">${[["left","←"],["up","↑"],["down","↓"],["right","→"]].map(([id,label])=>`<button class="btn secondary" data-action="puzzle-move" data-id="${id}" aria-label="${id}">${label}</button>`).join("")}</div>
+ <div class="arrows">${[["left","←"],["up","↑"],["down","↓"],["right","→"]].map(([id,label])=>`
+  <button class="btn secondary" data-action="puzzle-move" data-id="${id}" aria-label="${id}">${label}</button>`).join("")}</div>
  <p class="small" style="margin-top:13px">${T("60 секунд. Один ключ за игровой день. Закрытие окна завершает попытку.","60 seconds. One key per game day. Closing the dialog ends the attempt.")}</p>`;
 }
-function canPlace(v,x,y){
- if(x<0||y<0||x+(v.axis==="h"?v.len:1)>6||y+(v.axis==="v"?v.len:1)>6)return false;
- for(let i=0;i<v.len;i++){
-  const cx=x+(v.axis==="h"?i:0),cy=y+(v.axis==="v"?i:0);
-  for(const o of puzzle.vehicles){
-   if(o.id===v.id)continue;
-   for(let j=0;j<o.len;j++)if(cx===o.x+(o.axis==="h"?j:0)&&cy===o.y+(o.axis==="v"?j:0))return false;
+function canPlace(vehicle,x,y){
+ if(x<0||y<0||x+(vehicle.axis==="h"?vehicle.len:1)>6||y+(vehicle.axis==="v"?vehicle.len:1)>6)return false;
+ for(let i=0;i<vehicle.len;i++){
+  const cx=x+(vehicle.axis==="h"?i:0),cy=y+(vehicle.axis==="v"?i:0);
+  for(const other of puzzle.vehicles){
+   if(other.id===vehicle.id)continue;
+   for(let j=0;j<other.len;j++){
+    if(cx===other.x+(other.axis==="h"?j:0)&&cy===other.y+(other.axis==="v"?j:0))return false;
+   }
   }
- }return true;
+ }
+ return true;
 }
 function movePuzzle(direction){
  if(!puzzle||puzzle.finished)return;
  if(now()>=puzzle.deadline){endPuzzle(false);return}
- const v=puzzle.vehicles.find(x=>x.id===puzzle.selected);
+ const vehicle=puzzle.vehicles.find(v=>v.id===puzzle.selected);
  const moves={left:[-1,0],right:[1,0],up:[0,-1],down:[0,1]};
- if(!v||!moves[direction])return;
+ if(!vehicle||!moves[direction])return;
  const [dx,dy]=moves[direction];
- if((v.axis==="h"&&dy)||(v.axis==="v"&&dx))return;
- if(!canPlace(v,v.x+dx,v.y+dy)){sound("error");return}
- v.x+=dx;v.y+=dy;puzzle.moves++;sound();
- if(v.id==="key"&&v.x+v.len===6){endPuzzle(true);return}
+ if((vehicle.axis==="h"&&dy)||(vehicle.axis==="v"&&dx))return;
+ if(!canPlace(vehicle,vehicle.x+dx,vehicle.y+dy)){sound("error");return}
+ vehicle.x+=dx;vehicle.y+=dy;puzzle.moves++;sound();
+ if(vehicle.id==="key"&&vehicle.x+vehicle.len===6){endPuzzle(true);return}
  renderModal();
 }
 function endPuzzle(won){
- if(!puzzle||puzzle.finished)return;puzzle.finished=true;puzzle.won=won;
- if(won&&state.puzzleDay!==comboDay()){state.keys++;state.puzzleDay=comboDay();save();sound("reward");haptic()}
- else if(!won)sound("error");
+ if(!puzzle||puzzle.finished)return;
+ puzzle.finished=true;puzzle.won=won;
+ if(won&&state.puzzleDay!==comboDay()){
+  state.keys++;state.puzzleDay=comboDay();save();sound("reward");haptic();
+ }else if(!won)sound("error");
  if(modalName==="puzzle")renderModal();
 }
 
 function buyCard(id){
- settle(false);rollDays();const c=CARD_BY_ID[id];if(!c)return;
+ settle(false);rollDays();
+ const c=CARD_BY_ID[id];if(!c)return;
  const reason=lockReason(c);if(reason){toast(reason);return}
  if((state.cards[id]||0)>=100)return;
  if(!spend(cardPrice(c))){toast(T("Недостаточно монет.","Not enough coins."));sound("error");return}
@@ -1292,42 +1801,39 @@ function buyCard(id){
  toast(found?T("Найдено направление комбо!","Combo business found!"):T("Бизнес улучшен.","Business upgraded."));
 }
 function claimCombo(){
- settle(false);rollDays();if(state.comboClaimed||state.comboFound.length!==3)return;
- state.comboClaimed=true;credit(5000000);save();sound("reward");render();if(modalName)renderModal();
+ settle(false);rollDays();
+ if(state.comboClaimed||state.comboFound.length!==3)return;
+ state.comboClaimed=true;credit(5000000);save();sound("reward");
+ render();if(modalName)renderModal();
  toast(T("Комбо собрано! +5 000 000","Combo complete! +5,000,000"));
 }
 function buyBoost(type){
- if(!["tap","energy"].includes(type))return;settle(false);
- const l=type==="tap"?state.tapLevel:state.energyLevel;if(l>=100)return;
+ if(!["tap","energy"].includes(type))return;
+ settle(false);
+ const level=type==="tap"?state.tapLevel:state.energyLevel;if(level>=100)return;
  if(!spend(boostPrice(type))){sound("error");toast(T("Недостаточно монет.","Not enough coins."));return}
  if(type==="tap")state.tapLevel++;
  else{state.energyLevel++;state.energy=Math.min(maxEnergy(),state.energy+ENERGY_STEP)}
  save();sound("buy");render();renderModal();
 }
 function useFullEnergy(){
- settle(false);rollDays();if(state.boostUsed>=6||now()-state.boostLast<3600000)return;
+ settle(false);rollDays();
+ if(state.boostUsed>=6||now()-state.boostLast<3600000)return;
  if(state.energy>=maxEnergy()-.1){toast(T("Энергия уже полная.","Energy is already full."));return}
- state.energy=maxEnergy();state.boostUsed++;state.boostLast=now();save();sound("reward");render();renderModal();
+ state.energy=maxEnergy();state.boostUsed++;state.boostLast=now();
+ save();sound("reward");render();renderModal();
 }
 function claimCheckin(){
- settle(false);const i=checkinInfo();if(i.claimed)return;
- const reward=CHECKIN[i.next-1];state.checkinStreak=i.streak+1;state.checkinLast=i.today;
- credit(reward);save();sound("reward");render();toast(T("Ежедневная награда: +","Daily reward: +")+fmt(reward));
-}
-function claimTask(id){
- const t=TASKS.find(t=>t.id===id);if(!t||t.id==="video"||state.tasks[id])return;
- settle(false);state.tasks[id]=true;credit(t.reward);save();sound("reward");closeModal();render();
- toast(T("Награда получена: +","Reward claimed: +")+fmt(t.reward));
-}
-function claimVideo(){
- rollDays();if(state.tasks.video)return;
- if(!state.videoStart||now()-state.videoStart<3600000){toast(T("Дождись окончания часового таймера.","Wait for the 1-hour timer."));return}
- if(($("#video-code")?.value||"").trim().toUpperCase()!=="HAMSTER"){sound("error");toast(T("Неверный код. Демо-код: HAMSTER","Incorrect code. Demo code: HAMSTER"));return}
- settle(false);state.tasks.video=true;credit(100000);save();sound("reward");closeModal();render();toast(T("Награда за видео: +100 000","Video reward: +100,000"));
+ settle(false);const info=checkinInfo();if(info.claimed)return;
+ const reward=CHECKIN[info.next-1];
+ state.checkinStreak=info.streak+1;state.checkinLast=info.today;
+ credit(reward);save();sound("reward");render();
+ toast(T("Ежедневная награда: +","Daily reward: +")+fmt(reward));
 }
 function checkRank(){
- const r=rankIndex();if(r===lastRenderedRank)return;lastRenderedRank=r;
- toast(T("Новая лига: ","New league: ")+RANKS[r][0]);sound("reward");
+ const rank=rankIndex();if(rank===lastRenderedRank)return;
+ const increased=rank>lastRenderedRank;lastRenderedRank=rank;
+ if(increased){toast(T("Новая лига: ","New league: ")+RANKS[rank][0]);sound("reward")}
 }
 function downloadBlob(blob,name){
  const url=URL.createObjectURL(blob),a=document.createElement("a");
@@ -1336,44 +1842,73 @@ function downloadBlob(blob,name){
 }
 function exportSave(){
  save();
- downloadBlob(new Blob([JSON.stringify({...state,assets:{...assets,photo:assets.photo||defaultPhotoData}},null,2)],{type:"application/json"}),"hamster-empire-business-save.json");
+ const data={...state,assets:{...assets,photo:assets.photo||defaultPhotoData}};
+ downloadBlob(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),
+  "hamster-empire-"+currentAccount.login+"-save.json");
 }
 async function exportHTML(){
+ const epoch=sessionEpoch;
  try{
   const photo=await embedDefaultPhoto();
+  if(epoch!==sessionEpoch||!currentAccount)return;
   const copy=document.documentElement.cloneNode(true);
-  for(const id of ["header","main","nav","modal-root","toast-root"])copy.querySelector("#"+id).innerHTML="";
+  for(const id of ["header","main","nav","modal-root","toast-root"])
+   copy.querySelector("#"+id).innerHTML="";
   copy.querySelector("body").style.overflow="";
   copy.querySelectorAll(".float-number").forEach(n=>n.remove());
-  copy.querySelector("#embedded-assets").textContent=JSON.stringify({photo,avatar:assets.avatar});
-  downloadBlob(new Blob(["<!DOCTYPE html>\n"+copy.outerHTML],{type:"text/html;charset=utf-8"}),"hamster-empire-with-photo.html");
-  toast(T("Автономный HTML с фото скачан.","Standalone HTML with photo downloaded."));
- }catch(e){toast(e.message||T("Не удалось встроить фото.","Could not embed photo."))}
+  copy.querySelector("#embedded-assets").textContent=JSON.stringify({photo,avatar:""});
+  downloadBlob(new Blob(["<!DOCTYPE html>\n"+copy.outerHTML],{type:"text/html;charset=utf-8"}),
+   "hamster-empire-with-photo.html");
+  toast(T("HTML с фото скачан. Аккаунты в него не включены.","HTML with photo downloaded. Accounts are not included."));
+ }catch(e){if(epoch===sessionEpoch)toast(e.message||T("Не удалось встроить фото.","Could not embed photo."))}
 }
 async function importSave(){
- const file=$("#import-file")?.files?.[0];
+ const file=$("#import-file")?.files?.[0],epoch=sessionEpoch;
  if(!file){toast(T("Выбери JSON-файл.","Choose a JSON file."));return}
  if(file.size>12*1024*1024){toast(T("Максимум 12 МБ.","Maximum 12 MB."));return}
  try{
-  const d=JSON.parse(await file.text());
-  if(!d||![1,2,3].includes(d.version)||typeof d.balance!=="number"||!Number.isFinite(d.balance)||!d.cards||typeof d.cards!=="object"||Array.isArray(d.cards))throw new Error("Invalid save");
-  const imported=normalizeState(d);imported.lastSeen=now();
-  if(d.assets)assets=normalizeAssets(d.assets);
+  const data=JSON.parse(await file.text());
+  if(epoch!==sessionEpoch||!currentAccount)return;
+  if(!data||![1,2,3,4].includes(data.version)||typeof data.balance!=="number"||
+   !Number.isFinite(data.balance)||!data.cards||typeof data.cards!=="object"||
+   Array.isArray(data.cards))throw new Error("Invalid save");
+  const imported=normalizeState(data);imported.lastSeen=now();
+  if(data.assets)assets=normalizeAssets(data.assets);
   state=imported;profitCache=null;settleClock=now();displayedBalance=state.balance;
   lastRenderedRank=rankIndex();cipherMode=false;clearCipher();puzzle=null;tab="home";
   if(state.avatar==="custom"&&!assets.avatar)state.avatar="photo";
   rollDays();saveAssets();writeSave();closeModal();render();
-  toast(T("Сохранение импортировано.","Save imported."));
- }catch{toast(T("Не удалось прочитать корректное сохранение.","Could not read a valid save."))}
+  toast(T("Прогресс импортирован в текущий аккаунт.","Progress imported into the current account."));
+ }catch{if(epoch===sessionEpoch)toast(T("Не удалось прочитать корректное сохранение.","Could not read a valid save."))}
 }
 
+document.addEventListener("submit",event=>{
+ if(event.target.id==="auth-form"){event.preventDefault();submitAuth()}
+});
 document.addEventListener("click",event=>{
- if(event.target.id==="overlay"){closeModal();return}
- const b=event.target.closest("[data-action]");if(!b||b.disabled)return;
- const action=b.dataset.action,id=b.dataset.id;
+ const target=event.target;
+ if(!(target instanceof Element))return;
+ if(target.id==="overlay"){closeModal();return}
+ const button=target.closest("[data-action]");
+ if(!button||button.disabled)return;
+ const action=button.dataset.action,id=button.dataset.id;
+ if(action==="password-show"){
+  const input=document.getElementById(id);
+  if(input)input.type=input.type==="password"?"text":"password";
+  return;
+ }
+ if(!currentAccount){
+  if(action==="auth-mode"&&!authBusy&&["register","login"].includes(id)){
+   authMode=id;renderAuth();
+  }
+  if(action==="auth-language"&&!authBusy&&["ru","en"].includes(id)){
+   state.language=id;renderAuth();
+  }
+  return;
+ }
  switch(action){
   case "tab":
-   if(!["home","mine","earn","airdrop"].includes(id))break;
+   if(!["home","mine","earn","empire"].includes(id))break;
    if(modalName)closeModal();
    if(id!=="home"){cipherMode=false;clearCipher()}
    tab=id;render();window.scrollTo({top:0,behavior:"auto"});break;
@@ -1392,138 +1927,23 @@ document.addEventListener("click",event=>{
    state.avatar=id;save();renderHeader();updateHUD();renderModal();break;
   case "exchange":openModal("exchange");break;
   case "exchange-select":
-   if(!EXCHANGES.includes(id))break;state.exchange=id;save();closeModal();render();break;
+   if(!EXCHANGES.includes(id))break;
+   state.exchange=id;save();closeModal();render();break;
   case "language":
-   if(!["ru","en"].includes(id))break;state.language=id;save();render();renderModal();break;
+   if(!["ru","en"].includes(id))break;
+   state.language=id;save();render();renderModal();break;
   case "theme":
-   if(!["dark","light"].includes(id))break;state.theme=id;save();render();renderModal();break;
+   if(!["dark","light"].includes(id))break;
+   state.theme=id;save();render();renderModal();break;
   case "sound":
    state.sound=!state.sound;save();if(state.sound)sound("buy");renderModal();break;
   case "nickname-save":{
    const name=($("#nickname-input")?.value||"").trim().slice(0,24);
    if(!name){toast(T("Имя не может быть пустым.","Name cannot be empty."));break}
-   state.nickname=name;save();renderHeader();updateHUD();toast(T("Имя сохранено.","Name saved."));break;
+   state.nickname=name;save();renderHeader();updateHUD();
+   toast(T("Имя сохранено.","Name saved."));break;
   }
   case "close":closeModal();break;
   case "boosts":openModal("boosts");break;
   case "boost-buy":buyBoost(id);break;
-  case "full-energy":useFullEnergy();break;
-  case "card":if(CARD_BY_ID[id])openModal("card",id);break;
-  case "card-buy":buyCard(id);break;
-  case "combo":openModal("combo");break;
-  case "combo-claim":claimCombo();break;
-  case "cipher-toggle":toggleCipher();break;
-  case "cipher-help":openModal("cipher-help");break;
-  case "cipher-clear":clearCipher();updateCipherUI();break;
-  case "stat-tap":{
-   const t=now();statTapTimes=statTapTimes.filter(v=>t-v<1200);statTapTimes.push(t);
-   if(statTapTimes.length>=3){statTapTimes=[];toggleCipher()}break;
-  }
-  case "puzzle":case "puzzle-retry":startPuzzle();break;
-  case "puzzle-select":
-   if(puzzle&&!puzzle.finished&&puzzle.vehicles.some(v=>v.id===id)){puzzle.selected=id;renderModal()}break;
-  case "puzzle-move":movePuzzle(id);break;
-  case "checkin":claimCheckin();break;
-  case "task":openModal("task",id);break;
-  case "task-claim":claimTask(id);break;
-  case "video-start":
-   rollDays();if(!state.videoStart){state.videoStart=now();save();renderModal()}break;
-  case "video-claim":claimVideo();break;
-  case "promo-activate":activatePromo();break;
-  case "channel-open":openChannel();break;
-  case "channel-claim":claimChannel();break;
-  case "offline-claim":{
-   settle(false);const amount=state.pendingOffline;state.pendingOffline=0;credit(amount);
-   save();closeModal();sound("reward");render();toast(T("Офлайн-доход: +","Offline earnings: +")+fmt(amount));break;
-  }
-  case "reset-confirm":openModal("reset");break;
-  case "reset":{
-   const preferences={language:state.language,theme:state.theme,sound:state.sound,avatar:state.avatar,nickname:state.nickname};
-   state={...newState(),...preferences};profitCache=null;settleClock=now();displayedBalance=0;
-   lastRenderedRank=0;cipherMode=false;clearCipher();puzzle=null;tab="home";
-   writeSave();closeModal();render();break;
-  }
-  case "export":exportSave();break;
-  case "export-html":exportHTML();break;
-  case "import":openModal("import");break;
-  case "import-apply":importSave();break;
- }
-});
-document.addEventListener("input",e=>{
- if(e.target.id==="mine-search"){mineSearch=e.target.value;renderBusinessList()}
- if(e.target.id==="promo-input"){const n=$("#promo-message");if(n)n.textContent=""}
-});
-document.addEventListener("change",e=>{
- if(e.target.id==="mine-sort"){mineSort=e.target.value;renderBusinessList()}
-});
-document.addEventListener("keydown",e=>{
- if(e.key==="Enter"&&e.target.id==="promo-input"){e.preventDefault();activatePromo();return}
- if(e.key==="Escape"){
-  if(modalName)closeModal();else if(cipherMode){cipherMode=false;clearCipher();render()}return;
- }
- if(modalName==="puzzle"&&puzzle&&!puzzle.finished){
-  const d={ArrowLeft:"left",ArrowRight:"right",ArrowUp:"up",ArrowDown:"down"};
-  if(d[e.key]){e.preventDefault();movePuzzle(d[e.key]);return}
- }
- if(e.key==="Tab"&&modalName){
-  const nodes=$$(".modal button:not(:disabled),.modal input:not(:disabled),.modal select,.modal a[href],.modal summary");
-  if(!nodes.length)return;
-  const first=nodes[0],last=nodes[nodes.length-1],inside=document.activeElement?.closest(".modal");
-  if(e.shiftKey&&(document.activeElement===first||!inside)){e.preventDefault();last.focus()}
-  else if(!e.shiftKey&&(document.activeElement===last||!inside)){e.preventDefault();first.focus()}
- }
-});
-document.addEventListener("contextmenu",e=>{if(e.target.closest("#hero"))e.preventDefault()});
-
-function tick(){
- if(!active)return;settle(false);
- if(rollDays()){render();if(modalName)renderModal();writeSave()}
- checkRank();
- if(puzzle&&!puzzle.finished&&now()>=puzzle.deadline)endPuzzle(false);
- if(modalName==="boosts"){
-  const b=$('[data-action="full-energy"]');
-  if(b)b.disabled=!(state.boostUsed<6&&now()-state.boostLast>=3600000);
- }
- updateHUD();
-}
-function frame(t){
- const dt=clamp((t-lastFrame)/1000,0,.1);lastFrame=t;
- if(active){
-  displayedBalance+=(state.balance-displayedBalance)*(1-Math.exp(-dt*13));
-  if(Math.abs(state.balance-displayedBalance)<.5)displayedBalance=state.balance;
-  if(t-lastHUD>45){setText("#balance-number",fmt(displayedBalance));lastHUD=t}
- }
- requestAnimationFrame(frame);
-}
-function suspend(){
- if(!active)return;settle(false);active=false;writeSave();
- if(puzzle&&!puzzle.finished)endPuzzle(false);
- activePointers.clear();clearTimeout(cipherTimer);cipherSymbols="";updateCipherUI();
-}
-function resume(){
- if(active||document.hidden)return;settle(true);active=true;lastFrame=performance.now();
- rollDays();writeSave();render();
- if(state.pendingOffline>=1)openModal("offline");else if(modalName)renderModal();
-}
-document.addEventListener("visibilitychange",()=>document.hidden?suspend():resume());
-window.addEventListener("pagehide",()=>{suspend();writeSave()});
-window.addEventListener("pageshow",e=>{if(e.persisted)resume()});
-window.addEventListener("blur",()=>{
- activePointers.clear();if($("#hero"))$("#hero").style.transform="";
- clearTimeout(cipherTimer);cipherSymbols="";updateCipherUI();
-});
-
-settle(true);rollDays();lastRenderedRank=rankIndex();
-if(state.avatar==="custom"&&!assets.avatar)state.avatar="photo";
-writeSave();render();
-setInterval(tick,200);
-setInterval(()=>{if(active)save()},5000);
-requestAnimationFrame(frame);
-if(state.pendingOffline>=1){
- setTimeout(()=>{if(!modalName)openModal("offline")},350);
-}else if(migrationNotice){
- setTimeout(()=>toast(T("Прогресс перенесён. Добавлены промокоды и задание канала во вкладке «Империя».","Progress migrated. Promo codes and the channel task are in the Empire tab.")),450);
-}
-</script>
-</body>
-</html>
+  case "full-energy":useFullEnergy();

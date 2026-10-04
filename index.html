@@ -549,9 +549,9 @@ function normalizeState(data){
  s.energy=clamp(finite(data.energy,ENERGY_BASE),0,ENERGY_BASE+s.energyLevel*ENERGY_STEP);
  s.pendingOffline=safeNumber(data.pendingOffline);
  s.lastSeen=clamp(finite(data.lastSeen,now()),0,now());
- s.keys=Math.floor(safeNumber(data.keys,1e9));
+ s.keys=Math.floor(safeNumber(data.keys,0));
  const cards=data.cards&&typeof data.cards==="object"?data.cards:{};
- for(const c of CARDS)s.cards[c.id]=Math.floor(safeNumber(cards[c.id],100));
+ for(const c of CARDS)s.cards[c.id]=Math.floor(safeNumber(cards[c.id],0));
  for(const k of ["comboDay","cipherDay","boostDay"]){
   if(data[k]!=null&&Number.isFinite(Number(data[k])))s[k]=Math.floor(Number(data[k]));
  }
@@ -562,7 +562,7 @@ function normalizeState(data){
  s.boostUsed=Math.floor(safeNumber(data.boostUsed,6));
  s.boostLast=clamp(finite(data.boostLast),0,now());
  s.checkinLast=data.checkinLast==null?null:Math.floor(finite(data.checkinLast));
- s.checkinStreak=Math.floor(safeNumber(data.checkinStreak,1e9));
+ s.checkinStreak=Math.floor(safeNumber(data.checkinStreak,0));
  s.puzzleDay=data.puzzleDay==null?null:Math.floor(finite(data.puzzleDay));
  s.usedPromos=Array.isArray(data.usedPromos)?[...new Set(
   data.usedPromos.filter(v=>typeof v==="string")

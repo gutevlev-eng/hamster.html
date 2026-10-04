@@ -1946,4 +1946,323 @@ document.addEventListener("click",event=>{
   case "close":closeModal();break;
   case "boosts":openModal("boosts");break;
   case "boost-buy":buyBoost(id);break;
-  case "full-energy":useFullEnergy();
+  case "full-energy":useFullEnergy();break;
+  case "combo":openModal("combo");break;
+  case "combo-claim":claimCombo();break;
+  case "card":
+   if(CARD_BY_ID[id])openModal("card",id);
+   break;
+  case "card-buy":buyCard(id);break;
+  case "checkin":claimCheckin();break;
+  case "promo-activate":activatePromo();break;
+  case "cipher-toggle":
+   if(modalName)closeModal();
+   toggleCipher();
+   break;
+  case "cipher-clear":
+   clearCipher();updateCipherUI();
+   break;
+  case "cipher-help":openModal("cipher-help");break;
+  case "stat-tap":{
+   const t=performance.now();
+   statTapTimes=statTapTimes.filter(value=>t-value<1200);
+   statTapTimes.push(t);
+   if(statTapTimes.length>=3){
+    statTapTimes=[];
+    toggleCipher();
+   }
+   break;
+  }
+  case "puzzle":startPuzzle();break;
+  case "puzzle-retry":startPuzzle();break;
+  case "puzzle-select":
+   if(puzzle&&!puzzle.finished&&puzzle.vehicles.some(v=>v.id===id)){
+    puzzle.selected=id;
+    renderModal();
+   }
+   break;
+  case "puzzle-move":movePuzzle(id);break;
+  case "offline-claim":{
+   settle(false);
+   const reward=state.pendingOffline;
+   if(reward>0){
+    state.pendingOffline=0;
+    credit(reward);
+    save();
+    sound("reward");
+    checkRank();
+   }
+   closeModal();render();
+   if(reward>=1){
+    toast(T("Офлайн-доход получен: +","Offline earnings claimed: +")+fmt(reward));
+   }
+   break;
+  }
+  case "export":exportSave();break;
+  case "export-html":exportHTML();break;
+  case "import":openModal("import");break;
+  case "import-apply":importSave();break;
+  case "reset-confirm":openModal("reset");break;
+  case "reset":{
+   const preferences={
+    language:state.language,
+    theme:state.theme,
+    sound:state.sound,
+    nickname:state.nickname,
+    exchange:state.exchange,
+    avatar:state.avatar
+   };
+   state=Object.assign(newState(),preferences);
+   profitCache=null;
+   displayedBalance=0;
+   settleClock=now();
+   lastFrame=performance.now();
+   lastRenderedRank=0;
+   lastAcceptedTap=-Infinity;
+   cipherMode=false;
+   clearCipher();
+   statTapTimes=[];
+   puzzle=null;
+   tab="home";
+   mineCategory="markets";
+   mineSearch="";
+   mineSort="default";
+   if(state.avatar==="custom"&&!assets.avatar)state.avatar="photo";
+   writeSave();
+   closeModal();render();
+   toast(T(
+    "Прогресс сброшен. Аккаунт и изображения сохранены.",
+    "Progress reset. Account and images preserved."
+   ));
+   break;
+  }
+  case "password-change":openModal("password");break;
+  case "password-save":changePassword();break;
+  case "logout-confirm":openModal("logout");break;
+  case "logout":logout();break;
+ }
+});
+
+/* Поиск и сортировка без перерисовки поля ввода. */
+document.addEventListener("input",event=>{
+ if(!currentAccount)return;
+ const input=event.target;
+ if(input instanceof HTMLInputElement&&input.id==="mine-search"){
+  mineSearch=input.value;
+  renderBusinessList();
+ }
+});
+
+document.addEventListener("change",event=>{
+ if(!currentAccount)return;
+ const input=event.target;
+ if(input instanceof HTMLSelectElement&&input.id==="mine-sort"){
+  if(!["default","price","profit","roi"].includes(input.value))return;
+  mineSort=input.value;
+  renderBusinessList();
+ }
+});
+
+/* Клавиатура, мини-игра и удержание фокуса внутри модального окна. */
+document.addEventListener("keydown",event=>{
+ if(!currentAccount)return;
+
+ if(event.key==="Escape"&&modalName){
+  event.preventDefault();
+  closeModal();
+  return;
+ }
+
+ if(event.key==="Tab"&&modalName){
+  const modal=$(".modal");
+  if(!modal)return;
+  const focusable=[...modal.querySelectorAll(
+   'button:not(:disabled),input:not(:disabled),select:not(:disabled),'+
+   'textarea:not(:disabled),a[href],summary,[tabindex="0"]'
+  )].filter(element=>element.getClientRects().length>0);
+
+  if(!focusable.length){
+   event.preventDefault();return;
+  }
+  const first=focusable[0],last=focusable[focusable.length-1];
+  const focused=document.activeElement;
+
+  if(event.shiftKey&&(focused===first||!modal.contains(focused))){
+   event.preventDefault();last.focus();
+  }else if(!event.shiftKey&&(focused===last||!modal.contains(focused))){
+   event.preventDefault();first.focus();
+  }
+  return;
+ }
+
+ const target=event.target;
+ const editing=target instanceof Element&&(
+  target.matches("input,textarea,select")||target.isContentEditable
+ );
+
+ if(event.key==="Enter"&&editing){
+  if(target.id==="promo-input"){
+   event.preventDefault();activatePromo();return;
+  }
+  if(modalName==="password"&&[
+   "old-password","new-password","repeat-password"
+  ].includes(target.id)){
+   event.preventDefault();changePassword();return;
+  }
+  if(modalName==="settings"&&target.id==="nickname-input"){
+   event.preventDefault();
+   $('[data-action="nickname-save"]')?.click();
+   return;
+  }
+ }
+
+ if(editing)return;
+
+ if(modalName==="puzzle"&&puzzle&&!puzzle.finished){
+  const direction={
+   ArrowLeft:"left",
+   ArrowRight:"right",
+   ArrowUp:"up",
+   ArrowDown:"down"
+  }[event.key];
+  if(direction){
+   event.preventDefault();
+   movePuzzle(direction);
+  }
+ }
+});
+
+/* Сохранение при уходе со страницы и учёт отсутствия. */
+function suspendGame(){
+ if(!currentAccount)return;
+ if(active){
+  settle(false);
+  active=false;
+ }
+ activePointers.clear();
+ clearTimeout(cipherTimer);
+ cipherSymbols="";
+ updateCipherUI();
+ const hero=$("#hero");
+ if(hero)hero.style.transform="";
+ writeSave();
+}
+
+function resumeGame(){
+ if(!currentAccount||active||document.hidden)return;
+
+ settle(true);
+ const dayChanged=rollDays();
+ active=true;
+ lastFrame=performance.now();
+ lastHUD=0;
+
+ if(dayChanged){
+  render();
+  if(modalName)renderModal();
+ }else{
+  updateHUD();
+ }
+
+ if(puzzle&&!puzzle.finished&&now()>=puzzle.deadline){
+  endPuzzle(false);
+ }
+
+ writeSave();
+
+ if(state.pendingOffline>=1&&!modalName){
+  openModal("offline");
+ }else if(modalName==="offline"){
+  renderModal();
+ }
+}
+
+document.addEventListener("visibilitychange",()=>{
+ if(document.hidden)suspendGame();
+ else resumeGame();
+});
+
+window.addEventListener("pagehide",suspendGame);
+window.addEventListener("pageshow",()=>{
+ if(!document.hidden)resumeGame();
+});
+
+/* Резервное сохранение, если браузер закрывает вкладку. */
+window.addEventListener("beforeunload",()=>{
+ if(!currentAccount)return;
+ if(active)settle(false);
+ writeSave();
+});
+
+/* Плавный баланс и обновление интерфейса.
+   Доход рассчитывается по реальному времени, а не количеству кадров. */
+function animationFrame(timestamp){
+ requestAnimationFrame(animationFrame);
+
+ const dt=clamp((timestamp-lastFrame)/1000,0,.1);
+ lastFrame=timestamp;
+
+ if(!currentAccount||!active||document.hidden)return;
+
+ const balanceElement=$("#balance-number");
+ if(balanceElement){
+  const difference=state.balance-displayedBalance;
+  if(Math.abs(difference)<.5){
+   displayedBalance=state.balance;
+  }else{
+   displayedBalance+=difference*(1-Math.exp(-dt*14));
+  }
+  const text=fmt(displayedBalance);
+  if(balanceElement.textContent!==text)balanceElement.textContent=text;
+ }
+
+ if(timestamp-lastHUD<200)return;
+ lastHUD=timestamp;
+
+ settle(false);
+
+ if(rollDays()){
+  writeSave();
+  render();
+  if(modalName)renderModal();
+ }
+
+ if(puzzle&&!puzzle.finished&&now()>=puzzle.deadline){
+  endPuzzle(false);
+ }
+
+ checkRank();
+ updateHUD();
+}
+
+/* Автосохранение принадлежит только текущему аккаунту. */
+setInterval(()=>{
+ if(!currentAccount)return;
+ if(active&&!document.hidden)settle(false);
+ writeSave();
+},5000);
+
+/* Проверка структуры данных при запуске. */
+function validateConfiguration(){
+ if(CARDS.length!==60){
+  console.error("Ожидалось 60 бизнес-направлений:",CARDS.length);
+ }
+ if(new Set(CARDS.map(card=>card.id)).size!==CARDS.length){
+  console.error("Обнаружены повторяющиеся идентификаторы бизнесов.");
+ }
+ for(const card of CARDS){
+  if(card.dep&&!CARD_BY_ID[card.dep[0]]){
+   console.error("Не найдена зависимость бизнеса:",card.id,card.dep[0]);
+  }
+ }
+}
+
+/* Запуск: автоматического входа нет.
+   Каждый раз пользователь вводит логин и пароль. */
+validateConfiguration();
+renderAuth();
+requestAnimationFrame(animationFrame);
+
+</script>
+</body>
+</html>

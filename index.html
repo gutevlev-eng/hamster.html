@@ -2,312 +2,502 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#121318">
-<title>Hamster Empire — Browser Edition</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#10131c">
+<title>Hamster Empire — Business Edition</title>
 <style>
 :root{
   color-scheme:dark;
-  --bg:#121318;--surface:#1c1f27;--panel:rgba(34,39,51,.82);
-  --text:#fff;--muted:#9aa8bc;--border:rgba(255,255,255,.09);
-  --gold:#f3ba2f;--blue:#38bdf8;--green:#22c55e;
-  --shadow:0 18px 55px rgba(0,0,0,.25);
-  --nav:rgba(20,23,30,.94);--input:#171b24;
-  --glow:rgba(37,99,235,.15);
+  --bg:#10131c;
+  --surface:#191e2b;
+  --panel:rgba(29,36,52,.86);
+  --input:#131a28;
+  --text:#f5f7ff;
+  --muted:#95a3bb;
+  --border:rgba(190,211,255,.1);
+  --gold:#f4c45a;
+  --blue:#58c9ff;
+  --green:#65dfac;
+  --nav:rgba(16,21,32,.95);
+  --shadow:0 18px 48px #0003;
+  --glow:rgba(58,103,214,.2);
 }
 [data-theme="light"]{
   color-scheme:light;
-  --bg:#eff2f8;--surface:#fff;--panel:rgba(255,255,255,.9);
-  --text:#182235;--muted:#69768b;--border:rgba(26,42,68,.11);
-  --shadow:0 12px 35px rgba(31,53,90,.09);
-  --nav:rgba(255,255,255,.96);--input:#edf1f8;
-  --glow:rgba(37,99,235,.08);
+  --bg:#edf1f8;
+  --surface:#fff;
+  --panel:rgba(255,255,255,.9);
+  --input:#eef2f9;
+  --text:#182338;
+  --muted:#687891;
+  --border:rgba(39,64,106,.12);
+  --gold:#c58c18;
+  --blue:#087fc0;
+  --green:#138859;
+  --nav:rgba(255,255,255,.96);
+  --shadow:0 15px 45px #243b6010;
+  --glow:rgba(83,133,233,.13);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;min-height:100%;overscroll-behavior:none}
 body{
   background:var(--bg);color:var(--text);
-  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-  user-select:none;-webkit-user-select:none;touch-action:manipulation;
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
   transition:background .25s,color .25s;
 }
-button,input{font:inherit}
-button{cursor:pointer;color:inherit;touch-action:manipulation}
-button:disabled{cursor:not-allowed;opacity:.43}
-button:focus-visible,a:focus-visible,input:focus-visible{
+button,input,select{font:inherit}
+button{
+  color:inherit;border:0;cursor:pointer;touch-action:manipulation;
+  -webkit-user-select:none;user-select:none;
+}
+button:disabled{opacity:.42;cursor:not-allowed}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
   outline:3px solid var(--blue);outline-offset:3px
 }
-input{user-select:text;-webkit-user-select:text}
-button,a{ -webkit-touch-callout:none }
-button{border:0}
 a{color:var(--blue)}
 .app{
-  max-width:480px;margin:auto;min-height:100dvh;position:relative;
-  background:radial-gradient(ellipse at 50% 32%,var(--glow),transparent 57%),var(--bg);
-  overflow:hidden;
+  width:min(100%,540px);min-height:100dvh;margin:auto;
+  position:relative;isolation:isolate;overflow:hidden;
+  background:
+    radial-gradient(ellipse at 50% 22%,var(--glow),transparent 52%),
+    var(--bg);
 }
-.header{padding:calc(14px + env(safe-area-inset-top)) 18px 8px}
+.ambient{
+  position:absolute;inset:0;pointer-events:none;z-index:-1;overflow:hidden
+}
+.ambient::before,.ambient::after{
+  content:"";position:absolute;width:350px;height:350px;
+  border-radius:50%;filter:blur(65px);opacity:.14;
+  background:#3479ff;left:-190px;top:180px;
+  animation:ambientMove 15s ease-in-out infinite alternate;
+}
+.ambient::after{
+  left:auto;right:-210px;top:460px;background:#e7a231;
+  animation-delay:-7s;
+}
+@keyframes ambientMove{
+  to{transform:translate(70px,110px) scale(1.15)}
+}
+.header{padding:calc(17px + env(safe-area-inset-top)) 18px 10px}
 .profile{display:flex;align-items:center;gap:10px}
 .avatar{
-  width:43px;height:43px;border-radius:15px;display:grid;place-items:center;
-  font-size:28px;background:linear-gradient(145deg,#ffd06a,#a96c17);
-  box-shadow:inset 0 0 0 2px rgba(255,255,255,.17)
+  flex:none;width:46px;height:46px;border-radius:16px;
+  display:grid;place-items:center;font-size:27px;overflow:hidden;
+  background:linear-gradient(145deg,#f7d581,#9f6925);
+  box-shadow:inset 0 0 0 1px #ffffff45,0 5px 17px #0002;
 }
-.profile-name{font-size:14px;font-weight:800;max-width:170px;overflow:hidden;text-overflow:ellipsis}
-.sub{font-size:11px;color:var(--muted);margin-top:3px}
-.spacer{flex:1}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.profile-info{min-width:0;flex:1}
+.profile-name{
+  font-weight:850;font-size:14px;overflow:hidden;
+  white-space:nowrap;text-overflow:ellipsis
+}
+.sub{font-size:10px;color:var(--muted);margin-top:4px}
 .icon-button{
-  width:38px;height:38px;display:grid;place-items:center;border-radius:12px;
-  background:var(--panel);border:1px solid var(--border);font-size:19px
+  flex:none;width:38px;height:38px;border-radius:12px;
+  display:grid;place-items:center;background:var(--panel);
+  border:1px solid var(--border);font-size:20px
 }
 .exchange-button{
-  display:flex;align-items:center;gap:5px;background:var(--panel);
-  border:1px solid var(--border);border-radius:12px;padding:9px;font-size:11px
+  display:flex;align-items:center;gap:6px;padding:9px 8px;
+  border:1px solid var(--border);border-radius:12px;
+  background:var(--panel);font-size:10px
 }
 .exchange-logo{
-  color:#171717;background:var(--gold);display:grid;place-items:center;
-  width:20px;height:20px;border-radius:6px;font-weight:900
+  width:21px;height:21px;border-radius:7px;
+  display:grid;place-items:center;font-weight:900;
+  background:#f4c45a;color:#37270c;flex:none
 }
-.rank-row{display:flex;justify-content:space-between;font-size:11px;margin:15px 0 7px}
+.rank-row{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:11px;margin:16px 0 8px;gap:10px
+}
 .rank-row strong{font-size:12px}
-.progress{height:6px;border-radius:10px;background:var(--border);overflow:hidden}
+.progress{
+  height:7px;border-radius:20px;background:var(--border);overflow:hidden
+}
 .progress i{
-  display:block;height:100%;width:0;
-  background:linear-gradient(90deg,#2563eb,#38bdf8,#f3ba2f);
-  border-radius:inherit;transition:width .45s
+  display:block;height:100%;width:0;border-radius:inherit;
+  background:linear-gradient(90deg,#497aff,#58c9ff,#f4c45a);
+  transition:width .35s linear
 }
-main{padding:10px 16px calc(96px + env(safe-area-inset-bottom))}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+main{padding:9px 16px calc(99px + env(safe-area-inset-bottom))}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .stat{
-  min-width:0;padding:11px 5px;border-radius:14px;text-align:center;
-  background:var(--panel);border:1px solid var(--border)
+  background:var(--panel);border:1px solid var(--border);
+  padding:12px 5px;border-radius:16px;text-align:center;min-width:0
 }
-button.stat{width:100%}
-.stat-label{font-size:9px;color:var(--muted);line-height:1.4;min-height:26px}
-.stat-value{font-size:14px;font-weight:800;margin-top:4px}
-.gold{color:var(--gold)}.green{color:var(--green)}.blue{color:var(--blue)}
+.stat-label{font-size:10px;color:var(--muted);min-height:27px;line-height:1.4}
+.stat-value{font-size:15px;font-weight:850;margin-top:4px}
+.gold{color:var(--gold)}
+.green{color:var(--green)}
+.blue{color:var(--blue)}
 .balance{
   display:flex;align-items:center;justify-content:center;gap:11px;
-  margin:22px 0 8px;letter-spacing:-1px;font-size:clamp(27px,8.4vw,42px);
-  font-weight:900;font-variant-numeric:tabular-nums
+  margin:23px 0 6px;font-size:clamp(26px,8vw,42px);
+  font-weight:900;letter-spacing:-1.2px;font-variant-numeric:tabular-nums
 }
 .coin{
-  flex:none;width:39px;height:39px;border-radius:50%;display:grid;place-items:center;
-  color:#9c6614;background:linear-gradient(140deg,#fff0a9,#fbc443 45%,#d79213);
-  border:3px solid #f7d171;font-size:23px;font-weight:900;
-  box-shadow:inset 0 0 0 2px #e3a324,0 3px 12px rgba(243,186,47,.24)
+  flex:none;width:39px;height:39px;border-radius:50%;
+  display:grid;place-items:center;font-size:23px;
+  color:#936214;background:linear-gradient(140deg,#fff1b6,#fbc94e 55%,#d99720);
+  border:3px solid #ffe38d;
+  box-shadow:inset 0 0 0 2px #dba434,0 5px 20px #f3ba2f25;
 }
 .balance-caption{text-align:center;font-size:11px;color:var(--muted)}
-.hero-wrap{position:relative;width:min(100%,335px);margin:15px auto 13px}
+.hero-wrap{
+  width:min(100%,350px);margin:17px auto 11px;
+  position:relative;aspect-ratio:1;
+}
+.hero-wrap::before{
+  content:"";position:absolute;inset:3px;border-radius:50%;
+  border:1px dashed #789cff45;
+  animation:orbit 55s linear infinite;pointer-events:none;
+}
+.hero-wrap::after{
+  content:"";position:absolute;inset:0;border-radius:50%;
+  box-shadow:0 0 45px #3977ff18;
+  animation:breathe 4s ease-in-out infinite;pointer-events:none
+}
+@keyframes orbit{to{transform:rotate(360deg)}}
+@keyframes breathe{50%{opacity:.4;transform:scale(1.035)}}
 .hero{
-  display:block;position:relative;width:100%;aspect-ratio:1;border-radius:50%;
-  padding:13px;touch-action:none;overflow:visible;will-change:transform;
-  background:radial-gradient(circle at 50% 35%,#334b87 0,#172f65 45%,#111b34 75%);
-  border:7px solid #354c7d;
-  box-shadow:0 0 0 2px #152345,0 0 42px rgba(37,99,235,.22),
-    inset 0 0 28px rgba(56,189,248,.18);
-  transition:transform .14s ease-out,border-color .3s;
+  position:absolute;inset:13px;width:calc(100% - 26px);
+  border-radius:50%;padding:0;overflow:hidden;
+  touch-action:none;user-select:none;-webkit-user-select:none;
+  background:
+    radial-gradient(ellipse at 50% 87%,#01061280,transparent 44%),
+    radial-gradient(circle at 50% 32%,#405982,#223b65 45%,#111e37 85%);
+  border:4px solid #5875a955;
+  box-shadow:
+    inset 0 0 38px #94bfff14,
+    0 13px 40px #0002,0 0 0 6px #5579bd0c;
+  transition:transform .13s ease-out,border-color .3s;
+  will-change:transform;
 }
-.hero.cipher{background:radial-gradient(circle,#75313f,#301527);border-color:#aa4053}
-.hero svg{width:100%;height:100%;filter:drop-shadow(0 12px 8px rgba(0,0,0,.32));pointer-events:none}
-.float-number{
-  position:fixed;z-index:50;pointer-events:none;font-weight:900;font-size:32px;
-  color:#fff;text-shadow:0 2px 4px #000,0 0 14px rgba(243,186,47,.5);
-  animation:floatUp .8s ease-out forwards;transform:translate(-50%,-50%)
+.hero.cipher{
+  background:radial-gradient(circle at 50% 35%,#683c58,#281a32);
+  border-color:#ca668a70
 }
-@keyframes floatUp{
-  0%{opacity:1;transform:translate(-50%,-50%) scale(.88)}
-  18%{transform:translate(-50%,-80%) scale(1.1)}
-  100%{opacity:0;transform:translate(-50%,-190px) scale(.95)}
+.hero::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(135deg,#ffffff0b,transparent 48%)
 }
-.status-row{display:flex;align-items:center;gap:15px}
-.energy{flex:1}
-.energy-label{display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:7px}
-.energy .progress i{background:linear-gradient(90deg,#f59e0b,#ffe692)}
+.hero-photo{
+  position:absolute;left:2%;bottom:1%;width:96%;height:96%;
+  object-fit:contain;pointer-events:none;
+  filter:drop-shadow(0 12px 8px #0005);
+  animation:hamsterBreath 4.8s ease-in-out infinite;
+  transform-origin:50% 95%;
+}
+@keyframes hamsterBreath{
+  50%{transform:translateY(-3px) scale(1.008)}
+}
+.hero-placeholder{
+  height:100%;display:flex;flex-direction:column;justify-content:center;
+  align-items:center;gap:10px;padding:25px;
+  color:#e8f0ff;pointer-events:none
+}
+.hero-placeholder b{font-size:35px;letter-spacing:-1px}
+.hero-placeholder span{font-size:12px;line-height:1.7;max-width:220px}
+.photo-button{
+  display:block;margin:0 auto 18px;font-size:11px;
+  padding:8px 13px;border-radius:20px;background:var(--panel);
+  border:1px solid var(--border);color:var(--muted)
+}
+.status-row{display:flex;align-items:center;gap:13px}
+.energy{flex:1;min-width:0}
+.energy-label{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:7px;margin-bottom:8px;font-weight:750;font-size:12px
+}
+.energy .progress i{background:linear-gradient(90deg,#df9a2d,#ffe19b)}
 .boost{
-  display:flex;align-items:center;gap:6px;border-radius:13px;padding:13px 17px;
-  background:var(--panel);border:1px solid var(--border);font-weight:800
+  padding:13px 16px;border-radius:14px;background:var(--panel);
+  border:1px solid var(--border);font-size:12px;font-weight:850
 }
+.quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:17px 0 12px}
 .panel{
   background:var(--panel);border:1px solid var(--border);
-  border-radius:19px;padding:15px;margin-bottom:12px;box-shadow:var(--shadow)
+  border-radius:19px;padding:16px;margin-bottom:12px;
+  box-shadow:var(--shadow)
 }
-.panel.no-shadow{box-shadow:none}
-.section-title{font-size:22px;font-weight:900;margin:8px 0 7px;letter-spacing:-.6px}
-.description{font-size:12px;color:var(--muted);line-height:1.65;margin:0 0 16px}
-.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.small{font-size:11px;color:var(--muted);line-height:1.6}
+.no-shadow{box-shadow:none}
+.section-title{font-size:25px;letter-spacing:-.8px;margin:9px 0;font-weight:900}
+.description{font-size:12px;line-height:1.75;color:var(--muted);margin:0 0 15px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.small{font-size:11px;line-height:1.65;color:var(--muted)}
 .btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:7px;
-  padding:12px 15px;background:var(--gold);color:#2c210c;
-  border-radius:12px;font-weight:800;font-size:12px;min-height:43px
+  display:inline-flex;align-items:center;justify-content:center;
+  gap:7px;min-height:43px;padding:12px 15px;border-radius:13px;
+  background:linear-gradient(135deg,#f9d584,#eeb84d);
+  color:#352509;font-size:12px;font-weight:850;
+  text-decoration:none;transition:transform .15s,filter .15s;
 }
-.btn.secondary{background:var(--input);color:var(--text);border:1px solid var(--border)}
-.btn.success{background:#22c55e;color:#07351c}
-.btn.danger{background:#ef4444;color:#fff}
+.btn:not(:disabled):active{transform:scale(.97)}
+.btn.secondary{
+  background:var(--input);color:var(--text);border:1px solid var(--border)
+}
+.btn.success{background:#66dbad;color:#0c3626}
+.btn.danger{background:#e45b6c;color:#fff}
 .btn.wide{width:100%;margin-top:12px}
-.tabs{display:flex;gap:5px;overflow:auto;padding:2px 0 12px;scrollbar-width:none}
-.tab{white-space:nowrap;background:var(--panel);border:1px solid var(--border);padding:10px 12px;border-radius:11px;font-size:11px}
-.tab.active{background:var(--gold);color:#2b210c;border-color:transparent;font-weight:800}
-.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tabs{
+  display:flex;gap:7px;padding:3px 0 13px;overflow-x:auto;
+  scrollbar-width:none
+}
+.tab{
+  flex:none;white-space:nowrap;border-radius:11px;padding:10px 13px;
+  background:var(--panel);border:1px solid var(--border);font-size:11px
+}
+.tab.active{background:#f4c45a;color:#352509;font-weight:850;border-color:transparent}
+.search-row{display:flex;gap:8px;margin-bottom:13px}
+.field{
+  width:100%;min-width:0;border:1px solid var(--border);
+  background:var(--input);color:var(--text);border-radius:12px;padding:12px
+}
+.search-row select{max-width:150px;font-size:11px}
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
 .mine-card{
-  background:var(--panel);border:1px solid var(--border);border-radius:17px;
-  overflow:hidden;text-align:left;padding:0;display:flex;flex-direction:column;
-  min-height:211px;transition:transform .15s
+  display:flex;flex-direction:column;text-align:left;overflow:hidden;
+  border-radius:17px;border:1px solid var(--border);
+  background:var(--panel);padding:0;min-height:212px;
+  transition:transform .16s,border-color .16s;
 }
-.mine-card:not(:disabled):active{transform:scale(.97)}
+.mine-card:hover{border-color:#81aaff40}
+.mine-card:active{transform:scale(.98)}
 .card-art{
-  height:66px;display:flex;align-items:center;justify-content:center;
-  background:radial-gradient(ellipse at center,rgba(56,189,248,.13),transparent);
-  font-size:37px;position:relative
+  position:relative;height:67px;display:grid;place-items:center;
+  background:radial-gradient(ellipse at 50% 100%,var(--card-glow,#428bff22),transparent 80%);
+  font-size:35px;border-bottom:1px solid var(--border)
 }
-.card-level{position:absolute;right:8px;top:8px;font-size:9px;background:var(--input);padding:4px 6px;border-radius:6px}
-.card-body{padding:10px;flex:1}
-.card-name{font-weight:800;font-size:12px;min-height:29px}
+.card-level{
+  position:absolute;right:8px;top:8px;border-radius:6px;
+  background:var(--input);color:var(--muted);font-size:9px;padding:4px 6px
+}
+.card-body{padding:11px;flex:1}
+.card-name{font-size:12px;font-weight:850;min-height:30px;line-height:1.4}
 .card-profit{font-size:11px;color:var(--green);margin:7px 0}
-.card-footer{border-top:1px solid var(--border);padding:10px;font-size:12px;font-weight:800}
-.lock-text{font-size:9px;line-height:1.45;color:var(--muted)}
+.card-footer{
+  padding:11px;border-top:1px solid var(--border);
+  font-size:12px;font-weight:850;min-height:39px
+}
+.lock-text{color:var(--muted);font-size:10px;line-height:1.5}
 .combo{display:flex;gap:7px;margin:13px 0}
 .combo-slot{
-  flex:1;min-width:0;padding:11px 5px;border-radius:11px;text-align:center;
-  background:var(--input);border:1px dashed var(--border);font-size:11px;
-  min-height:65px;display:flex;flex-direction:column;justify-content:center;gap:5px
+  flex:1;min-width:0;background:var(--input);border:1px dashed var(--border);
+  border-radius:12px;padding:10px 4px;text-align:center;
+  display:flex;flex-direction:column;gap:5px;justify-content:center;
+  font-size:10px;min-height:76px
 }
-.combo-slot.found{border-color:var(--green);background:rgba(34,197,94,.08)}
-.combo-slot b{font-size:23px}
+.combo-slot b{font-size:24px}
+.combo-slot.found{border-color:var(--green);background:#22c55e0c}
 .nav{
   position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-  width:min(100%,480px);z-index:20;padding:8px 8px calc(9px + env(safe-area-inset-bottom));
-  background:var(--nav);backdrop-filter:blur(20px);border-top:1px solid var(--border);
-  display:grid;grid-template-columns:repeat(5,1fr);gap:3px
+  width:min(100%,540px);z-index:30;
+  padding:9px 9px calc(10px + env(safe-area-inset-bottom));
+  background:var(--nav);backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);
+  display:grid;grid-template-columns:repeat(4,1fr);gap:5px
 }
 .nav button{
-  background:transparent;color:var(--muted);border-radius:13px;
-  padding:9px 2px 7px;font-size:9px;position:relative
+  position:relative;background:transparent;color:var(--muted);
+  border-radius:14px;padding:9px 3px;font-size:10px
 }
-.nav button.active{color:var(--gold);background:rgba(243,186,47,.09)}
+.nav button.active{background:#f4c45a0e;color:var(--gold)}
 .nav-icon{display:block;font-size:23px;margin-bottom:5px}
-.badge{position:absolute;top:3px;right:17px;background:var(--gold);width:7px;height:7px;border-radius:50%}
+.badge{
+  position:absolute;top:5px;right:25%;
+  width:6px;height:6px;border-radius:50%;background:var(--gold)
+}
 .overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);
-  z-index:80;display:flex;align-items:flex-end;justify-content:center;padding-top:30px;
-  animation:fadeIn .17s
+  position:fixed;inset:0;z-index:80;background:#0009;
+  backdrop-filter:blur(8px);display:flex;align-items:flex-end;
+  justify-content:center;padding-top:25px;animation:fadeIn .18s
 }
 .modal{
-  width:min(100%,480px);max-height:90dvh;overflow:auto;
-  padding:19px 19px calc(24px + env(safe-area-inset-bottom));
-  background:var(--surface);border:1px solid var(--border);border-bottom:0;
-  border-radius:26px 26px 0 0;box-shadow:0 -20px 60px rgba(0,0,0,.2);
-  animation:slideIn .23s ease-out
+  width:min(100%,540px);max-height:92dvh;overflow:auto;
+  padding:18px 19px calc(24px + env(safe-area-inset-bottom));
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:26px 26px 0 0;box-shadow:0 -20px 65px #0004;
+  animation:slideIn .22s ease-out
 }
-.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:10px}
+.modal-handle{
+  width:40px;height:4px;border-radius:5px;
+  background:var(--muted);opacity:.3;margin:0 auto 18px
+}
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}
 .modal-head h2{font-size:21px;margin:0}
-.modal-handle{width:40px;height:4px;background:var(--muted);opacity:.3;border-radius:4px;margin:0 auto 18px}
-@keyframes slideIn{from{transform:translateY(70px);opacity:0}to{transform:none;opacity:1}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideIn{from{opacity:0;transform:translateY(50px)}to{opacity:1;transform:none}}
 .toast{
-  position:fixed;top:calc(20px + env(safe-area-inset-top));left:50%;
-  transform:translateX(-50%);z-index:120;max-width:420px;width:max-content;
-  padding:13px 18px;border-radius:14px;background:var(--surface);
-  border:1px solid var(--border);box-shadow:var(--shadow);font-size:12px;
-  text-align:center;pointer-events:none;animation:fadeIn .15s
+  position:fixed;top:calc(18px + env(safe-area-inset-top));
+  left:50%;transform:translateX(-50%);z-index:120;
+  width:max-content;max-width:min(90vw,440px);
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;padding:13px 17px;font-size:12px;line-height:1.6;
+  text-align:center;box-shadow:var(--shadow);pointer-events:none;
+  animation:fadeIn .15s
 }
-.field{
-  width:100%;border:1px solid var(--border);border-radius:12px;
-  background:var(--input);color:var(--text);padding:13px;min-width:0
+.float-number{
+  position:fixed;z-index:60;pointer-events:none;color:#fff;
+  font-size:31px;font-weight:900;
+  text-shadow:0 2px 4px #0008,0 0 15px #f4c45a60;
+  animation:floatUp .8s ease-out forwards;
+}
+@keyframes floatUp{
+  0%{opacity:1;transform:translate(-50%,-50%) scale(.85)}
+  20%{transform:translate(-50%,-80%) scale(1.06)}
+  100%{opacity:0;transform:translate(-50%,-160px) scale(.94)}
 }
 .setting{padding:13px 0;border-bottom:1px solid var(--border)}
-.segment{display:flex;gap:6px;margin-top:9px}
+.segment{display:flex;gap:7px;margin-top:10px}
 .segment button{flex:1}
+.notice{
+  padding:12px;margin:12px 0;border-radius:12px;
+  background:#58c9ff0b;border:1px solid #58c9ff22;
+  color:var(--muted);font-size:11px;line-height:1.75
+}
 .calendar{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:14px 0}
 .day{
-  padding:10px 3px;border-radius:11px;background:var(--input);
-  font-size:10px;text-align:center;border:1px solid var(--border)
+  background:var(--input);border:1px solid var(--border);
+  border-radius:11px;text-align:center;padding:9px 2px;font-size:10px
 }
 .day.current{border-color:var(--gold)}
-.day.done{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3)}
-.task{display:flex;align-items:center;gap:11px;padding:13px 0;border-bottom:1px solid var(--border)}
+.day.done{background:#22c55e0c;border-color:#22c55e40}
+.task{
+  display:flex;align-items:center;gap:11px;
+  padding:13px 0;border-bottom:1px solid var(--border)
+}
 .task:last-child{border-bottom:0}
 .task-icon{font-size:27px;flex:none}
 .task-info{flex:1;min-width:0}
-.task-title{font-size:12px;font-weight:800}
-.friend-avatar{
-  width:40px;height:40px;border-radius:13px;display:grid;place-items:center;
-  font-size:21px;background:var(--input);flex:none
+.task-title{font-weight:850;font-size:12px;line-height:1.5}
+.separator{height:1px;background:var(--border);margin:14px 0}
+.cipher-box{
+  border:1px solid #bb668655;border-radius:16px;
+  padding:14px;margin-top:16px;text-align:center
 }
-.notice{
-  padding:12px;border-radius:12px;background:rgba(56,189,248,.08);
-  border:1px solid rgba(56,189,248,.16);font-size:11px;color:var(--muted);
-  line-height:1.65;margin:12px 0
+.cipher-code{color:#ed88ac;font-size:26px;font-weight:900;min-height:35px;letter-spacing:5px}
+.cipher-word{font-size:19px;font-weight:850;letter-spacing:5px;margin:7px 0}
+details{font-size:11px;color:var(--muted);line-height:1.8;margin-top:12px}
+summary{color:var(--text);cursor:pointer}
+.mono{font-family:ui-monospace,Consolas,monospace;word-break:break-all}
+.avatar-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:15px 0}
+.avatar-choice{
+  aspect-ratio:1;border-radius:14px;background:var(--input);
+  border:1px solid var(--border);font-size:28px;overflow:hidden
 }
-.cipher-box{text-align:center;padding:12px;margin-top:14px;border:1px solid #aa4053;border-radius:14px}
-.cipher-code{font-size:25px;font-weight:900;letter-spacing:5px;min-height:35px;color:#fb7185}
-.cipher-word{font-size:17px;font-weight:800;letter-spacing:4px;margin:5px 0}
+.avatar-choice.selected{border-color:var(--gold);background:#f4c45a16}
+.avatar-choice img{width:100%;height:100%;object-fit:cover}
+.offline-photo{
+  width:230px;height:210px;display:block;object-fit:contain;
+  margin:0 auto;filter:drop-shadow(0 12px 13px #0003)
+}
+.photo-preview{
+  width:100%;height:230px;object-fit:contain;border-radius:15px;
+  background:
+    radial-gradient(circle at 50% 35%,#405982,#162742);
+}
+.placeholder-panel{
+  min-height:150px;display:grid;place-items:center;text-align:center;
+  border:1px dashed var(--border);border-radius:16px;
+  color:var(--muted);padding:25px;font-size:12px;line-height:1.8
+}
+.photo-options{display:flex;align-items:center;gap:9px;font-size:12px;margin:12px 0}
+.photo-options input{width:19px;height:19px}
 .puzzle-board{
   display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(6,1fr);
-  aspect-ratio:1;background:var(--input);border:2px solid var(--border);
-  border-radius:15px;gap:4px;padding:6px;position:relative;margin:15px 0;overflow:visible
+  aspect-ratio:1;padding:6px;gap:4px;margin:15px 0;
+  border:2px solid var(--border);border-radius:16px;
+  background:var(--input);position:relative
 }
 .puzzle-cell{
-  border-radius:5px;background:var(--border);grid-row:var(--r);grid-column:var(--c);opacity:.35
+  background:var(--border);opacity:.3;border-radius:5px;
+  grid-row:var(--r);grid-column:var(--c)
 }
 .vehicle{
-  z-index:2;border-radius:9px;display:flex;align-items:center;justify-content:center;
-  font-size:19px;color:white;border:2px solid rgba(255,255,255,.25);
-  background:linear-gradient(145deg,#16a34a,#087239);box-shadow:0 3px 9px #0003
+  z-index:2;display:grid;place-items:center;font-size:20px;
+  border-radius:8px;color:white;border:2px solid #ffffff40;
+  background:linear-gradient(145deg,#32b17c,#116342);
+  box-shadow:0 4px 8px #0002
 }
-.vehicle.red{background:linear-gradient(145deg,#ef4444,#991b1b)}
-.vehicle.key{background:linear-gradient(145deg,#ffd45b,#d4940b);color:#553500}
-.vehicle.selected{outline:3px solid #38bdf8;outline-offset:0}
-.puzzle-exit{
-  position:absolute;right:-13px;top:34%;height:16%;display:grid;place-items:center;
-  font-size:20px;color:var(--gold);z-index:3
-}
+.vehicle.red{background:linear-gradient(145deg,#de687d,#92364b)}
+.vehicle.key{background:linear-gradient(145deg,#ffdf8c,#cb922c);color:#523a10}
+.vehicle.selected{outline:3px solid #58c9ff}
+.puzzle-exit{position:absolute;right:-14px;top:35%;font-size:22px;color:var(--gold);z-index:4}
 .arrows{display:flex;justify-content:center;gap:8px}
-.arrows button{font-size:22px;min-width:54px}
-.separator{height:1px;background:var(--border);margin:15px 0}
-details{font-size:12px;line-height:1.7;color:var(--muted);margin-top:12px}
-summary{cursor:pointer;color:var(--text)}
-.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;word-break:break-all}
-@media(max-height:740px){
-  .hero-wrap{width:min(100%,280px);margin:10px auto}
-  .balance{margin-top:14px}
-}
+.arrows button{min-width:52px;font-size:21px}
+.empty{text-align:center;color:var(--muted);padding:30px 15px;font-size:12px}
+.stat-list{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.stat-list .panel{margin:0;padding:12px}
+.stat-list strong{display:block;margin-top:5px;font-size:16px}
 @media(min-width:700px){
-  .app{box-shadow:0 0 90px rgba(0,0,0,.15)}
+  .app{box-shadow:0 0 90px #0002}
   .overlay{align-items:center;padding:25px}
-  .modal{border-radius:24px;border-bottom:1px solid var(--border);max-height:88dvh}
+  .modal{border-radius:25px;max-height:89dvh}
+}
+@media(max-height:750px){
+  .hero-wrap{width:min(100%,285px);margin-top:10px}
+  .balance{margin-top:16px}
+}
+@media(max-width:360px){
+  .header{padding-left:12px;padding-right:12px}
+  .exchange-button{font-size:9px;gap:3px;padding:8px 5px}
+  main{padding-left:12px;padding-right:12px}
+  .stat-value{font-size:13px}
 }
 @media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+  }
 }
 </style>
 </head>
 <body>
 <div class="app">
-  <header class="header" id="header"></header>
+  <div class="ambient" aria-hidden="true"></div>
+  <header id="header" class="header"></header>
   <main id="main"></main>
-  <nav class="nav" id="nav" aria-label="Navigation"></nav>
+  <nav id="nav" class="nav" aria-label="Навигация"></nav>
 </div>
 <div id="modal-root"></div>
 <div id="toast-root" aria-live="polite"></div>
 
+<!-- Экспорт HTML автоматически помещает сюда фото. -->
+<script id="embedded-assets" type="application/json">{"photo":"","avatar":""}</script>
+
 <script>
 "use strict";
 
-/* ============================================================
-   LOCAL BROWSER DEMO
-   No server, no social verification, no real token distribution.
-   All assets are inline; no external libraries or dependencies.
-   ============================================================ */
+/* ==========================================================
+   HAMSTER EMPIRE — BUSINESS EDITION
+   Один HTML. Без библиотек, сервера и внешних изображений.
+   Игровые монеты не имеют денежной стоимости.
+   ========================================================== */
 
 const STORAGE_KEY = "hamster-empire-browser-v1";
-const VERSION = 1;
-const $ = selector => document.querySelector(selector);
-const $$ = selector => [...document.querySelectorAll(selector)];
+const ASSET_KEY = "hamster-empire-assets-v2";
+const VERSION = 2;
+const OFFLINE_LIMIT = 3600;
+const ENERGY_BASE = 1000;
+const ENERGY_STEP = 250;
+const ENERGY_REGEN = 1.5;
+const PRICE_GROWTH = 1.78;
+const PROFIT_GROWTH = 1.10;
+const PROFIT_FACTOR = .55;
+
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
 const now = () => Date.now();
 const clamp = (x,a,b) => Math.max(a,Math.min(b,x));
-const escapeHTML = value => String(value).replace(/[&<>"']/g,c=>({
+const finite = (v,fallback=0) => {
+  const n = Number(v);
+  return Number.isFinite(n) ? n : fallback;
+};
+const safeNumber = (v,max=1e100) => clamp(finite(v),0,max);
+const escapeHTML = v => String(v).replace(/[&<>"']/g,c=>({
   "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
 }[c]));
 
@@ -317,38 +507,113 @@ const RANKS = [
   ["Master",50000000],["Grandmaster",100000000],["Lord",1000000000],
   ["Creator",10000000000]
 ];
-
+const RANK_ICONS = ["🥉","🥈","🥇","🔷","💎","⚡","🔥","👑","🌟","🏆","✨"];
 const EXCHANGES = ["Binance","Bybit","OKX","BingX","HTX","KuCoin"];
-
-const CARDS = [
-  {id:"fan",cat:"markets",ru:"Фан-токены",en:"Fan tokens",icon:"⚽",cost:250,profit:60},
-  {id:"margin10",cat:"markets",ru:"Маржинальная торговля ×10",en:"Margin trading ×10",icon:"📈",cost:500,profit:110},
-  {id:"staking",cat:"markets",ru:"Стейкинг",en:"Staking",icon:"💎",cost:800,profit:160},
-  {id:"meme",cat:"markets",ru:"Мем-монеты",en:"Meme coins",icon:"🐸",cost:1200,profit:230,dep:["fan",2]},
-  {id:"margin50",cat:"markets",ru:"Маржинальная торговля ×50",en:"Margin trading ×50",icon:"🚀",cost:3500,profit:620,dep:["margin10",3]},
-  {id:"margin100",cat:"markets",ru:"Маржинальная торговля ×100",en:"Margin trading ×100",icon:"🔥",cost:9500,profit:1400,dep:["margin50",3]},
-  {id:"marketing",cat:"team",ru:"Маркетинг",en:"Marketing",icon:"📣",cost:300,profit:70},
-  {id:"security",cat:"team",ru:"Команда безопасности",en:"Security team",icon:"🛡️",cost:600,profit:130},
-  {id:"ux",cat:"team",ru:"UX-дизайн",en:"UX design",icon:"🎨",cost:950,profit:190},
-  {id:"anonymous",cat:"team",ru:"Анонимные транзакции",en:"Anonymous transactions",icon:"🕶️",cost:2400,profit:440,dep:["security",3]},
-  {id:"legalteam",cat:"team",ru:"Юридический отдел",en:"Legal team",icon:"⚖️",cost:1500,profit:280},
-  {id:"uae",cat:"legal",ru:"Лицензия ОАЭ",en:"UAE license",icon:"🏜️",cost:2500,profit:480,dep:["legalteam",2]},
-  {id:"europe",cat:"legal",ru:"Лицензия Европы",en:"Europe license",icon:"🏛️",cost:6000,profit:900,dep:["uae",2]},
-  {id:"asia",cat:"legal",ru:"Лицензия Азии",en:"Asia license",icon:"🌏",cost:8000,profit:1150,dep:["europe",2]},
-  {id:"usa",cat:"legal",ru:"Лицензия США",en:"USA license",icon:"🗽",cost:15000,profit:2100,dep:["asia",3]},
-  {id:"tournament",cat:"special",ru:"Турнир трейдеров",en:"Trading tournament",icon:"🏆",cost:10000,profit:1600,friends:1},
-  {id:"collab",cat:"special",ru:"Звёздная коллаборация",en:"Star collaboration",icon:"🌟",cost:20000,profit:3000,friends:3},
-  {id:"event",cat:"special",ru:"Событие дня",en:"Daily event",icon:"🎪",cost:5000,profit:850,event:true}
+const AVATARS = ["🐹","🦊","🐼","🐻","🐱","🐺","🦁","🐯","🦉","🐸","🐨","🐰","🤖","👑","💎"];
+const CATEGORIES = [
+  {id:"markets",ru:"Крипторынки",en:"Crypto markets",color:"#498dff25"},
+  {id:"business",ru:"Бизнес",en:"Business",color:"#f4c45a25"},
+  {id:"team",ru:"Команда",en:"Team",color:"#a77aff25"},
+  {id:"tech",ru:"Технологии",en:"Technology",color:"#58c9ff25"},
+  {id:"legal",ru:"Право",en:"Legal",color:"#65dfac25"},
+  {id:"special",ru:"Развитие",en:"Expansion",color:"#f484aa25"}
 ];
+
+/*
+   Ровно 60 направлений: 6 категорий × 10.
+   Идентификаторы старых карточек сохранены для переноса прогресса.
+   Формат: id, русское имя, английское имя, значок,
+           базовая цена, базовый доход, условие.
+*/
+const CARD_DATA = {
+  markets:[
+    ["fan","Фан-токены","Fan tokens","⚽",250,60],
+    ["margin10","Маржинальная торговля ×10","Margin trading ×10","📈",500,110],
+    ["staking","Стейкинг","Staking","💎",800,160],
+    ["meme","Мем-монеты","Meme coins","🐸",1200,230,["fan",2]],
+    ["margin50","Маржинальная торговля ×50","Margin trading ×50","🚀",3500,620,["margin10",3]],
+    ["margin100","Маржинальная торговля ×100","Margin trading ×100","🔥",9500,1400,["margin50",3]],
+    ["spot","Спотовый терминал","Spot terminal","📊",700,140],
+    ["liquidity","Пулы ликвидности","Liquidity pools","💧",4200,680,["staking",3]],
+    ["research","Аналитика активов","Asset research","🔍",1800,320,["spot",2]],
+    ["institutional","Институциональный отдел","Institutional desk","🏦",24000,3400,["research",4]]
+  ],
+  business:[
+    ["coffee","Кофейня","Coffee shop","☕",350,75],
+    ["delivery","Курьерская служба","Courier service","📦",650,125],
+    ["store","Интернет-магазин","Online store","🛒",1100,210],
+    ["studio","Дизайн-студия","Design studio","🖌️",1700,300],
+    ["restaurant","Ресторан","Restaurant","🍽️",4200,640,["coffee",3]],
+    ["logistics","Логистический центр","Logistics hub","🚚",6500,940,["delivery",3]],
+    ["factory","Производственная линия","Production line","🏭",11000,1550,["store",3]],
+    ["estate","Коммерческая недвижимость","Commercial property","🏢",18000,2400,["restaurant",3]],
+    ["hotel","Бутик-отель","Boutique hotel","🏨",27000,3600,["estate",3]],
+    ["holding","Бизнес-холдинг","Business holding","🌐",65000,8000,["factory",4]]
+  ],
+  team:[
+    ["marketing","Маркетинг","Marketing","📣",300,70],
+    ["security","Команда безопасности","Security team","🛡️",600,130],
+    ["ux","UX-дизайн","UX design","🎨",950,190],
+    ["anonymous","Защита конфиденциальности","Privacy protection","🔒",2400,440,["security",3]],
+    ["legalteam","Юридический отдел","Legal team","⚖️",1500,280],
+    ["support","Служба поддержки","Customer support","🎧",800,155],
+    ["hr","HR-отдел","HR department","🧑‍💼",1300,240],
+    ["sales","Отдел продаж","Sales department","🤝",2600,440,["marketing",2]],
+    ["academy","Корпоративная академия","Corporate academy","🎓",7400,1080,["hr",3]],
+    ["executive","Совет директоров","Board of directors","👔",22000,2900,["academy",3]]
+  ],
+  tech:[
+    ["servers","Серверная инфраструктура","Server infrastructure","🖥️",900,175],
+    ["cloud","Облачная платформа","Cloud platform","☁️",2200,380,["servers",2]],
+    ["mobile","Мобильное приложение","Mobile app","📱",1800,315,["ux",2]],
+    ["api","API для партнёров","Partner API","🔌",3600,580,["servers",3]],
+    ["automation","Автоматизация процессов","Process automation","⚙️",4700,720,["cloud",2]],
+    ["ai","AI-аналитика","AI analytics","🧠",7800,1100,["research",3]],
+    ["backup","Резервные системы","Backup systems","💾",3100,500,["security",2]],
+    ["datacenter","Дата-центр","Data center","🏗️",19000,2600,["cloud",4]],
+    ["payments","Платёжная инфраструктура","Payment infrastructure","💳",12000,1700,["api",3]],
+    ["robotics","Роботизация","Robotics","🤖",36000,4600,["automation",4]]
+  ],
+  legal:[
+    ["compliance","Комплаенс","Compliance","📋",1000,185],
+    ["audit","Финансовый аудит","Financial audit","🧾",1800,315,["legalteam",2]],
+    ["uae","Лицензия ОАЭ","UAE license","🏜️",2500,480,["legalteam",2]],
+    ["europe","Лицензия Европы","Europe license","🏛️",6000,900,["uae",2]],
+    ["asia","Лицензия Азии","Asia license","🌏",8000,1150,["europe",2]],
+    ["usa","Лицензия США","USA license","🗽",15000,2100,["asia",3]],
+    ["trademark","Регистрация бренда","Trademark registration","®️",2300,370,["compliance",2]],
+    ["insurance","Страхование бизнеса","Business insurance","☂️",4500,690,["audit",2]],
+    ["standards","Сертификация качества","Quality certification","✅",8200,1140,["compliance",3]],
+    ["patents","Патентный портфель","Patent portfolio","📜",24000,3000,["standards",3]]
+  ],
+  special:[
+    ["event","Событие дня","Daily event","🎪",5000,850,null,true],
+    ["tournament","Турнир трейдеров","Trading tournament","🏆",10000,1600,["marketing",3]],
+    ["collab","Звёздная коллаборация","Star collaboration","🌟",20000,3000,["marketing",5]],
+    ["conference","Бизнес-конференция","Business conference","🎤",6800,1000,["sales",3]],
+    ["franchise","Франчайзинговая сеть","Franchise network","🗺️",15000,2000,["restaurant",3]],
+    ["venture","Венчурный фонд","Venture fund","💼",26000,3400,["audit",3]],
+    ["international","Международный офис","International office","✈️",32000,4000,["europe",3]],
+    ["media","Собственное медиа","Company media","📰",9000,1280,["marketing",3]],
+    ["green","Зелёная энергетика","Green energy","🌱",21000,2750,["factory",3]],
+    ["innovation","Инновационный кампус","Innovation campus","🏙️",80000,9500,["datacenter",4]]
+  ]
+};
+const CARDS = Object.entries(CARD_DATA).flatMap(([cat,rows])=>
+  rows.map(([id,ru,en,icon,cost,profit,dep,event])=>({
+    id,cat,ru,en,icon,cost,profit,dep,event:!!event
+  }))
+);
+const CARD_BY_ID = Object.fromEntries(CARDS.map(c=>[c.id,c]));
 
 const TASKS = [
-  {id:"telegram",icon:"✈️",ru:"Telegram-канал",en:"Telegram channel",reward:5000,url:"https://telegram.org/"},
-  {id:"x",icon:"𝕏",ru:"Сообщество в X",en:"X community",reward:5000,url:"https://x.com/"},
-  {id:"youtube",icon:"▶️",ru:"YouTube-канал",en:"YouTube channel",reward:5000,url:"https://www.youtube.com/"},
-  {id:"video",icon:"🎬",ru:"Видео дня",en:"Daily video",reward:100000,url:"https://www.youtube.com/"}
+  {id:"telegram",icon:"✈️",ru:"Telegram-канал · демо",en:"Telegram channel · demo",reward:5000,url:"https://telegram.org/"},
+  {id:"x",icon:"𝕏",ru:"Сообщество в X · демо",en:"X community · demo",reward:5000,url:"https://x.com/"},
+  {id:"youtube",icon:"▶️",ru:"YouTube-канал · демо",en:"YouTube channel · demo",reward:5000,url:"https://www.youtube.com/"},
+  {id:"video",icon:"🎬",ru:"Видео дня · демо",en:"Daily video · demo",reward:100000,url:"https://www.youtube.com/"}
 ];
-
 const CHECKIN = [500,1000,2500,5000,15000,25000,100000,500000,1000000,5000000];
+const WORDS = ["COIN","TON","MINE","GOLD","BLOCK","TRADE","TOKEN"];
 const MORSE = {
   ".-":"A","-...":"B","-.-.":"C","-..":"D",".":"E","..-.":"F",
   "--.":"G","....":"H","..":"I",".---":"J","-.-":"K",".-..":"L",
@@ -356,34 +621,8 @@ const MORSE = {
   "...":"S","-":"T","..-":"U","...-":"V",".--":"W","-..-":"X",
   "-.--":"Y","--..":"Z"
 };
-const WORDS = ["COIN","TON","MINE","GOLD","BLOCK","TRADE","TOKEN"];
-
-function newState(){
-  return {
-    version:VERSION,language:"ru",theme:"dark",sound:true,
-    nickname:"Hamster CEO",exchange:"Binance",
-    balance:0,earned:0,energy:5000,tapLevel:0,energyLevel:0,
-    cards:{},lastSeen:now(),pendingOffline:0,
-    comboDay:comboDay(),comboFound:[],comboClaimed:false,
-    cipherDay:comboDay(),cipherClaimed:false,
-    boostDay:calendarDay(),boostUsed:0,boostLast:0,
-    checkinLast:null,checkinStreak:0,
-    tasks:{},videoStart:0,videoDay:comboDay(),
-    friends:[],refId:randomId(),keys:0,puzzleDay:null,
-    wallet:"",stats:{taps:0,spent:0,playSeconds:0}
-  };
-}
-
-function randomId(){
-  try{
-    const a = new Uint32Array(2);
-    crypto.getRandomValues(a);
-    return [...a].map(v=>v.toString(36)).join("");
-  }catch{ return Math.random().toString(36).slice(2,12); }
-}
 
 function comboDay(time=now()){
-  // 15:00 Moscow = 12:00 UTC; Moscow has UTC+3 without DST.
   return Math.floor((time-12*3600000)/86400000);
 }
 function calendarDay(time=now()){
@@ -395,90 +634,189 @@ function comboResetAt(){
 function calendarResetAt(){
   return (calendarDay()+1)*86400000-3*3600000;
 }
+function newState(){
+  return {
+    version:VERSION,language:"ru",theme:"dark",sound:true,
+    nickname:"Hamster CEO",exchange:"Binance",avatar:"🐹",
+    balance:0,earned:0,energy:ENERGY_BASE,
+    tapLevel:0,energyLevel:0,cards:{},lastSeen:now(),
+    pendingOffline:0,
+    comboDay:comboDay(),comboFound:[],comboClaimed:false,
+    cipherDay:comboDay(),cipherClaimed:false,
+    boostDay:calendarDay(),boostUsed:0,boostLast:0,
+    checkinLast:null,checkinStreak:0,
+    tasks:{},videoStart:0,videoDay:comboDay(),
+    keys:0,puzzleDay:null,wallet:"",
+    stats:{taps:0,spent:0,playSeconds:0}
+  };
+}
+function normalizeState(data){
+  const d = newState();
+  if(!data || typeof data!=="object" || Array.isArray(data))return d;
+  const s = {...d};
+  s.language = ["ru","en"].includes(data.language)?data.language:"ru";
+  s.theme = ["dark","light"].includes(data.theme)?data.theme:"dark";
+  s.sound = typeof data.sound==="boolean"?data.sound:true;
+  s.nickname = String(data.nickname||d.nickname).slice(0,24);
+  s.exchange = EXCHANGES.includes(data.exchange)?data.exchange:"Binance";
+  s.avatar = [...AVATARS,"photo","custom"].includes(data.avatar)?data.avatar:"🐹";
+  s.tapLevel = Math.floor(safeNumber(data.tapLevel,100));
+  s.energyLevel = Math.floor(safeNumber(data.energyLevel,100));
+  s.balance = safeNumber(data.balance);
+  s.earned = Math.max(s.balance,safeNumber(data.earned));
+  s.energy = clamp(finite(data.energy,ENERGY_BASE),0,ENERGY_BASE+s.energyLevel*ENERGY_STEP);
+  s.pendingOffline = safeNumber(data.pendingOffline);
+  s.lastSeen = clamp(finite(data.lastSeen,now()),0,now());
+  s.keys = Math.floor(safeNumber(data.keys,1e9));
+  const cards = data.cards && typeof data.cards==="object"?data.cards:{};
+  for(const c of CARDS)s.cards[c.id]=Math.floor(safeNumber(cards[c.id],100));
+  for(const key of ["comboDay","cipherDay","boostDay","videoDay"]){
+    s[key] = Number.isFinite(Number(data[key]))?Math.floor(Number(data[key])):d[key];
+  }
+  s.comboFound = Array.isArray(data.comboFound)?
+    [...new Set(data.comboFound.filter(id=>CARD_BY_ID[id]))].slice(0,3):[];
+  s.comboClaimed = !!data.comboClaimed;
+  s.cipherClaimed = !!data.cipherClaimed;
+  s.boostUsed = Math.floor(safeNumber(data.boostUsed,6));
+  s.boostLast = clamp(finite(data.boostLast),0,now());
+  s.checkinLast = data.checkinLast===null || data.checkinLast===undefined?
+    null:Math.floor(finite(data.checkinLast,calendarDay()-2));
+  s.checkinStreak = Math.floor(safeNumber(data.checkinStreak,1e9));
+  const tasks = data.tasks && typeof data.tasks==="object"?data.tasks:{};
+  for(const task of TASKS)s.tasks[task.id]=tasks[task.id]===true;
+  s.videoStart = clamp(finite(data.videoStart),0,now());
+  s.puzzleDay = data.puzzleDay===null || data.puzzleDay===undefined?
+    null:Math.floor(finite(data.puzzleDay));
+  s.wallet = typeof data.wallet==="string"?data.wallet.slice(0,100):"";
+  const stats = data.stats && typeof data.stats==="object"?data.stats:{};
+  for(const key of Object.keys(s.stats))s.stats[key]=safeNumber(stats[key],1e100);
+  if(s.wallet && !validTONAddress(s.wallet))s.wallet="";
+  return s;
+}
 
+let migrationNotice = false;
 let storageWarning = false;
+
 function loadState(){
-  const defaults = newState();
   try{
     const raw = localStorage.getItem(STORAGE_KEY);
-    if(!raw)return defaults;
+    if(!raw)return newState();
     const data = JSON.parse(raw);
-    if(!data || data.version!==VERSION)return defaults;
-    const s = {...defaults,...data,stats:{...defaults.stats,...data.stats}};
-    s.language = ["ru","en"].includes(s.language)?s.language:"ru";
-    s.theme = ["dark","light"].includes(s.theme)?s.theme:"dark";
-    s.exchange = EXCHANGES.includes(s.exchange)?s.exchange:"Binance";
-    s.nickname = String(s.nickname||"Hamster CEO").slice(0,24);
-    for(const key of ["balance","earned","energy","pendingOffline","keys","tapLevel","energyLevel"]){
-      s[key] = Math.max(0,Number(s[key])||0);
-    }
-    s.tapLevel = clamp(Math.floor(s.tapLevel),0,100);
-    s.energyLevel = clamp(Math.floor(s.energyLevel),0,100);
-    s.keys = Math.floor(s.keys);
-    s.cards = s.cards && typeof s.cards==="object"?s.cards:{};
-    for(const c of CARDS)s.cards[c.id]=clamp(Math.floor(Number(s.cards[c.id])||0),0,100);
-    s.friends = Array.isArray(s.friends)?s.friends.slice(0,100):[];
-    s.comboFound = Array.isArray(s.comboFound)?s.comboFound:[];
-    s.tasks = s.tasks && typeof s.tasks==="object"?s.tasks:{};
-    s.lastSeen = Number(s.lastSeen)||now();
-    return s;
-  }catch{ return defaults; }
+    if(![1,2].includes(data.version))return newState();
+    migrationNotice = data.version===1;
+    return normalizeState(data);
+  }catch{return newState()}
+}
+function validImageData(value){
+  return typeof value==="string" &&
+    value.length<5500000 &&
+    /^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=\s]+$/.test(value);
+}
+function normalizeAssets(data){
+  return {
+    photo:validImageData(data?.photo)?data.photo:"",
+    avatar:validImageData(data?.avatar)?data.avatar:""
+  };
+}
+function loadAssets(){
+  let embedded = {photo:"",avatar:""};
+  try{embedded=normalizeAssets(JSON.parse($("#embedded-assets").textContent))}catch{}
+  try{
+    const stored=normalizeAssets(JSON.parse(localStorage.getItem(ASSET_KEY)||"{}"));
+    return {
+      photo:stored.photo||embedded.photo,
+      avatar:stored.avatar||embedded.avatar
+    };
+  }catch{return embedded}
 }
 
 let state = loadState();
-let tab = "home", mineCategory = "markets";
-let modalName = "", modalData = null;
+let assets = loadAssets();
+let tab = "home";
+let mineCategory = "markets";
+let mineSearch = "";
+let mineSort = "default";
+let modalName = "";
+let modalData = null;
+let previousFocus = null;
+let active = !document.hidden;
 let displayedBalance = state.balance;
 let lastFrame = performance.now();
-let lastTick = now();
-let active = !document.hidden;
+let lastHUD = 0;
+let lastRenderedRank = 0;
+let profitCache = null;
 let soundContext = null;
-let toastTimer, tiltTimer;
-let cipherMode = false, cipherSymbols = "", cipherLetters = "", cipherTimer;
-const activePointers = new Map();
+let toastTimer = null;
+let tiltTimer = null;
+let cipherMode = false;
+let cipherSymbols = "";
+let cipherLetters = "";
+let cipherTimer = null;
+let cipherErrorTimer = null;
 let statTapTimes = [];
-let lastAcceptedTap = 0;
+let lastAcceptedTap = -Infinity;
 let puzzle = null;
+let photoBusy = false;
+let settleClock = state.lastSeen;
+const activePointers = new Map();
 
 const T = (ru,en) => state.language==="ru"?ru:en;
 const trName = item => state.language==="ru"?item.ru:item.en;
-const fmt = n => Math.floor(n).toLocaleString(state.language==="ru"?"ru-RU":"en-US").replace(/\u00a0/g," ");
+function fmt(n){
+  return Math.floor(finite(n)).toLocaleString(
+    state.language==="ru"?"ru-RU":"en-US"
+  ).replace(/\u00a0/g," ");
+}
 function compact(n){
+  n = Math.max(0,finite(n));
   if(n<1000)return fmt(n);
-  const unit = n>=1e9?"B":n>=1e6?"M":"K";
-  const divisor = n>=1e9?1e9:n>=1e6?1e6:1e3;
+  const units = [
+    [1e15,"Q"],[1e12,"T"],[1e9,"B"],[1e6,"M"],[1e3,"K"]
+  ];
+  const [divisor,unit]=units.find(([v])=>n>=v);
   return (n/divisor).toFixed(n/divisor<100?1:0).replace(/\.0$/,"")+unit;
 }
 function timeText(ms){
-  const s = Math.max(0,Math.ceil(ms/1000));
-  const h = Math.floor(s/3600),m=Math.floor(s%3600/60),sec=s%60;
-  return h?`${h}:${String(m).padStart(2,"0")}:${String(sec).padStart(2,"0")}`:
-    `${String(m).padStart(2,"0")}:${String(sec).padStart(2,"0")}`;
+  const seconds = Math.max(0,Math.ceil(finite(ms)/1000));
+  const h=Math.floor(seconds/3600);
+  const m=Math.floor(seconds%3600/60);
+  const s=seconds%60;
+  return h?
+    `${h}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`:
+    `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
 }
-function maxEnergy(){return 5000+state.energyLevel*500}
+function maxEnergy(){return ENERGY_BASE+state.energyLevel*ENERGY_STEP}
 function tapValue(){return 1+state.tapLevel}
 function rankIndex(){
   let index=0;
-  for(let i=0;i<RANKS.length;i++)if(state.earned>=RANKS[i][1])index=i;
+  for(let i=0;i<RANKS.length;i++){
+    if(state.earned>=RANKS[i][1])index=i;
+  }
   return index;
 }
-function profitPerHour(){
-  return CARDS.reduce((sum,c)=>{
-    const level = state.cards[c.id]||0;
-    return sum+c.profit*(Math.pow(1.12,level)-1)/.12;
-  },0);
-}
-function cardPrice(c){
-  return Math.ceil(c.cost*Math.pow(1.65,state.cards[c.id]||0));
+function cardIncome(c){
+  const level=state.cards[c.id]||0;
+  return c.profit*PROFIT_FACTOR*
+    (Math.pow(PROFIT_GROWTH,level)-1)/(PROFIT_GROWTH-1);
 }
 function cardIncrease(c){
-  return c.profit*Math.pow(1.12,state.cards[c.id]||0);
+  return c.profit*PROFIT_FACTOR*
+    Math.pow(PROFIT_GROWTH,state.cards[c.id]||0);
+}
+function profitPerHour(){
+  if(profitCache===null){
+    profitCache=CARDS.reduce((sum,c)=>sum+cardIncome(c),0);
+  }
+  return profitCache;
+}
+function cardPrice(c){
+  return Math.ceil(c.cost*Math.pow(PRICE_GROWTH,state.cards[c.id]||0));
 }
 function boostPrice(type){
-  return Math.ceil((type==="tap"?500:1000)*Math.pow(1.75,type==="tap"?state.tapLevel:state.energyLevel));
+  const level=type==="tap"?state.tapLevel:state.energyLevel;
+  return Math.ceil((type==="tap"?500:1000)*Math.pow(1.75,level));
 }
 function dailyCombo(){
-  // Deterministic daily rotation, restricted to unlocked starter cards.
   const pool=["fan","margin10","staking","marketing","security","ux","legalteam"];
   const d=((comboDay()%pool.length)+pool.length)%pool.length;
   return [pool[d],pool[(d+2)%pool.length],pool[(d+4)%pool.length]];
@@ -486,205 +824,409 @@ function dailyCombo(){
 function dailyWord(){
   return WORDS[((comboDay()%WORDS.length)+WORDS.length)%WORDS.length];
 }
+function credit(amount){
+  if(!Number.isFinite(amount)||amount<=0)return;
+  state.balance=Math.min(1e100,state.balance+amount);
+  state.earned=Math.min(1e100,state.earned+amount);
+}
+function spend(amount){
+  if(!Number.isFinite(amount)||amount<0 || state.balance+1e-7<amount)return false;
+  state.balance=Math.max(0,state.balance-amount);
+  state.stats.spent=Math.min(1e100,state.stats.spent+amount);
+  return true;
+}
 
-function save(){
+/* ---------------- Время и сохранения ---------------- */
+
+function settle(offline=false){
+  const time=now();
+  const seconds=Math.max(0,(time-settleClock)/1000);
+  settleClock=time;
+  state.lastSeen=time;
+  if(!seconds)return;
+  const income=profitPerHour()*Math.min(seconds,OFFLINE_LIMIT)/3600;
+  if(offline)state.pendingOffline=Math.min(1e100,state.pendingOffline+income);
+  else credit(income);
+  state.energy=clamp(state.energy+seconds*ENERGY_REGEN,0,maxEnergy());
+  if(!offline){
+    state.stats.playSeconds+=Math.min(seconds,60);
+  }
+}
+function writeSave(){
   try{
-    state.lastSeen=now();
     localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
+    return true;
   }catch{
     if(!storageWarning){
       storageWarning=true;
-      toast(T("Сохранение недоступно: проверь настройки браузера.","Saving unavailable: check your browser settings."));
+      toast(T(
+        "Сохранение недоступно. Проверь настройки и свободное место браузера.",
+        "Saving unavailable. Check browser settings and free storage."
+      ));
     }
+    return false;
   }
 }
-function credit(amount){
-  if(!Number.isFinite(amount)||amount<=0)return;
-  state.balance+=amount;
-  state.earned+=amount;
+function save(){
+  if(active)settle(false);
+  return writeSave();
 }
-function spend(amount){
-  if(state.balance+1e-7<amount)return false;
-  state.balance=Math.max(0,state.balance-amount);
-  state.stats.spent+=amount;
-  return true;
+function saveAssets(){
+  try{
+    localStorage.setItem(ASSET_KEY,JSON.stringify(assets));
+    return true;
+  }catch{
+    toast(T(
+      "Фото работает в текущей сессии, но не сохранилось. Экспортируй HTML или освободи место.",
+      "The image works in this session but could not be saved. Export HTML or free storage."
+    ));
+    return false;
+  }
+}
+function clearCipher(){
+  clearTimeout(cipherTimer);
+  clearTimeout(cipherErrorTimer);
+  cipherSymbols="";
+  cipherLetters="";
+  activePointers.clear();
 }
 function rollDays(){
   let changed=false;
   const day=comboDay();
   if(state.comboDay!==day){
-    state.comboDay=day;state.comboFound=[];state.comboClaimed=false;changed=true;
+    state.comboDay=day;
+    state.comboFound=[];
+    state.comboClaimed=false;
+    changed=true;
   }
   if(state.cipherDay!==day){
-    state.cipherDay=day;state.cipherClaimed=false;
-    cipherMode=false;cipherSymbols="";cipherLetters="";
-    clearTimeout(cipherTimer);changed=true;
+    state.cipherDay=day;
+    state.cipherClaimed=false;
+    cipherMode=false;
+    clearCipher();
+    changed=true;
   }
   if(state.videoDay!==day){
-    state.videoDay=day;state.videoStart=0;delete state.tasks.video;changed=true;
+    state.videoDay=day;
+    state.videoStart=0;
+    state.tasks.video=false;
+    changed=true;
   }
   if(state.boostDay!==calendarDay()){
-    state.boostDay=calendarDay();state.boostUsed=0;changed=true;
+    state.boostDay=calendarDay();
+    state.boostUsed=0;
+    changed=true;
   }
+  const combo=dailyCombo();
+  state.comboFound=state.comboFound.filter(id=>combo.includes(id));
   return changed;
 }
-function accrueOffline(){
-  const time=now();
-  const elapsed=clamp((time-state.lastSeen)/1000,0,3*3600);
-  const earned=profitPerHour()*elapsed/3600;
-  state.pendingOffline+=earned;
-  const fullElapsed=Math.max(0,(time-state.lastSeen)/1000);
-  state.energy=clamp(state.energy+fullElapsed*3,0,maxEnergy());
-  state.lastSeen=time;
-  rollDays();
-  save();
-}
-accrueOffline();
 
-/* -------------------- Audio / microfeedback -------------------- */
+/* ---------------- Звук и обратная связь ---------------- */
 
 function sound(kind="tap"){
-  if(!state.sound)return;
+  if(!state.sound || !active)return;
   try{
-    if(!soundContext)soundContext=new (window.AudioContext||window.webkitAudioContext)();
+    const Audio=window.AudioContext||window.webkitAudioContext;
+    if(!Audio)return;
+    if(!soundContext)soundContext=new Audio();
     if(soundContext.state==="suspended")soundContext.resume().catch(()=>{});
-    const time=soundContext.currentTime;
-    const frequencies = kind==="reward"?[523,659,784,1047]:
-      kind==="buy"?[440,660]:kind==="error"?[160]:[750];
+    const start=soundContext.currentTime;
+    const frequencies=kind==="reward"?[523,659,784,1047]:
+      kind==="buy"?[440,660]:kind==="error"?[160]:[740];
     frequencies.forEach((frequency,i)=>{
-      const oscillator=soundContext.createOscillator();
+      const osc=soundContext.createOscillator();
       const gain=soundContext.createGain();
-      oscillator.connect(gain);gain.connect(soundContext.destination);
-      oscillator.type=kind==="tap"?"sine":"triangle";
-      oscillator.frequency.setValueAtTime(frequency,time+i*.075);
-      if(kind==="tap")oscillator.frequency.exponentialRampToValueAtTime(380,time+.065);
-      gain.gain.setValueAtTime(.0001,time+i*.075);
-      gain.gain.exponentialRampToValueAtTime(kind==="tap"?.075:.11,time+i*.075+.007);
-      gain.gain.exponentialRampToValueAtTime(.0001,time+i*.075+.12);
-      oscillator.start(time+i*.075);oscillator.stop(time+i*.075+.14);
+      osc.connect(gain);
+      gain.connect(soundContext.destination);
+      const t=start+i*.075;
+      osc.type=kind==="tap"?"sine":"triangle";
+      osc.frequency.setValueAtTime(frequency,t);
+      if(kind==="tap")osc.frequency.exponentialRampToValueAtTime(380,t+.065);
+      gain.gain.setValueAtTime(.0001,t);
+      gain.gain.exponentialRampToValueAtTime(kind==="tap"?.07:.1,t+.008);
+      gain.gain.exponentialRampToValueAtTime(.0001,t+.12);
+      osc.start(t);
+      osc.stop(t+.14);
     });
   }catch{}
 }
 function haptic(){
-  // Browser fallback, no Telegram shell or SDK.
-  try{if(navigator.vibrate)navigator.vibrate(9)}catch{}
+  try{navigator.vibrate?.(8)}catch{}
 }
 function toast(message){
   clearTimeout(toastTimer);
   $("#toast-root").innerHTML=`<div class="toast">${escapeHTML(message)}</div>`;
-  toastTimer=setTimeout(()=>$("#toast-root").innerHTML="",3200);
+  toastTimer=setTimeout(()=>$("#toast-root").innerHTML="",3500);
 }
 function floatNumber(x,y,value){
-  if(document.querySelectorAll(".float-number").length>=36)return;
+  if($$(".float-number").length>=30)return;
   const node=document.createElement("div");
   node.className="float-number";
   node.textContent=value;
-  node.style.left=x+"px";node.style.top=y+"px";
+  node.style.left=x+"px";
+  node.style.top=y+"px";
   document.body.appendChild(node);
   node.addEventListener("animationend",()=>node.remove(),{once:true});
   setTimeout(()=>node.remove(),1000);
 }
 
-/* -------------------- Original procedural SVG hamster -------------------- */
+/* ---------------- Фото и аватары ---------------- */
 
-function hamsterSVG(){
-  const rank=rankIndex();
-  const fancy=rank>=7, suit=rank>=4, hoodie=rank>=2;
-  const jacket=fancy?"url(#goldSuit)":suit?"#253b58":hoodie?"#5274ad":"#77715d";
-  return `<svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <defs>
-    <radialGradient id="fur" cx=".34" cy=".26" r=".8">
-      <stop stop-color="#ffe6b9"/><stop offset=".52" stop-color="#c99356"/><stop offset="1" stop-color="#8a552e"/>
-    </radialGradient>
-    <radialGradient id="cream" cx=".4" cy=".2" r=".8">
-      <stop stop-color="#fff6dc"/><stop offset="1" stop-color="#dec49c"/>
-    </radialGradient>
-    <linearGradient id="goldSuit" x2="1" y2="1">
-      <stop stop-color="#ffdf6c"/><stop offset=".5" stop-color="#bf831d"/><stop offset="1" stop-color="#ffe59a"/>
-    </linearGradient>
-    <linearGradient id="glasses" x2="0" y2="1">
-      <stop stop-color="#425d72"/><stop offset="1" stop-color="#0a101d"/>
-    </linearGradient>
-  </defs>
-  <ellipse cx="160" cy="289" rx="99" ry="15" fill="#080d20" opacity=".45"/>
-  <ellipse cx="117" cy="284" rx="31" ry="14" fill="url(#fur)"/>
-  <ellipse cx="204" cy="284" rx="31" ry="14" fill="url(#fur)"/>
-  <ellipse cx="160" cy="226" rx="86" ry="66" fill="${jacket}"/>
-  ${suit?`
-    <path d="M131 165h58l-10 107h-39z" fill="#faf5e7"/>
-    <path d="M100 177l40 13 8 65-43-49 18-12z" fill="${fancy?"#b57820":"#152940"}"/>
-    <path d="M220 177l-40 13-8 65 43-49-18-12z" fill="${fancy?"#a26b14":"#152940"}"/>
-    <path d="M156 184h11l6 10-10 43-12-43z" fill="${fancy?"#403324":"#b73242"}"/>
-    <circle cx="160" cy="264" r="3" fill="#e7b651"/>
-  `:hoodie?`
-    <path d="M128 168q30 24 65 0" stroke="#86a5d5" stroke-width="13" fill="none"/>
-    <path d="M142 191v38m36-38v38" stroke="#d3e4fb" stroke-width="3"/>
-    <path d="M126 250q34 14 68 0v19h-68z" fill="#385888"/>
-  `:`
-    <path d="M134 236l15 8-11 17-16-12z" fill="#a7a087"/>
-    <path d="M195 200l-11 20 18 6" fill="none" stroke="#514e40" stroke-width="3"/>
-  `}
-  <ellipse cx="84" cy="229" rx="23" ry="38" transform="rotate(16 84 229)" fill="url(#fur)"/>
-  <ellipse cx="235" cy="229" rx="23" ry="38" transform="rotate(-16 235 229)" fill="url(#fur)"/>
-  <circle cx="102" cy="72" r="37" fill="url(#fur)"/>
-  <circle cx="219" cy="72" r="37" fill="url(#fur)"/>
-  <circle cx="102" cy="72" r="24" fill="#b47d68"/>
-  <circle cx="219" cy="72" r="24" fill="#b47d68"/>
-  <circle cx="100" cy="70" r="16" fill="#dfaa94" opacity=".65"/>
-  <circle cx="218" cy="70" r="16" fill="#dfaa94" opacity=".65"/>
-  <path d="M69 130C64 64 112 46 161 46s94 26 93 84c0 56-43 91-94 91S70 190 69 130z" fill="url(#fur)"/>
-  <path d="M100 66q15-22 36-20m11-1q15-7 27 1" stroke="#ffe5ad" stroke-width="7" stroke-linecap="round" opacity=".65"/>
-  <ellipse cx="115" cy="157" rx="44" ry="38" fill="url(#cream)"/>
-  <ellipse cx="205" cy="157" rx="44" ry="38" fill="url(#cream)"/>
-  <ellipse cx="160" cy="179" rx="44" ry="35" fill="url(#cream)"/>
-  ${fancy?`
-    <path d="M89 105h65v35q-29 20-57-1zM167 105h65l-8 35q-29 16-53-1z" fill="url(#glasses)" stroke="#e7b447" stroke-width="5"/>
-    <path d="M153 117h15m-78-9-17-4m159 4 15-4" stroke="#e7b447" stroke-width="5"/>
-    <path d="M98 111l29 21m51-21 29 21" stroke="#8296a0" opacity=".35" stroke-width="4"/>
-  `:`
-    <ellipse cx="123" cy="119" rx="13" ry="17" fill="#251b16"/>
-    <ellipse cx="198" cy="119" rx="13" ry="17" fill="#251b16"/>
-    <circle cx="119" cy="114" r="5" fill="#fff"/>
-    <circle cx="194" cy="114" r="5" fill="#fff"/>
-    <path d="M106 97q16-9 29 0m49 0q16-9 29 0" fill="none" stroke="#754b2e" stroke-width="5" stroke-linecap="round"/>
-  `}
-  <path d="M148 153q12-9 25 0l-12 12z" fill="#985c51"/>
-  <path d="M160 163v10m0 0q-12 13-25 2m25-2q13 13 26 1" fill="none" stroke="#73482d" stroke-width="3" stroke-linecap="round"/>
-  <rect x="148" y="178" width="12" height="17" rx="3" fill="#fffbea"/>
-  <rect x="161" y="178" width="12" height="17" rx="3" fill="#fffbea"/>
-  <path d="M86 154l-25-5m27 14-27 4m173-13 25-5m-27 14 27 4" stroke="#f1d9b6" stroke-width="2" stroke-linecap="round"/>
-  ${fancy?`
-    <path d="M124 217q34 38 72 0" fill="none" stroke="#f9cf53" stroke-width="7"/>
-    <circle cx="161" cy="240" r="10" fill="#d89e22" stroke="#ffe58b" stroke-width="3"/>
-    <text x="161" y="244" font-size="12" text-anchor="middle" fill="#664207" font-weight="bold">$</text>
-    <path d="M190 175l40 13" stroke="#815737" stroke-width="9" stroke-linecap="round"/>
-    <path d="M225 187l7 2" stroke="#ff865b" stroke-width="8" stroke-linecap="round"/>
-    <path d="M236 182q-13-13 0-23t0-23" fill="none" stroke="#dce3ed" stroke-width="3" opacity=".25"/>
-  `:""}
-  </svg>`;
+/*
+   Автоматическое удаление белого фона.
+   1. Фон выделяется заливкой от границ.
+   2. Внутренние светлые участки шерсти не вырезаются.
+   3. Край обрабатывается мягче и очищается от белого ореола.
+*/
+async function processImage(file,removeWhite=false,avatar=false){
+  if(!file || !file.type.startsWith("image/")){
+    throw new Error(T("Выбери файл изображения.","Choose an image file."));
+  }
+  if(file.size>15*1024*1024){
+    throw new Error(T("Максимальный размер файла — 15 МБ.","Maximum file size is 15 MB."));
+  }
+  const url=URL.createObjectURL(file);
+  try{
+    const image=await new Promise((resolve,reject)=>{
+      const img=new Image();
+      img.onload=()=>resolve(img);
+      img.onerror=()=>reject(new Error(T(
+        "Не удалось открыть изображение.",
+        "Could not open the image."
+      )));
+      img.src=url;
+    });
+    if(!image.naturalWidth || !image.naturalHeight){
+      throw new Error(T("Изображение пустое.","The image is empty."));
+    }
+
+    const canvas=document.createElement("canvas");
+    let width,height;
+    if(avatar){
+      width=height=160;
+    }else{
+      const scale=Math.min(1,720/Math.max(image.naturalWidth,image.naturalHeight));
+      width=Math.max(1,Math.round(image.naturalWidth*scale));
+      height=Math.max(1,Math.round(image.naturalHeight*scale));
+    }
+    canvas.width=width;
+    canvas.height=height;
+    const ctx=canvas.getContext("2d",{willReadFrequently:true});
+    if(!ctx)throw new Error(T("Canvas недоступен.","Canvas is unavailable."));
+
+    if(avatar){
+      const size=Math.min(image.naturalWidth,image.naturalHeight);
+      ctx.drawImage(
+        image,(image.naturalWidth-size)/2,(image.naturalHeight-size)/2,
+        size,size,0,0,width,height
+      );
+    }else{
+      ctx.drawImage(image,0,0,width,height);
+    }
+
+    if(removeWhite && !avatar){
+      const pixels=ctx.getImageData(0,0,width,height);
+      const data=pixels.data;
+      const count=width*height;
+      const marked=new Uint8Array(count);
+      const queue=new Int32Array(count);
+      let head=0,tail=0;
+
+      const isBackground=index=>{
+        const o=index*4;
+        if(data[o+3]<15)return true;
+        const r=data[o],g=data[o+1],b=data[o+2];
+        const min=Math.min(r,g,b),max=Math.max(r,g,b);
+        return min>=214 && max-min<=29;
+      };
+      const add=index=>{
+        if(index<0 || index>=count || marked[index] || !isBackground(index))return;
+        marked[index]=1;
+        queue[tail++]=index;
+      };
+
+      for(let x=0;x<width;x++){
+        add(x);
+        add((height-1)*width+x);
+      }
+      for(let y=0;y<height;y++){
+        add(y*width);
+        add(y*width+width-1);
+      }
+      while(head<tail){
+        const index=queue[head++];
+        const x=index%width;
+        if(x>0)add(index-1);
+        if(x<width-1)add(index+1);
+        if(index>=width)add(index-width);
+        if(index<count-width)add(index+width);
+      }
+
+      for(let i=0;i<count;i++){
+        if(marked[i])data[i*4+3]=0;
+      }
+
+      for(let y=1;y<height-1;y++){
+        for(let x=1;x<width-1;x++){
+          const i=y*width+x;
+          if(marked[i])continue;
+          let near=false;
+          for(let dy=-1;dy<=1 && !near;dy++){
+            for(let dx=-1;dx<=1;dx++){
+              if(marked[i+dy*width+dx]){
+                near=true;
+                break;
+              }
+            }
+          }
+          if(!near)continue;
+          const o=i*4;
+          const min=Math.min(data[o],data[o+1],data[o+2]);
+          const max=Math.max(data[o],data[o+1],data[o+2]);
+          if(min>160 && max-min<80){
+            const alpha=clamp((255-min)/85,.08,1);
+            data[o+3]=Math.round(data[o+3]*alpha);
+            if(alpha<1){
+              for(let c=0;c<3;c++){
+                data[o+c]=clamp(Math.round(
+                  (data[o+c]-255*(1-alpha))/alpha
+                ),0,255);
+              }
+            }
+          }
+        }
+      }
+      ctx.putImageData(pixels,0,0);
+
+      let minX=width,minY=height,maxX=-1,maxY=-1;
+      for(let y=0;y<height;y++){
+        for(let x=0;x<width;x++){
+          if(data[(y*width+x)*4+3]>40){
+            minX=Math.min(minX,x);
+            minY=Math.min(minY,y);
+            maxX=Math.max(maxX,x);
+            maxY=Math.max(maxY,y);
+          }
+        }
+      }
+      if(maxX>=minX && maxY>=minY){
+        const padding=12;
+        const cropped=document.createElement("canvas");
+        cropped.width=maxX-minX+1+padding*2;
+        cropped.height=maxY-minY+1+padding*2;
+        cropped.getContext("2d").drawImage(
+          canvas,minX,minY,maxX-minX+1,maxY-minY+1,
+          padding,padding,maxX-minX+1,maxY-minY+1
+        );
+        return cropped.toDataURL("image/png");
+      }
+    }
+    return canvas.toDataURL("image/png");
+  }finally{
+    URL.revokeObjectURL(url);
+  }
+}
+async function uploadPhoto(){
+  if(photoBusy)return;
+  const file=$("#photo-file")?.files?.[0];
+  if(!file){
+    toast(T("Сначала выбери фото хомяка.","Choose the hamster photo first."));
+    return;
+  }
+  const removeWhite=!!$("#photo-remove-white")?.checked;
+  photoBusy=true;
+  const button=$('[data-action="photo-upload"]');
+  if(button){
+    button.disabled=true;
+    button.textContent=T("Обрабатываю фото…","Processing image…");
+  }
+  try{
+    assets.photo=await processImage(file,removeWhite,false);
+    saveAssets();
+    render();
+    renderModal();
+    toast(T(
+      "Фото добавлено. Оно используется на главной и в офлайн-награде.",
+      "Photo added. It is used on the home screen and offline reward."
+    ));
+  }catch(error){
+    toast(error.message||T("Ошибка обработки фото.","Image processing failed."));
+  }finally{
+    photoBusy=false;
+    if(modalName==="photo")renderModal();
+  }
+}
+async function uploadAvatar(){
+  if(photoBusy)return;
+  const file=$("#avatar-file")?.files?.[0];
+  if(!file){
+    toast(T("Выбери изображение аватара.","Choose an avatar image."));
+    return;
+  }
+  photoBusy=true;
+  const button=$('[data-action="avatar-upload"]');
+  if(button)button.disabled=true;
+  try{
+    assets.avatar=await processImage(file,false,true);
+    state.avatar="custom";
+    saveAssets();
+    save();
+    render();
+    renderModal();
+    toast(T("Аватар изменён.","Avatar updated."));
+  }catch(error){
+    toast(error.message||T("Ошибка загрузки.","Upload failed."));
+  }finally{
+    photoBusy=false;
+    if(modalName==="avatar")renderModal();
+  }
+}
+function avatarHTML(){
+  const src=state.avatar==="photo"?assets.photo:
+    state.avatar==="custom"?assets.avatar:"";
+  return src?
+    `<img src="${src}" alt="${T("Аватар игрока","Player avatar")}">`:
+    escapeHTML(AVATARS.includes(state.avatar)?state.avatar:"🐹");
+}
+function heroHTML(){
+  if(assets.photo){
+    return `<img class="hero-photo" src="${assets.photo}"
+      alt="${T("Хомяк","Hamster")}" draggable="false">`;
+  }
+  return `<div class="hero-placeholder">
+    <b>HAMSTER<br>EMPIRE</b>
+    <span>${T(
+      "Нажимай здесь, чтобы зарабатывать. Добавь своё фото хомяка кнопкой ниже.",
+      "Tap here to earn. Add your hamster photo using the button below."
+    )}</span>
+  </div>`;
 }
 
-/* -------------------- UI rendering -------------------- */
+/* ---------------- Основной интерфейс ---------------- */
 
 function applySettings(){
   document.documentElement.lang=state.language;
   document.documentElement.dataset.theme=state.theme;
-  document.querySelector('meta[name="theme-color"]').content=state.theme==="dark"?"#121318":"#eff2f8";
+  $('meta[name="theme-color"]').content=state.theme==="dark"?"#10131c":"#edf1f8";
+  $("#nav").setAttribute("aria-label",T("Навигация","Navigation"));
 }
 function renderHeader(){
   $("#header").innerHTML=`
     <div class="profile">
-      <div class="avatar">🐹</div>
-      <div>
+      <button class="avatar" data-action="avatar"
+        aria-label="${T("Изменить аватар","Change avatar")}">${avatarHTML()}</button>
+      <div class="profile-info">
         <div class="profile-name">${escapeHTML(state.nickname)}</div>
-        <div class="sub">${T("Браузерная версия · локальное демо","Browser edition · local demo")}</div>
+        <div class="sub">${T("CEO · бизнес и криптобиржа","CEO · business & crypto exchange")}</div>
       </div>
-      <div class="spacer"></div>
-      <button class="exchange-button" data-action="exchange" aria-label="${T("Сменить биржу","Change exchange")}">
-        <span class="exchange-logo">${escapeHTML(state.exchange[0])}</span>
+      <button class="exchange-button" data-action="exchange"
+        aria-label="${T("Выбрать биржу","Choose exchange")}">
+        <span class="exchange-logo">${state.exchange[0]}</span>
         ${escapeHTML(state.exchange)} ⌄
       </button>
-      <button class="icon-button" data-action="settings" aria-label="${T("Настройки","Settings")}">⚙</button>
+      <button class="icon-button" data-action="settings"
+        aria-label="${T("Настройки","Settings")}">⚙</button>
     </div>
     <div class="rank-row">
       <strong id="rank-name"></strong>
@@ -694,16 +1236,17 @@ function renderHeader(){
 }
 function renderNav(){
   const items=[
-    ["home","🐹",T("Главная","Exchange")],
-    ["mine","⛏️",T("Шахта","Mine")],
-    ["friends","👥",T("Друзья","Friends")],
-    ["earn","🎁",T("Задания","Earn")],
-    ["airdrop","🪂",T("Дроп","Airdrop")]
+    ["home","🐹",T("Главная","Home")],
+    ["mine","💼",T("Бизнес","Business")],
+    ["earn","🎁",T("Награды","Rewards")],
+    ["airdrop","📊",T("Империя","Empire")]
   ];
   $("#nav").innerHTML=items.map(([id,icon,label])=>`
-    <button class="${tab===id?"active":""}" data-action="tab" data-id="${id}" aria-label="${label}" ${tab===id?'aria-current="page"':""}>
+    <button data-action="tab" data-id="${id}"
+      class="${tab===id?"active":""}"
+      ${tab===id?'aria-current="page"':""}>
       <span class="nav-icon">${icon}</span>${label}
-      ${id==="earn"&&state.checkinLast!==calendarDay()?'<i class="badge"></i>':""}
+      ${id==="earn" && state.checkinLast!==calendarDay()?'<i class="badge"></i>':""}
     </button>`).join("");
 }
 function render(){
@@ -711,83 +1254,101 @@ function render(){
   renderHeader();
   renderNav();
   if(tab==="home")renderHome();
-  if(tab==="mine")renderMine();
-  if(tab==="friends")renderFriends();
-  if(tab==="earn")renderEarn();
-  if(tab==="airdrop")renderAirdrop();
+  else if(tab==="mine")renderMine();
+  else if(tab==="earn")renderEarn();
+  else renderEmpire();
   updateHUD();
 }
 function renderHome(){
   $("#main").innerHTML=`
-  <div class="stats">
-    <button class="stat" data-action="stat-tap" title="${T("Тройной тап: шифр дня","Triple tap: daily cipher")}">
-      <div class="stat-label gold">${T("Прибыль за тап","Earn per tap")}</div>
-      <div class="stat-value gold" id="tap-value"></div>
-    </button>
-    <div class="stat">
-      <div class="stat-label blue">${T("Монет до уровня","Coins to level up")}</div>
-      <div class="stat-value" id="to-next"></div>
-    </div>
-    <div class="stat">
-      <div class="stat-label green">${T("Прибыль в час","Profit per hour")}</div>
-      <div class="stat-value green" id="pph"></div>
-    </div>
-  </div>
-  <div class="balance"><span class="coin">$</span><span id="balance-number">${fmt(displayedBalance)}</span></div>
-  <div class="balance-caption">${T("Империя начинается с одного тапа","Your empire starts with a single tap")}</div>
-  <div class="hero-wrap">
-    <button id="hero" class="hero ${cipherMode?"cipher":""}" aria-label="${T("Нажми на хомяка","Tap the hamster")}">
-      ${hamsterSVG()}
-    </button>
-  </div>
-  <div class="status-row">
-    <div class="energy">
-      <div class="energy-label"><span>⚡ <span id="energy-number"></span></span><span class="small">+3/${T("с","s")}</span></div>
-      <div class="progress"><i id="energy-progress"></i></div>
-    </div>
-    <button class="boost" data-action="boosts">🚀 ${T("Бусты","Boost")}</button>
-  </div>
-  ${cipherMode?`
-    <div class="cipher-box">
-      <div class="small">${T("Шифр дня · короткий тап = точка, >300 мс = тире","Daily cipher · short tap = dot, >300 ms = dash")}</div>
-      <div class="cipher-code" id="cipher-code">${cipherSymbols.replace(/\./g,"•").replace(/-/g,"—")||" "}</div>
-      <div class="cipher-word" id="cipher-word">${escapeHTML(cipherLetters)||"_"}</div>
-      <div class="small">${T("Пауза 0,9 с завершает букву","A 0.9-second pause completes a letter")}</div>
-      <div class="segment">
-        <button class="btn secondary" data-action="cipher-help">${T("Подсказка","Hint")}</button>
-        <button class="btn secondary" data-action="cipher-clear">${T("Очистить","Clear")}</button>
-        <button class="btn secondary" data-action="cipher-toggle">${T("Выйти","Exit")}</button>
+    <div class="stats">
+      <button class="stat" data-action="stat-tap"
+        title="${T("Три нажатия открывают шифр","Triple tap opens the cipher")}">
+        <div class="stat-label gold">${T("Монет за нажатие","Coins per tap")}</div>
+        <div class="stat-value gold" id="tap-value"></div>
+      </button>
+      <div class="stat">
+        <div class="stat-label blue">${T("До следующей лиги","Until next league")}</div>
+        <div class="stat-value" id="to-next"></div>
+      </div>
+      <div class="stat">
+        <div class="stat-label green">${T("Доход в час","Profit per hour")}</div>
+        <div class="stat-value green" id="pph"></div>
       </div>
     </div>
-  `:`
-    <div class="row" style="margin-top:18px">
-      <button class="btn secondary" data-action="cipher-toggle">🔴 ${T("Шифр дня","Daily cipher")}</button>
-      <button class="btn secondary" data-action="puzzle">🔑 ${T("Мини-игра","Mini-game")}</button>
+    <div class="balance">
+      <span class="coin">$</span>
+      <span id="balance-number">${fmt(displayedBalance)}</span>
     </div>
-  `}
-  <div class="panel no-shadow" style="margin-top:14px">
-    <div class="row">
-      <div><strong style="font-size:13px">🧩 ${T("Комбо дня","Daily combo")}</strong>
-      <div class="small">${T("Награда","Reward")}: <span class="gold">5 000 000</span></div></div>
-      <button class="btn secondary" data-action="combo">${T("Открыть","Open")}</button>
+    <div class="balance-caption">${T(
+      "Строй бизнес. Развивай биржу. Создавай империю.",
+      "Build businesses. Grow your exchange. Create an empire."
+    )}</div>
+    <div class="hero-wrap">
+      <button id="hero" class="hero ${cipherMode?"cipher":""}"
+        aria-label="${T("Нажать на хомяка","Tap the hamster")}">${heroHTML()}</button>
     </div>
-  </div>`;
+    <button class="photo-button" data-action="photo">
+      ${assets.photo?T("Изменить фото хомяка","Change hamster photo"):
+        T("Добавить фото хомяка","Add hamster photo")}
+    </button>
+    <div class="status-row">
+      <div class="energy">
+        <div class="energy-label">
+          <span>⚡ <span id="energy-number"></span></span>
+          <span class="small">+${T("1,5/с","1.5/s")}</span>
+        </div>
+        <div class="progress"><i id="energy-progress"></i></div>
+      </div>
+      <button class="boost" data-action="boosts">🚀 ${T("Бусты","Boosts")}</button>
+    </div>
+    ${cipherMode?`
+      <div class="cipher-box">
+        <div class="small">${T(
+          "Короткое нажатие — точка. Удержание >300 мс — тире.",
+          "Short press: dot. Hold >300 ms: dash."
+        )}</div>
+        <div id="cipher-code" class="cipher-code"></div>
+        <div id="cipher-word" class="cipher-word"></div>
+        <div class="small">${T(
+          "Пауза 0,9 с завершает букву.",
+          "A 0.9-second pause completes a letter."
+        )}</div>
+        <div class="segment">
+          <button class="btn secondary" data-action="cipher-help">${T("Подсказка","Hint")}</button>
+          <button class="btn secondary" data-action="cipher-clear">${T("Очистить","Clear")}</button>
+          <button class="btn secondary" data-action="cipher-toggle">${T("Выйти","Exit")}</button>
+        </div>
+      </div>`:`
+      <div class="quick-actions">
+        <button class="btn secondary" data-action="cipher-toggle">🔴 ${T("Шифр дня","Daily cipher")}</button>
+        <button class="btn secondary" data-action="puzzle">🔑 ${T("Мини-игра","Mini-game")}</button>
+      </div>`}
+    <div class="panel no-shadow" style="margin-top:14px">
+      <div class="row">
+        <div>
+          <strong style="font-size:13px">🧩 ${T("Комбо дня","Daily combo")}</strong>
+          <div class="small">${T("Награда","Reward")}: <span class="gold">5 000 000</span></div>
+        </div>
+        <button class="btn secondary" data-action="combo">${T("Открыть","Open")}</button>
+      </div>
+    </div>
+    <div class="small" style="text-align:center">
+      ${T("Офлайн: до 1 часа · 60 бизнес-направлений","Offline: up to 1 hour · 60 business directions")}
+    </div>`;
   bindHero();
+  updateCipherUI();
 }
-
 function lockReason(c){
   if(c.dep){
-    const [id,lvl]=c.dep;
-    if((state.cards[id]||0)<lvl){
-      return `${trName(CARDS.find(x=>x.id===id))} · ${T("ур.","lvl")} ${lvl}`;
+    const [id,level]=c.dep;
+    if((state.cards[id]||0)<level){
+      return `${trName(CARD_BY_ID[id])} · ${T("ур.","lvl")} ${level}`;
     }
   }
-  if(c.friends&&state.friends.length<c.friends){
-    return `${T("Демо-друзей","Demo friends")}: ${state.friends.length}/${c.friends}`;
-  }
   if(c.event){
-    const utcHour=new Date().getUTCHours();
-    if(utcHour>=3&&utcHour<9){
+    const hour=new Date().getUTCHours();
+    if(hour>=3 && hour<9){
       return T("Доступно с 12:00 до 06:00 МСК","Available 12:00–06:00 Moscow time");
     }
   }
@@ -801,76 +1362,135 @@ function comboHTML(){
       <span class="small" data-countdown="${comboResetAt()}"></span>
     </div>
     <div class="combo">
-    ${ids.map(id=>{
-      const c=CARDS.find(x=>x.id===id),found=state.comboFound.includes(id);
-      return `<div class="combo-slot ${found?"found":""}">
-        <b>${found?c.icon:"?"}</b><span>${found?escapeHTML(trName(c)):T("Скрытая карта","Hidden card")}</span>${found?"✅":""}
-      </div>`;
-    }).join("")}
+      ${ids.map(id=>{
+        const c=CARD_BY_ID[id];
+        const found=state.comboFound.includes(id);
+        return `<div class="combo-slot ${found?"found":""}">
+          <b>${found?c.icon:"?"}</b>
+          <span>${found?escapeHTML(trName(c)):T("Скрытый бизнес","Hidden business")}</span>
+          ${found?"✓":""}
+        </div>`;
+      }).join("")}
     </div>
     <div class="row">
-      <strong class="gold" style="font-size:15px">🪙 5 000 000</strong>
-      <button class="btn ${state.comboFound.length===3&&!state.comboClaimed?"success":"secondary"}" data-action="combo-claim"
-        ${state.comboFound.length!==3||state.comboClaimed?"disabled":""}>
+      <strong class="gold">🪙 5 000 000</strong>
+      <button class="btn ${state.comboFound.length===3 && !state.comboClaimed?"success":"secondary"}"
+        data-action="combo-claim"
+        ${state.comboFound.length!==3 || state.comboClaimed?"disabled":""}>
         ${state.comboClaimed?T("Получено","Claimed"):T("Забрать","Claim")}
       </button>
     </div>
-    <details><summary>${T("Как найти комбо?","How do I find the combo?")}</summary>
-      ${T("Купи или улучши три карты дня. Повторные покупки одной карты не заменяют остальные. Сброс в 15:00 МСК. В этом демо подсказка:","Buy or upgrade today's three cards. Repeated purchases of one card do not replace the others. Resets at 15:00 Moscow time. Demo hint:")}
-      <b>${ids.map(id=>escapeHTML(trName(CARDS.find(c=>c.id===id)))).join(" · ")}</b>
+    <details>
+      <summary>${T("Как собрать комбо?","How do I complete the combo?")}</summary>
+      ${T(
+        "Купи или улучши три направления дня. Сброс в 15:00 МСК. Подсказка:",
+        "Buy or upgrade today's three businesses. Resets at 15:00 Moscow time. Hint:"
+      )}
+      <b>${ids.map(id=>escapeHTML(trName(CARD_BY_ID[id]))).join(" · ")}</b>
     </details>
   </div>`;
 }
 function renderMine(){
-  const categories=[
-    ["markets",T("Рынки","Markets")],["team","PR & Team"],
-    ["legal",T("Право","Legal")],["special",T("Особые","Specials")]
-  ];
   $("#main").innerHTML=`
-    <h1 class="section-title">${T("Твоя криптоимперия","Your crypto empire")}</h1>
-    <p class="description">${T("Улучшай карты и получай пассивный доход. Максимум офлайн — 3 часа.","Upgrade cards and earn passive income. Offline income is capped at 3 hours.")}</p>
+    <h1 class="section-title">${T("Твоя бизнес-империя","Your business empire")}</h1>
+    <p class="description">${T(
+      "60 направлений: от кофейни до собственной криптобиржи. Доход начисляется постоянно, офлайн — максимум за 1 час.",
+      "60 directions: from a coffee shop to your crypto exchange. Earn continuously, with offline income capped at 1 hour."
+    )}</p>
     <div class="panel no-shadow row">
-      <span class="small">${T("Баланс","Balance")} <strong class="gold" data-balance></strong></span>
-      <span class="small">${T("Доход","Profit")} <strong class="green" data-pph></strong>/${T("ч","h")}</span>
+      <span class="small">${T("Баланс","Balance")}: <strong class="gold" data-balance></strong></span>
+      <span class="small"><strong class="green" data-pph></strong>/${T("ч","h")}</span>
     </div>
     ${comboHTML()}
-    <div class="tabs">${categories.map(([id,label])=>`
-      <button class="tab ${mineCategory===id?"active":""}" data-action="category" data-id="${id}">${label}</button>`).join("")}</div>
-    <div class="card-grid">
-    ${CARDS.filter(c=>c.cat===mineCategory).map(c=>{
-      const reason=lockReason(c),level=state.cards[c.id]||0;
+    <div class="tabs">
+      <button class="tab ${mineCategory==="all"?"active":""}"
+        data-action="category" data-id="all">${T("Все · 60","All · 60")}</button>
+      ${CATEGORIES.map(c=>`
+        <button class="tab ${mineCategory===c.id?"active":""}"
+          data-action="category" data-id="${c.id}">${trName(c)}</button>`).join("")}
+    </div>
+    <div class="search-row">
+      <input id="mine-search" class="field"
+        value="${escapeHTML(mineSearch)}"
+        placeholder="${T("Поиск бизнеса…","Search businesses…")}"
+        aria-label="${T("Поиск бизнеса","Search businesses")}">
+      <select id="mine-sort" class="field" aria-label="${T("Сортировка","Sort")}">
+        <option value="default" ${mineSort==="default"?"selected":""}>${T("По порядку","Default order")}</option>
+        <option value="price" ${mineSort==="price"?"selected":""}>${T("По цене","By price")}</option>
+        <option value="profit" ${mineSort==="profit"?"selected":""}>${T("По доходу","By profit")}</option>
+        <option value="roi" ${mineSort==="roi"?"selected":""}>${T("По окупаемости","By payback")}</option>
+      </select>
+    </div>
+    <div id="business-list"></div>`;
+  renderBusinessList();
+}
+function renderBusinessList(){
+  const query=mineSearch.trim().toLocaleLowerCase();
+  let list=CARDS.filter(c=>
+    (mineCategory==="all" || c.cat===mineCategory) &&
+    (!query || (c.ru+" "+c.en).toLocaleLowerCase().includes(query))
+  );
+  if(mineSort==="price")list.sort((a,b)=>cardPrice(a)-cardPrice(b));
+  if(mineSort==="profit")list.sort((a,b)=>cardIncrease(b)-cardIncrease(a));
+  if(mineSort==="roi")list.sort((a,b)=>
+    cardPrice(a)/cardIncrease(a)-cardPrice(b)/cardIncrease(b)
+  );
+  const root=$("#business-list");
+  if(!root)return;
+  if(!list.length){
+    root.innerHTML=`<div class="empty">${T("Ничего не найдено.","No businesses found.")}</div>`;
+    return;
+  }
+  root.innerHTML=`<div class="card-grid">
+    ${list.map(c=>{
+      const reason=lockReason(c);
+      const level=state.cards[c.id]||0;
+      const category=CATEGORIES.find(x=>x.id===c.cat);
       return `<button class="mine-card" data-action="card" data-id="${c.id}">
-        <div class="card-art">${c.icon}<span class="card-level">${T("Ур.","Lvl")} ${level}</span></div>
+        <div class="card-art" style="--card-glow:${category.color}">
+          ${c.icon}<span class="card-level">${T("Ур.","Lvl")} ${level}</span>
+        </div>
         <div class="card-body">
           <div class="card-name">${escapeHTML(trName(c))}</div>
           <div class="card-profit">+${compact(cardIncrease(c))}/${T("час","hour")}</div>
-          <div class="small">${T("Текущий доход","Current income")}: ${compact(c.profit*(Math.pow(1.12,level)-1)/.12)}</div>
+          <div class="small">${T("Текущий доход","Current profit")}: ${compact(cardIncome(c))}</div>
         </div>
-        <div class="card-footer">${reason?`<span class="lock-text">🔒 ${escapeHTML(reason)}</span>`:
-          `🪙 ${compact(cardPrice(c))} ${level>=100?T("· MAX","· MAX"):""}`}</div>
+        <div class="card-footer">
+          ${level>=100?"MAX":
+            reason?`<span class="lock-text">🔒 ${escapeHTML(reason)}</span>`:
+            `🪙 ${compact(cardPrice(c))}`}
+        </div>
       </button>`;
     }).join("")}
-    </div>`;
+  </div>`;
 }
 function checkinInfo(){
   const today=calendarDay();
-  const streak=state.checkinLast===today||state.checkinLast===today-1?state.checkinStreak:0;
-  const next=state.checkinLast===today?Math.max(1,streak):streak%10+1;
-  return {today,streak,next,claimed:state.checkinLast===today};
+  const streak=state.checkinLast===today || state.checkinLast===today-1?
+    state.checkinStreak:0;
+  const claimed=state.checkinLast===today;
+  const next=claimed?((Math.max(1,streak)-1)%10)+1:streak%10+1;
+  return {today,streak,next,claimed};
 }
 function renderEarn(){
   const info=checkinInfo();
   $("#main").innerHTML=`
     <h1 class="section-title">${T("Награды и задания","Rewards & tasks")}</h1>
-    <p class="description">${T("Заходи каждый день, чтобы сохранить серию.","Return every day to keep your streak.")}</p>
+    <p class="description">${T(
+      "Ежедневный вход, шифр, комбо и ключи помогают развивать империю.",
+      "Daily check-ins, ciphers, combos and keys help grow your empire."
+    )}</p>
     <div class="panel">
-      <div class="row"><strong>🗓 ${T("Ежедневный вход","Daily check-in")}</strong><span class="small">${T("Серия","Streak")}: ${info.streak}</span></div>
+      <div class="row">
+        <strong style="font-size:14px">🗓 ${T("Ежедневный вход","Daily check-in")}</strong>
+        <span class="small">${T("Серия","Streak")}: ${info.streak}</span>
+      </div>
       <div class="calendar">
         ${CHECKIN.map((reward,i)=>{
-          const position=info.streak===0?0:(info.streak-1)%10+1;
-          const done=info.claimed?i<position:i<info.streak%10;
-          return `<div class="day ${done?"done":""} ${info.next===i+1?"current":""}">
-            ${T("День","Day")} ${i+1}<br><span style="font-size:19px">${done?"✅":"🪙"}</span><br>
+          const position=info.claimed?info.next:info.streak%10;
+          return `<div class="day ${i<position?"done":""} ${info.next===i+1?"current":""}">
+            ${T("День","Day")} ${i+1}<br>
+            <span style="font-size:20px">${i<position?"✓":"🪙"}</span><br>
             <b class="gold">${compact(reward)}</b>
           </div>`;
         }).join("")}
@@ -879,432 +1499,653 @@ function renderEarn(){
         ${info.claimed?T("Сегодня уже получено","Already claimed today"):
           `${T("Забрать","Claim")} +${fmt(CHECKIN[info.next-1])}`}
       </button>
-      <div class="small" style="margin-top:8px">${T("Пропуск дня сбрасывает серию. После дня 10 цикл повторяется. Сутки — по МСК.","Missing a day resets your streak. The cycle repeats after day 10. Days follow Moscow time.")}</div>
+      <div class="small" style="margin-top:9px">${T(
+        "Пропуск дня сбрасывает серию. После 10-го дня цикл повторяется. Дни считаются по МСК.",
+        "Missing a day resets your streak. The cycle repeats after day 10. Days follow Moscow time."
+      )}</div>
     </div>
-    <div class="notice">${T("Социальные задания ниже — симуляция. У приложения нет собственного канала и серверной проверки подписок. Награды существуют только в этом браузере.","Social tasks below are simulations. This app has no project channel or server-side subscription verification. Rewards exist only in this browser.")}</div>
+    <div class="notice">${T(
+      "Социальные задания — локальная симуляция. Подписки и просмотры не проверяются, ссылки ведут на главные страницы сервисов.",
+      "Social tasks are local simulations. Subscriptions and views are not verified; links lead to service homepages."
+    )}</div>
     <div class="panel">
       ${TASKS.map(task=>{
         const done=!!state.tasks[task.id];
         return `<div class="task">
           <div class="task-icon">${task.icon}</div>
-          <div class="task-info"><div class="task-title">${trName(task)}</div>
-            <div class="small gold">+${fmt(task.reward)} · ${task.id==="video"?T("ежедневно","daily"):T("однократно","one-time")}</div>
-            ${task.id==="video"&&state.videoStart&&!done?`<div class="small" data-video-status></div>`:""}
+          <div class="task-info">
+            <div class="task-title">${trName(task)}</div>
+            <div class="small gold">+${fmt(task.reward)} ·
+              ${task.id==="video"?T("ежедневно","daily"):T("однократно","one-time")}
+            </div>
+            ${task.id==="video" && state.videoStart && !done?
+              '<div class="small" data-video-status></div>':""}
           </div>
-          <button class="btn secondary" data-action="task" data-id="${task.id}" ${done?"disabled":""}>
+          <button class="btn secondary" data-action="task"
+            data-id="${task.id}" ${done?"disabled":""}>
             ${done?"✓":T("Открыть","Open")}
           </button>
         </div>`;
       }).join("")}
     </div>`;
 }
-function referralURL(){
-  const base=location.protocol==="file:"?"https://your-app.example/":location.origin+location.pathname;
-  return base+"?ref="+encodeURIComponent(state.refId);
-}
-function renderFriends(){
+function renderEmpire(){
+  const owned=CARDS.filter(c=>(state.cards[c.id]||0)>0).length;
+  const levels=CARDS.reduce((sum,c)=>sum+(state.cards[c.id]||0),0);
   $("#main").innerHTML=`
-    <h1 class="section-title">${T("Друзья — твоя команда","Friends are your team")}</h1>
-    <p class="description">${T("Обычный друг: +5 000 обоим. Premium: +25 000 обоим.","Regular friend: +5,000 each. Premium: +25,000 each.")}</p>
-    <div class="panel">
-      <strong style="font-size:14px">🔗 ${T("Твоя реферальная ссылка","Your referral link")}</strong>
-      <div class="small mono" style="margin:12px 0;user-select:text">${escapeHTML(referralURL())}</div>
-      <div class="segment">
-        <button class="btn" data-action="copy-ref">📋 ${T("Копировать","Copy")}</button>
-        <button class="btn secondary" data-action="share-ref">✈️ ${T("Поделиться","Share")}</button>
-      </div>
+    <h1 class="section-title">${T("Обзор империи","Empire overview")}</h1>
+    <p class="description">${T(
+      "Твои бизнесы, достижения и игровой прогресс. Здесь нет реальных токенов, торговли или обещанного денежного дропа.",
+      "Your businesses, achievements and game progress. There are no real tokens, trading or promised monetary airdrops."
+    )}</p>
+    <div class="stat-list" style="margin-bottom:13px">
+      ${[
+        [T("Открыто бизнесов","Businesses owned"),`${owned}/60`],
+        [T("Всего уровней","Total upgrades"),fmt(levels)],
+        [T("Всего заработано","Total earned"),compact(state.earned)],
+        [T("Доход в час","Hourly profit"),compact(profitPerHour())]
+      ].map(([label,value])=>`
+        <div class="panel no-shadow">
+          <span class="small">${label}</span><strong class="gold">${value}</strong>
+        </div>`).join("")}
     </div>
-    <div class="notice">
-      ${T("Без сервера переходы по ссылке не подтверждают приглашение и не начисляют настоящие награды. При открытии через file:// ссылка — пример. Можно добавить явно обозначенных демо-друзей для тестирования зависимостей карточек.","Without a server, referral visits cannot verify invitations or grant real rewards. Under file:// the link is a placeholder. Add clearly marked demo friends to test card dependencies.")}
-    </div>
-    <button class="btn secondary wide" data-action="add-friend">＋ ${T("Добавить демо-друга","Add demo friend")}</button>
-    <div class="panel" style="margin-top:14px">
-      <div class="row"><strong style="font-size:14px">${T("Демо-команда","Demo team")}</strong><span class="small">${state.friends.length}</span></div>
-      ${state.friends.length?state.friends.map((f,i)=>`
-        <div class="task">
-          <div class="friend-avatar">${f.premium?"⭐":"🐹"}</div>
-          <div class="task-info">
-            <div class="task-title">${escapeHTML(f.name)} <span class="small">DEMO</span></div>
-            <div class="small">${RANKS[clamp(f.rank||0,0,10)][0]} · ${compact(f.pph||0)}/${T("ч","h")}</div>
-            <div class="small">${T("Демо-баланс друга","Friend's demo balance")}: ${fmt(f.coins||0)}</div>
-          </div>
-          <button class="btn secondary" data-action="friend-level" data-id="${i}" ${(f.rank||0)>=10?"disabled":""}>↑ ${T("Лига","League")}</button>
-        </div>`).join(""):`<p class="small">${T("Пока никого нет. Демо-друг не является реальным пользователем.","No one yet. A demo friend is not a real user.")}</p>`}
-    </div>
-    <div class="panel no-shadow">
-      <strong style="font-size:13px">${T("Бонусы за лиги","League bonuses")}</strong>
-      <p class="small">${T("В демо при повышении друга награда составляет 1 000 × номер новой лиги. Для Premium — ×5. Повышение каждого друга до каждой лиги оплачивается один раз.","In the demo, a friend's promotion grants 1,000 × the new league number. Premium multiplies this by 5. Each promotion is rewarded once.")}</p>
-    </div>`;
-}
-function renderAirdrop(){
-  const complete=Object.values(state.tasks).filter(Boolean).length;
-  $("#main").innerHTML=`
-    <h1 class="section-title">${T("Будущий дроп","Future airdrop")}</h1>
-    <p class="description">${T("Игровая сводка. Реальных токенов, обещанного дропа или денежной стоимости здесь нет.","Game summary. There are no real tokens, promised distributions or monetary value here.")}</p>
     <div class="panel">
       ${[
-        ["📈",T("Пассивный доход","Passive income"),`${compact(profitPerHour())}/${T("ч","h")}`],
-        ["🔑",T("Крипто-ключи","Crypto keys"),fmt(state.keys)],
-        ["✅",T("Выполненные задания","Completed tasks"),fmt(complete)],
-        ["👥",T("Демо-рефералы","Demo referrals"),fmt(state.friends.length)],
-        ["🏆",T("Текущая лига","Current league"),RANKS[rankIndex()][0]]
-      ].map(([icon,label,value])=>`<div class="task"><span class="task-icon">${icon}</span><div class="task-info"><div class="task-title">${label}</div></div><strong class="gold">${value}</strong></div>`).join("")}
+        ["🔑",T("Игровые крипто-ключи","Game crypto keys"),fmt(state.keys)],
+        ["✅",T("Выполненные задания","Completed tasks"),fmt(TASKS.filter(t=>state.tasks[t.id]).length)],
+        ["👆",T("Нажатий","Taps"),fmt(state.stats.taps)],
+        ["🏆",T("Текущая лига","Current league"),RANKS[rankIndex()][0]],
+        ["⏱️",T("Активное время","Active time"),timeText(state.stats.playSeconds*1000)]
+      ].map(([icon,label,value])=>`
+        <div class="task">
+          <span class="task-icon">${icon}</span>
+          <div class="task-info"><div class="task-title">${label}</div></div>
+          <strong class="gold" style="font-size:13px">${value}</strong>
+        </div>`).join("")}
     </div>
     <div class="panel">
-      <strong>💎 ${T("TON-адрес","TON address")}</strong>
-      <p class="small">${T("Можно сохранить валидный адрес. Это НЕ подключение TON Connect: владение кошельком не подтверждается, транзакции не выполняются.","Save a valid address. This is NOT a TON Connect connection: wallet ownership is not verified and no transactions are performed.")}</p>
+      <strong style="font-size:14px">💎 ${T("Публичный TON-адрес","Public TON address")}</strong>
+      <p class="small">${T(
+        "Сохранение адреса — не подключение кошелька. Владение не проверяется, транзакции не выполняются.",
+        "Saving an address does not connect a wallet. Ownership is not verified and no transactions are performed."
+      )}</p>
       ${state.wallet?`<div class="notice mono">${escapeHTML(state.wallet)}</div>`:""}
-      <button class="btn wide" data-action="wallet">${state.wallet?T("Изменить адрес","Change address"):T("Добавить TON-адрес","Add TON address")}</button>
-      ${state.wallet?`<button class="btn secondary wide" data-action="wallet-remove">${T("Удалить адрес","Remove address")}</button>`:""}
+      <button class="btn wide" data-action="wallet">
+        ${state.wallet?T("Изменить адрес","Change address"):T("Добавить адрес","Add address")}
+      </button>
+      ${state.wallet?`
+        <button class="btn secondary wide" data-action="wallet-remove">${T("Удалить адрес","Remove address")}</button>`:""}
     </div>`;
 }
+function setText(selector,text){
+  const node=$(selector);
+  if(node && node.textContent!==text)node.textContent=text;
+}
 function updateHUD(){
-  const r=rankIndex(),next=RANKS[r+1];
-  const progress=next?(state.earned-RANKS[r][1])/(next[1]-RANKS[r][1])*100:100;
-  if($("#rank-name"))$("#rank-name").textContent=`${["🥉","🥈","🥇","🔷","💎","⚡","🔥","👑","🌟","🏆","✨"][r]} ${RANKS[r][0]} ›`;
-  if($("#rank-level"))$("#rank-level").textContent=`${T("Уровень","Level")} ${r+1}/11`;
+  const r=rankIndex();
+  const next=RANKS[r+1];
+  const progress=next?
+    (state.earned-RANKS[r][1])/(next[1]-RANKS[r][1])*100:100;
+  setText("#rank-name",`${RANK_ICONS[r]} ${RANKS[r][0]}`);
+  setText("#rank-level",`${T("Уровень","Level")} ${r+1}/11`);
   if($("#rank-progress"))$("#rank-progress").style.width=clamp(progress,0,100)+"%";
-  if($("#tap-value"))$("#tap-value").textContent="🪙 +"+fmt(tapValue());
-  if($("#to-next"))$("#to-next").textContent=next?compact(Math.max(0,next[1]-state.earned)):"MAX";
-  if($("#pph"))$("#pph").textContent="+"+compact(profitPerHour());
-  if($("#energy-number"))$("#energy-number").textContent=`${fmt(state.energy)} / ${fmt(maxEnergy())}`;
-  if($("#energy-progress"))$("#energy-progress").style.width=state.energy/maxEnergy()*100+"%";
+  setText("#tap-value","🪙 +"+fmt(tapValue()));
+  setText("#to-next",next?compact(Math.max(0,next[1]-state.earned)):"MAX");
+  setText("#pph","+"+compact(profitPerHour()));
+  setText("#energy-number",`${fmt(state.energy)} / ${fmt(maxEnergy())}`);
+  if($("#energy-progress")){
+    $("#energy-progress").style.width=(state.energy/maxEnergy()*100)+"%";
+  }
   $$("[data-balance]").forEach(e=>e.textContent=fmt(state.balance));
   $$("[data-pph]").forEach(e=>e.textContent=compact(profitPerHour()));
-  $$("[data-countdown]").forEach(e=>e.textContent=timeText(Number(e.dataset.countdown)-now()));
-  $$("[data-video-status]").forEach(e=>e.textContent=now()-state.videoStart>=3600000?
-    T("Код можно вводить","Code entry is available"):
-    `${T("До проверки","Until verification")}: ${timeText(state.videoStart+3600000-now())}`);
-  if($("#puzzle-timer")&&puzzle)$("#puzzle-timer").textContent=timeText(puzzle.deadline-now());
-  if($("#boost-cooldown"))$("#boost-cooldown").textContent=timeText(Math.max(0,state.boostLast+3600000-now()));
+  $$("[data-countdown]").forEach(e=>
+    e.textContent=timeText(Number(e.dataset.countdown)-now())
+  );
+  $$("[data-video-status]").forEach(e=>{
+    e.textContent=now()-state.videoStart>=3600000?
+      T("Можно вводить код.","Code entry is available."):
+      `${T("До проверки","Until verification")}: ${timeText(state.videoStart+3600000-now())}`;
+  });
+  if(puzzle)setText("#puzzle-timer",timeText(puzzle.deadline-now()));
+  setText("#boost-cooldown",timeText(state.boostLast+3600000-now()));
 }
 
-/* -------------------- Pointer input and Morse -------------------- */
+/* ---------------- Нажатия и азбука Морзе ---------------- */
 
 function bindHero(){
   const hero=$("#hero");
   if(!hero)return;
   activePointers.clear();
   hero.addEventListener("pointerdown",event=>{
-    if(event.pointerType==="mouse"&&event.button!==0)return;
+    if(modalName || !active || (event.pointerType==="mouse" && event.button!==0))return;
     event.preventDefault();
-    if(activePointers.size>=4)return;
-    if(cipherMode&&activePointers.size>0)return;
-    activePointers.set(event.pointerId,{start:performance.now(),x:event.clientX,y:event.clientY});
+    if(activePointers.size>=4 || (cipherMode && activePointers.size))return;
+    activePointers.set(event.pointerId,{
+      start:performance.now(),x:event.clientX,y:event.clientY
+    });
     try{hero.setPointerCapture(event.pointerId)}catch{}
     const rect=hero.getBoundingClientRect();
     const x=(event.clientX-rect.left)/rect.width-.5;
     const y=(event.clientY-rect.top)/rect.height-.5;
-    hero.style.transform=`perspective(600px) rotateX(${-y*13}deg) rotateY(${x*13}deg) scale(.96)`;
+    hero.style.transform=`perspective(600px) rotateX(${-y*12}deg) rotateY(${x*12}deg) scale(.967)`;
     clearTimeout(tiltTimer);
-    tiltTimer=setTimeout(()=>hero.style.transform="",140);
-    if(!cipherMode)doTap(event.clientX,event.clientY);
-    else clearTimeout(cipherTimer);
+    tiltTimer=setTimeout(()=>hero.style.transform="",135);
+    if(cipherMode)clearTimeout(cipherTimer);
+    else doTap(event.clientX,event.clientY);
   });
   hero.addEventListener("pointerup",event=>{
     const entry=activePointers.get(event.pointerId);
     if(!entry)return;
     activePointers.delete(event.pointerId);
-    if(cipherMode){
-      const symbol=performance.now()-entry.start>300?"-":".";
-      cipherSymbols+=symbol;
-      sound();haptic();
-      floatNumber(entry.x,entry.y,symbol==="."?"•":"—");
-      updateCipherUI();
-      if(cipherSymbols.length>4){
-        cipherSymbols="";sound("error");
-        toast(T("В букве не больше 4 сигналов.","A letter has at most 4 signals."));
-        updateCipherUI();return;
-      }
-      cipherTimer=setTimeout(finishCipherLetter,900);
-    }
+    if(cipherMode)addCipherSymbol(performance.now()-entry.start>300?"-":".",entry);
   });
   hero.addEventListener("pointercancel",event=>{
     activePointers.delete(event.pointerId);
     hero.style.transform="";
   });
-  hero.addEventListener("lostpointercapture",event=>activePointers.delete(event.pointerId));
+  hero.addEventListener("lostpointercapture",event=>{
+    activePointers.delete(event.pointerId);
+  });
   hero.addEventListener("keydown",event=>{
-    if(event.code!=="Space"&&event.code!=="Enter")return;
+    if(!["Space","Enter"].includes(event.code) || modalName || !active)return;
     event.preventDefault();
     if(event.repeat)return;
     const rect=hero.getBoundingClientRect();
+    const entry={
+      start:performance.now(),
+      x:rect.left+rect.width/2,y:rect.top+rect.height/2
+    };
     if(cipherMode){
-      activePointers.set("keyboard",{start:performance.now(),x:rect.left+rect.width/2,y:rect.top+rect.height/2});
+      if(activePointers.size)return;
+      activePointers.set("keyboard",entry);
       clearTimeout(cipherTimer);
-    }else doTap(rect.left+rect.width/2,rect.top+rect.height/2);
+    }else doTap(entry.x,entry.y);
   });
   hero.addEventListener("keyup",event=>{
-    if(!cipherMode||!["Space","Enter"].includes(event.code))return;
+    if(!["Space","Enter"].includes(event.code))return;
+    event.preventDefault();
     const entry=activePointers.get("keyboard");
     if(!entry)return;
     activePointers.delete("keyboard");
-    cipherSymbols+=performance.now()-entry.start>300?"-":".";
-    updateCipherUI();sound();
-    cipherTimer=setTimeout(finishCipherLetter,900);
+    if(cipherMode)addCipherSymbol(performance.now()-entry.start>300?"-":".",entry);
   });
+  hero.addEventListener("blur",()=>activePointers.delete("keyboard"));
 }
 function doTap(x,y){
-  const timestamp=performance.now();
-  // UX-level throttle only. This is NOT a security boundary.
-  if(timestamp-lastAcceptedTap<4)return;
-  lastAcceptedTap=timestamp;
+  settle(false);
+  const time=performance.now();
+  if(time-lastAcceptedTap<4)return;
+  lastAcceptedTap=time;
   const gain=tapValue();
   if(state.energy+1e-8<gain){
-    sound("error");toast(T("Не хватает энергии. Подожди или используй буст.","Not enough energy. Wait or use a boost."));
+    sound("error");
+    toast(T("Не хватает энергии. Подожди или используй буст.","Not enough energy. Wait or use a boost."));
     return;
   }
-  const previousRank=rankIndex();
-  state.energy-=gain;
+  state.energy=Math.max(0,state.energy-gain);
   credit(gain);
   state.stats.taps++;
-  sound();haptic();floatNumber(x,y,"+"+fmt(gain));updateHUD();
-  if(rankIndex()!==previousRank){
-    if($("#hero"))$("#hero").innerHTML=hamsterSVG();
-    toast(T("Новая лига: ","New league: ")+RANKS[rankIndex()][0]);
-    sound("reward");save();
+  sound();
+  haptic();
+  floatNumber(x,y,"+"+fmt(gain));
+  checkRank();
+  updateHUD();
+}
+function addCipherSymbol(symbol,entry){
+  clearTimeout(cipherErrorTimer);
+  cipherSymbols+=symbol;
+  sound();
+  haptic();
+  floatNumber(entry.x,entry.y,symbol==="."?"•":"—");
+  if(cipherSymbols.length>4){
+    cipherSymbols="";
+    sound("error");
+    toast(T("В букве не больше четырёх сигналов.","A letter has at most four signals."));
+    updateCipherUI();
+    return;
   }
+  updateCipherUI();
+  cipherTimer=setTimeout(finishCipherLetter,900);
 }
 function updateCipherUI(){
-  if($("#cipher-code"))$("#cipher-code").textContent=cipherSymbols.replace(/\./g,"•").replace(/-/g,"—")||" ";
-  if($("#cipher-word"))$("#cipher-word").textContent=cipherLetters||"_";
+  setText("#cipher-code",cipherSymbols.replace(/\./g,"•").replace(/-/g,"—")||" ");
+  setText("#cipher-word",cipherLetters||"_");
 }
 function finishCipherLetter(){
+  if(!cipherMode || !active)return;
+  rollDays();
   if(!cipherMode)return;
   const letter=MORSE[cipherSymbols];
   cipherSymbols="";
   if(!letter){
-    sound("error");toast(T("Такой буквы нет. Повтори сигнал.","Unknown letter. Try the signal again."));
-    updateCipherUI();return;
+    sound("error");
+    toast(T("Неизвестный сигнал. Повтори букву.","Unknown signal. Repeat the letter."));
+    updateCipherUI();
+    return;
   }
   cipherLetters+=letter;
-  updateCipherUI();
   const word=dailyWord();
   if(!word.startsWith(cipherLetters)){
     sound("error");
-    toast(T("Неверная последовательность — начни заново.","Incorrect sequence — start again."));
-    setTimeout(()=>{cipherLetters="";updateCipherUI()},650);
+    toast(T("Неверная последовательность. Начни заново.","Incorrect sequence. Start again."));
+    cipherLetters="";
+    updateCipherUI();
     return;
   }
+  updateCipherUI();
   if(cipherLetters===word){
     if(!state.cipherClaimed){
-      state.cipherClaimed=true;credit(1000000);save();sound("reward");
-      toast(T("Шифр разгадан! +1 000 000 монет","Cipher solved! +1,000,000 coins"));
-    }else toast(T("Награда за сегодня уже получена.","Today's reward has already been claimed."));
+      settle(false);
+      state.cipherClaimed=true;
+      credit(1000000);
+      save();
+      sound("reward");
+      toast(T("Шифр разгадан! +1 000 000","Cipher solved! +1,000,000"));
+    }
     cipherMode=false;
-    setTimeout(()=>{cipherLetters="";if(tab==="home")render()},700);
+    clearCipher();
+    render();
   }
 }
 function toggleCipher(){
-  if(state.cipherClaimed&&!cipherMode){
-    toast(T("Сегодня шифр уже разгадан.","Today's cipher has already been solved."));return;
+  rollDays();
+  if(state.cipherClaimed && !cipherMode){
+    toast(T("Сегодня шифр уже разгадан.","Today's cipher is already solved."));
+    return;
   }
-  cipherMode=!cipherMode;cipherSymbols="";cipherLetters="";
-  clearTimeout(cipherTimer);
-  tab="home";render();
+  cipherMode=!cipherMode;
+  clearCipher();
+  tab="home";
+  render();
 }
 
-/* -------------------- Modal renderer -------------------- */
+/* ---------------- Модальные окна ---------------- */
 
 function openModal(name,data=null){
-  if(modalName==="puzzle"&&name!=="puzzle"&&puzzle&&!puzzle.finished){
+  if(!modalName)previousFocus=document.activeElement;
+  if(modalName==="puzzle" && name!=="puzzle" && puzzle && !puzzle.finished){
     puzzle.finished=true;
   }
-  modalName=name;modalData=data;
+  activePointers.clear();
+  clearTimeout(cipherTimer);
+  cipherSymbols="";
+  updateCipherUI();
+  modalName=name;
+  modalData=data;
   renderModal();
+  requestAnimationFrame(()=>{
+    $(".modal [data-action='close']")?.focus({preventScroll:true});
+  });
 }
 function closeModal(){
-  if(modalName==="puzzle"&&puzzle&&!puzzle.finished)puzzle.finished=true;
-  modalName="";modalData=null;$("#modal-root").innerHTML="";
+  if(modalName==="puzzle" && puzzle && !puzzle.finished)puzzle.finished=true;
+  modalName="";
+  modalData=null;
+  $("#modal-root").innerHTML="";
   document.body.style.overflow="";
+  if(previousFocus?.isConnected)previousFocus.focus({preventScroll:true});
+  previousFocus=null;
 }
 function renderModal(){
   if(!modalName)return;
   let title="",content="";
+
   if(modalName==="settings"){
     title=T("Настройки","Settings");
     content=`
       <div class="setting">
         <strong>${T("Язык","Language")}</strong>
         <div class="segment">
-          <button class="btn ${state.language==="ru"?"":"secondary"}" data-action="language" data-id="ru">Русский</button>
-          <button class="btn ${state.language==="en"?"":"secondary"}" data-action="language" data-id="en">English</button>
+          <button class="btn ${state.language==="ru"?"":"secondary"}"
+            data-action="language" data-id="ru">Русский</button>
+          <button class="btn ${state.language==="en"?"":"secondary"}"
+            data-action="language" data-id="en">English</button>
         </div>
       </div>
       <div class="setting">
-        <strong>${T("Тема оформления","Appearance")}</strong>
+        <strong>${T("Тема","Theme")}</strong>
         <div class="segment">
-          <button class="btn ${state.theme==="dark"?"":"secondary"}" data-action="theme" data-id="dark">🌙 ${T("Тёмная","Dark")}</button>
-          <button class="btn ${state.theme==="light"?"":"secondary"}" data-action="theme" data-id="light">☀️ ${T("Светлая","Light")}</button>
+          <button class="btn ${state.theme==="dark"?"":"secondary"}"
+            data-action="theme" data-id="dark">🌙 ${T("Тёмная","Dark")}</button>
+          <button class="btn ${state.theme==="light"?"":"secondary"}"
+            data-action="theme" data-id="light">☀️ ${T("Светлая","Light")}</button>
         </div>
       </div>
       <div class="setting row">
-        <strong>${T("Звуки","Sounds")}</strong>
-        <button class="btn secondary" data-action="sound">${state.sound?T("Включены","On"):T("Выключены","Off")}</button>
+        <strong>${T("Звук","Sound")}</strong>
+        <button class="btn secondary" data-action="sound">
+          ${state.sound?T("Включён","On"):T("Выключен","Off")}
+        </button>
       </div>
       <div class="setting">
         <strong>${T("Имя игрока","Player name")}</strong>
-        <input id="nickname-input" class="field" maxlength="24" value="${escapeHTML(state.nickname)}" style="margin-top:10px">
+        <input id="nickname-input" class="field" maxlength="24"
+          value="${escapeHTML(state.nickname)}" style="margin-top:10px">
         <button class="btn secondary wide" data-action="nickname-save">${T("Сохранить имя","Save name")}</button>
       </div>
       <div class="setting">
+        <strong>${T("Персонализация","Personalization")}</strong>
+        <div class="segment">
+          <button class="btn secondary" data-action="avatar">${T("Аватар","Avatar")}</button>
+          <button class="btn secondary" data-action="photo">${T("Фото хомяка","Hamster photo")}</button>
+        </div>
+      </div>
+      <div class="setting">
         <strong>${T("Статистика","Statistics")}</strong>
-        <div class="small" style="margin-top:8px">
+        <div class="small" style="margin-top:9px">
           ${T("Всего заработано","Total earned")}: ${fmt(state.earned)}<br>
           ${T("Всего потрачено","Total spent")}: ${fmt(state.stats.spent)}<br>
-          ${T("Тапов","Taps")}: ${fmt(state.stats.taps)}<br>
+          ${T("Нажатий","Taps")}: ${fmt(state.stats.taps)}<br>
           ${T("Активное время","Active time")}: ${timeText(state.stats.playSeconds*1000)}<br>
           ${T("Ключей","Keys")}: ${fmt(state.keys)}
         </div>
       </div>
-      <div class="notice">${T("Прогресс хранится в localStorage этого браузера. Очистка данных сайта удалит сохранение. Локальную экономику можно изменить через инструменты разработчика — это не защищённый серверный сервис.","Progress is stored in this browser's localStorage. Clearing site data deletes the save. Local economy values can be changed with developer tools — this is not a secure server-backed service.")}</div>
+      <div class="notice">${T(
+        "Прогресс и фото хранятся в этом браузере. Очистка данных сайта удалит их. Экспорт JSON включает прогресс и изображения. Экспорт HTML включает изображения, но не переносит игровой баланс.",
+        "Progress and images are stored in this browser. Clearing site data deletes them. JSON export includes progress and images. HTML export includes images but does not transfer your game balance."
+      )}</div>
       <div class="segment">
-        <button class="btn secondary" data-action="export">${T("Экспорт","Export")}</button>
-        <button class="btn secondary" data-action="import">${T("Импорт","Import")}</button>
+        <button class="btn secondary" data-action="export">${T("Экспорт JSON","Export JSON")}</button>
+        <button class="btn secondary" data-action="import">${T("Импорт JSON","Import JSON")}</button>
       </div>
+      <button class="btn secondary wide" data-action="export-html">${T("Скачать HTML с фото","Download HTML with photo")}</button>
       <button class="btn danger wide" data-action="reset-confirm">${T("Сбросить прогресс","Reset progress")}</button>`;
   }
+
+  if(modalName==="avatar"){
+    title=T("Твой аватар","Your avatar");
+    content=`
+      <p class="description">${T(
+        "Выбери значок, фото хомяка или загрузи собственную картинку.",
+        "Choose an icon, the hamster photo or upload your own image."
+      )}</p>
+      <div class="avatar-grid">
+        ${AVATARS.map(a=>`
+          <button class="avatar-choice ${state.avatar===a?"selected":""}"
+            data-action="avatar-select" data-id="${a}" aria-label="${a}">${a}</button>`).join("")}
+        ${assets.photo?`
+          <button class="avatar-choice ${state.avatar==="photo"?"selected":""}"
+            data-action="avatar-select" data-id="photo"
+            aria-label="${T("Фото хомяка","Hamster photo")}">
+            <img src="${assets.photo}" alt="">
+          </button>`:""}
+        ${assets.avatar?`
+          <button class="avatar-choice ${state.avatar==="custom"?"selected":""}"
+            data-action="avatar-select" data-id="custom"
+            aria-label="${T("Свой аватар","Custom avatar")}">
+            <img src="${assets.avatar}" alt="">
+          </button>`:""}
+      </div>
+      <label class="small" for="avatar-file">${T("Собственное изображение","Custom image")}</label>
+      <input id="avatar-file" type="file" accept="image/*" class="field" style="margin-top:8px">
+      <button class="btn wide" data-action="avatar-upload" ${photoBusy?"disabled":""}>${T("Загрузить аватар","Upload avatar")}</button>
+      <button class="btn secondary wide" data-action="photo">${T("Настроить фото хомяка","Configure hamster photo")}</button>`;
+  }
+
+  if(modalName==="photo"){
+    title=T("Фото хомяка","Hamster photo");
+    content=`
+      ${assets.photo?`
+        <img class="photo-preview" src="${assets.photo}" alt="${T("Предпросмотр хомяка","Hamster preview")}">`:
+        `<div class="placeholder-panel">${T(
+          "Загрузи приложенное фото хомяка.<br>Белый фон будет удалён автоматически.",
+          "Upload the attached hamster photo.<br>The white background will be removed automatically."
+        )}</div>`}
+      <p class="small">${T(
+        "Изображение будет использовано на главном экране и в окне офлайн-дохода. Обработка выполняется только в браузере — файл никуда не отправляется.",
+        "The image is used on the home screen and offline income dialog. Processing happens only in your browser; the file is not uploaded anywhere."
+      )}</p>
+      <input id="photo-file" type="file" accept="image/*" class="field">
+      <label class="photo-options">
+        <input id="photo-remove-white" type="checkbox" checked>
+        <span>${T("Удалить белый фон","Remove white background")}</span>
+      </label>
+      <button class="btn wide" data-action="photo-upload" ${photoBusy?"disabled":""}>
+        ${photoBusy?T("Обрабатываю…","Processing…"):T("Обработать и сохранить","Process and save")}
+      </button>
+      ${assets.photo?`
+        <button class="btn secondary wide" data-action="export-html">${T("Скачать HTML с этим фото","Download HTML with this photo")}</button>
+        <button class="btn secondary wide" data-action="photo-remove">${T("Удалить фото","Remove photo")}</button>`:""}
+      <div class="notice">${T(
+        "Для картинки с уже прозрачным фоном отключи удаление белого. Автоматическая обработка лучше всего подходит для светлого однотонного фона.",
+        "Disable white background removal for images that are already transparent. Automatic processing works best on a plain light background."
+      )}</div>`;
+  }
+
   if(modalName==="exchange"){
     title=T("Выбрать биржу","Choose exchange");
-    content=`<p class="small">${T("Косметический выбор. Реальной торговли и связи с биржами нет.","Cosmetic choice. There is no actual trading or exchange integration.")}</p>`+
-      EXCHANGES.map(name=>`<button class="btn secondary wide" data-action="exchange-select" data-id="${name}">
-        <span class="exchange-logo">${name[0]}</span>${name}${state.exchange===name?" ✓":""}</button>`).join("");
+    content=`<p class="small">${T(
+      "Косметический выбор. Реальной торговли и подключения к биржам нет.",
+      "Cosmetic choice. There is no real trading or exchange connection."
+    )}</p>`+
+    EXCHANGES.map(name=>`
+      <button class="btn secondary wide" data-action="exchange-select" data-id="${name}">
+        <span class="exchange-logo">${name[0]}</span>
+        ${name}${state.exchange===name?" ✓":""}
+      </button>`).join("");
   }
+
   if(modalName==="boosts"){
     title=T("Ускорители","Boosts");
-    const ready=state.boostUsed<6&&now()-state.boostLast>=3600000;
+    const ready=state.boostUsed<6 && now()-state.boostLast>=3600000;
     content=`
       <div class="panel no-shadow">
-        <div class="row"><strong>⚡ ${T("Полная энергия","Full energy")}</strong><span class="gold">${6-state.boostUsed}/6</span></div>
-        <p class="small">${T("Бесплатно, 6 раз в сутки. Перезарядка — 60 минут. Восстанавливает весь запас энергии.","Free, 6 times daily. Cooldown: 60 minutes. Restores your full energy reserve.")}</p>
-        ${!ready&&state.boostUsed<6?`<div class="small">${T("Перезарядка","Cooldown")}: <span id="boost-cooldown"></span></div>`:""}
-        ${state.boostUsed>=6?`<div class="small">${T("Сброс через","Reset in")} <span data-countdown="${calendarResetAt()}"></span></div>`:""}
-        <button class="btn wide" data-action="full-energy" ${ready?"":"disabled"}>${T("Использовать бесплатно","Use for free")}</button>
+        <div class="row">
+          <strong style="font-size:14px">⚡ ${T("Полная энергия","Full energy")}</strong>
+          <span class="gold">${6-state.boostUsed}/6</span>
+        </div>
+        <p class="small">${T(
+          "Бесплатно до 6 раз в сутки. Перезарядка — 60 минут.",
+          "Free up to 6 times daily. Cooldown: 60 minutes."
+        )}</p>
+        ${!ready && state.boostUsed<6?`
+          <div class="small">${T("Перезарядка","Cooldown")}: <span id="boost-cooldown"></span></div>`:""}
+        ${state.boostUsed>=6?`
+          <div class="small">${T("Сброс через","Reset in")} <span data-countdown="${calendarResetAt()}"></span></div>`:""}
+        <button class="btn wide" data-action="full-energy" ${ready?"":"disabled"}>${T("Восстановить энергию","Restore energy")}</button>
       </div>
       ${[
-        ["tap","👆",T("Мультитап","Multitap"),T("+1 монета за тап на каждом уровне","+1 coin per tap per level"),state.tapLevel],
-        ["energy","🔋",T("Лимит энергии","Energy limit"),T("+500 максимальной энергии на уровне","+500 maximum energy per level"),state.energyLevel]
-      ].map(([id,icon,name,desc,level])=>`
+        ["tap","👆",T("Мультитап","Multitap"),T("+1 монета за нажатие на каждом уровне","+1 coin per tap per level"),state.tapLevel],
+        ["energy","🔋",T("Лимит энергии","Energy limit"),T("+250 максимальной энергии на каждом уровне","+250 maximum energy per level"),state.energyLevel]
+      ].map(([id,icon,name,description,level])=>`
         <div class="panel no-shadow">
-          <div class="row"><strong>${icon} ${name}</strong><span class="small">${T("Ур.","Lvl")} ${level}</span></div>
-          <p class="small">${desc}</p>
+          <div class="row">
+            <strong style="font-size:14px">${icon} ${name}</strong>
+            <span class="small">${T("Ур.","Lvl")} ${level}</span>
+          </div>
+          <p class="small">${description}</p>
           <button class="btn wide" data-action="boost-buy" data-id="${id}" ${level>=100?"disabled":""}>
-            ${level>=100?"MAX":`🪙 ${fmt(boostPrice(id))}`}
+            ${level>=100?"MAX":"🪙 "+fmt(boostPrice(id))}
           </button>
         </div>`).join("")}
-      <div class="small">${T("Тап расходует столько энергии, сколько даёт монет. Цена улучшений растёт ×1,75; максимальный уровень — 100.","A tap consumes the same amount of energy as coins it earns. Upgrade prices grow ×1.75; maximum level is 100.")}</div>`;
+      <div class="small">${T(
+        "Базовая энергия: 1000. Восстановление: 1,5/с. Нажатие расходует столько энергии, сколько приносит монет. Цена улучшений растёт ×1,75.",
+        "Base energy: 1000. Recovery: 1.5/s. Taps consume as much energy as they earn coins. Upgrade prices grow ×1.75."
+      )}</div>`;
   }
+
   if(modalName==="combo"){
-    title=T("Дневное комбо","Daily combo");
+    title=T("Комбо дня","Daily combo");
     content=comboHTML();
   }
+
   if(modalName==="cipher-help"){
-    title=T("Азбука Морзе","Morse code");
+    title=T("Шифр дня","Daily cipher");
     const word=dailyWord();
     content=`
-      <div class="notice">${T("Слово дня в демо","Today's demo word")}: <strong class="gold">${word}</strong></div>
-      <p class="small">${T("Короткое нажатие — •. Удержание более 300 мс — —. Между сигналами одной буквы делай паузу меньше 0,9 с; между буквами — больше. В режиме шифра монеты и энергия от тапов не меняются.","Short press: •. Hold more than 300 ms: —. Pause less than 0.9 seconds between a letter's signals; pause longer between letters. Cipher taps do not change coins or energy.")}</p>
+      <div class="notice">${T("Слово дня","Today's word")}: <strong class="gold">${word}</strong></div>
+      <p class="small">${T(
+        "Короткое нажатие — точка. Удержание более 300 мс — тире. Пауза менее 0,9 с соединяет сигналы одной буквы; более 0,9 с завершает букву. В режиме шифра энергия и монеты от нажатий не меняются.",
+        "Short press: dot. Hold more than 300 ms: dash. Pause less than 0.9 seconds within a letter, and longer to complete it. Cipher taps do not change coins or energy."
+      )}</p>
       <div class="panel no-shadow">
         ${[...word].map(letter=>{
           const code=Object.keys(MORSE).find(key=>MORSE[key]===letter);
-          return `<div class="row" style="padding:8px 0"><strong>${letter}</strong><strong class="gold mono" style="font-size:21px">${code.replace(/\./g,"•").replace(/-/g,"—")}</strong></div>`;
+          return `<div class="row" style="padding:8px 0">
+            <strong>${letter}</strong>
+            <strong class="gold mono" style="font-size:22px">${code.replace(/\./g,"•").replace(/-/g,"—")}</strong>
+          </div>`;
         }).join("")}
       </div>
       <details><summary>${T("Весь алфавит","Full alphabet")}</summary>
-      ${Object.entries(MORSE).sort((a,b)=>a[1].localeCompare(b[1])).map(([code,letter])=>`${letter}: ${code.replace(/\./g,"•").replace(/-/g,"—")}`).join(" · ")}
+        ${Object.entries(MORSE).sort((a,b)=>a[1].localeCompare(b[1])).map(
+          ([code,letter])=>`${letter}: ${code.replace(/\./g,"•").replace(/-/g,"—")}`
+        ).join(" · ")}
       </details>`;
   }
+
   if(modalName==="offline"){
-    title=T("Хомяк работал без тебя!","Your hamster kept working!");
+    title=T("Империя работала без тебя","Your empire kept working");
     content=`
-      <div style="text-align:center;font-size:67px;padding:12px">🐹💼</div>
-      <p class="description" style="text-align:center">${T("Офлайн-доход начисляется максимум за 3 часа каждого отсутствия.","Offline income is capped at 3 hours per absence.")}</p>
-      <div class="balance" style="font-size:30px">🪙 +${fmt(state.pendingOffline)}</div>
+      ${assets.photo?`
+        <img class="offline-photo" src="${assets.photo}" alt="${T("Хомяк","Hamster")}">`:
+        `<div class="placeholder-panel">${T(
+          "Добавь фото хомяка — оно появится здесь и на главном экране.",
+          "Add your hamster photo to display it here and on the home screen."
+        )}</div>`}
+      <p class="description" style="text-align:center">${T(
+        "Начислен доход максимум за 1 час отсутствия.",
+        "Income is calculated for up to 1 hour of absence."
+      )}</p>
+      <div class="balance" style="font-size:30px">
+        <span class="coin">$</span>+${fmt(state.pendingOffline)}
+      </div>
       <button class="btn wide" data-action="offline-claim">${T("Забрать доход","Claim earnings")}</button>
-      <p class="small">${T("До получения награда сохранена отдельно и не входит в баланс.","Until claimed, this reward is stored separately and is not included in your balance.")}</p>`;
+      <p class="small" style="text-align:center">${T(
+        "До получения эта награда хранится отдельно от баланса.",
+        "Until claimed, this reward is stored separately from your balance."
+      )}</p>`;
   }
+
   if(modalName==="card"){
-    const c=CARDS.find(x=>x.id===modalData);
-    const reason=lockReason(c),lvl=state.cards[c.id]||0;
+    const c=CARD_BY_ID[modalData];
+    if(!c){closeModal();return}
+    const reason=lockReason(c);
+    const level=state.cards[c.id]||0;
     title=trName(c);
     content=`
-      <div style="font-size:75px;text-align:center;padding:15px">${c.icon}</div>
+      <div style="font-size:72px;text-align:center;padding:15px">${c.icon}</div>
       <div class="panel no-shadow">
-        <div class="row"><span class="small">${T("Уровень","Level")}</span><strong>${lvl} → ${Math.min(100,lvl+1)}</strong></div>
+        <div class="row">
+          <span class="small">${T("Уровень","Level")}</span>
+          <strong>${level} → ${Math.min(100,level+1)}</strong>
+        </div>
         <div class="separator"></div>
-        <div class="row"><span class="small">${T("Прирост дохода в час","Additional hourly profit")}</span><strong class="green">+${compact(cardIncrease(c))}</strong></div>
+        <div class="row">
+          <span class="small">${T("Текущий доход в час","Current hourly profit")}</span>
+          <strong>${compact(cardIncome(c))}</strong>
+        </div>
         <div class="separator"></div>
-        <div class="row"><span class="small">${T("Стоимость","Cost")}</span><strong class="gold">🪙 ${fmt(cardPrice(c))}</strong></div>
+        <div class="row">
+          <span class="small">${T("Прирост дохода в час","Additional hourly profit")}</span>
+          <strong class="green">+${compact(cardIncrease(c))}</strong>
+        </div>
+        <div class="separator"></div>
+        <div class="row">
+          <span class="small">${T("Стоимость","Cost")}</span>
+          <strong class="gold">🪙 ${compact(cardPrice(c))}</strong>
+        </div>
+        <div class="separator"></div>
+        <div class="row">
+          <span class="small">${T("Окупаемость улучшения","Upgrade payback")}</span>
+          <strong class="blue">${compact(cardPrice(c)/cardIncrease(c))} ${T("ч","h")}</strong>
+        </div>
       </div>
-      ${reason?`<div class="notice">🔒 ${T("Сначала выполни условие","Meet this condition first")}: ${escapeHTML(reason)}</div>`:""}
-      <button class="btn wide" data-action="card-buy" data-id="${c.id}" ${reason||lvl>=100?"disabled":""}>
-        ${lvl>=100?"MAX":T("Улучшить карту","Upgrade card")}
+      ${reason?`<div class="notice">🔒 ${T("Сначала","First")}: ${escapeHTML(reason)}</div>`:""}
+      <button class="btn wide" data-action="card-buy" data-id="${c.id}" ${reason || level>=100?"disabled":""}>
+        ${level>=100?"MAX":T("Улучшить бизнес","Upgrade business")}
       </button>
-      <div class="small" style="margin-top:12px">${T("Цена ×1,65 за уровень. Следующий прирост дохода ×1,12. Доход всех уровней суммируется.","Price grows ×1.65 per level. Each next profit increment grows ×1.12. All level increments are cumulative.")}</div>`;
+      <div class="small" style="margin-top:12px">${T(
+        "Цена ×1,78 за уровень. Следующий прирост дохода ×1,10. Доход всех купленных уровней суммируется. Максимум: 100 уровней.",
+        "Price grows ×1.78 per level. Each next profit increment grows ×1.10. All purchased level increments add up. Maximum: 100 levels."
+      )}</div>`;
   }
+
   if(modalName==="task"){
-    const task=TASKS.find(x=>x.id===modalData);
-    const video=task.id==="video";
+    const task=TASKS.find(t=>t.id===modalData);
+    if(!task){closeModal();return}
     title=trName(task);
     content=`
-      <div class="notice">${T("Это локальная симуляция задания, не проверка реальной подписки или просмотра.","This is a local task simulation, not verification of a real subscription or view.")}</div>
-      <div style="font-size:65px;text-align:center;margin:15px">${task.icon}</div>
-      <p class="small">${T("Ссылка ведёт на главную страницу сервиса, а не на канал этого проекта.","The link leads to the service homepage, not a project channel.")}</p>
-      <a class="btn secondary wide" href="${task.url}" target="_blank" rel="noopener noreferrer">${T("Открыть сервис","Open service")} ↗</a>
-      ${video?`
-        <p class="small">${T("Демо-проверка: запусти таймер, подожди 1 час и введи код HAMSTER. Таймер сохраняется, но просмотра видео приложение не проверяет.","Demo verification: start the timer, wait 1 hour and enter HAMSTER. The timer is saved, but the app does not verify video viewing.")}</p>
-        ${!state.videoStart?`<button class="btn wide" data-action="video-start">${T("Запустить таймер на 1 час","Start 1-hour timer")}</button>`:`
-          <div class="notice"><span data-video-status></span></div>
-          <input class="field" id="video-code" placeholder="${T("Проверочный код","Verification code")}" autocomplete="off">
-          <button class="btn wide" data-action="video-claim">${T("Проверить и забрать","Verify and claim")} +${fmt(task.reward)}</button>`}
-      `:`
-        <p class="small">${T("Кнопка ниже начисляет тестовую награду без проверки.","The button below grants a test reward without verification.")}</p>
-        <button class="btn wide" data-action="task-claim" data-id="${task.id}">${T("Завершить демо-задание","Complete demo task")} +${fmt(task.reward)}</button>
-      `}`;
+      <div class="notice">${T(
+        "Это локальная симуляция, а не проверка подписки или просмотра.",
+        "This is a local simulation, not subscription or view verification."
+      )}</div>
+      <div style="text-align:center;font-size:60px;margin:15px">${task.icon}</div>
+      <a class="btn secondary wide" href="${task.url}" target="_blank" rel="noopener noreferrer">
+        ${T("Открыть сервис","Open service")} ↗
+      </a>
+      ${task.id==="video"?`
+        <p class="small">${T(
+          "Запусти таймер, подожди 1 час и введи демо-код HAMSTER. Реальный просмотр видео не проверяется.",
+          "Start the timer, wait 1 hour and enter demo code HAMSTER. Actual video viewing is not verified."
+        )}</p>
+        ${!state.videoStart?`
+          <button class="btn wide" data-action="video-start">${T("Запустить таймер","Start timer")}</button>`:`
+          <div class="notice" data-video-status></div>
+          <input id="video-code" class="field" autocomplete="off"
+            placeholder="${T("Код: HAMSTER","Code: HAMSTER")}">
+          <button class="btn wide" data-action="video-claim">${T("Проверить и забрать","Verify and claim")} +${fmt(task.reward)}</button>`}`:`
+        <p class="small">${T(
+          "Кнопка начисляет тестовую награду без проверки.",
+          "The button grants a test reward without verification."
+        )}</p>
+        <button class="btn wide" data-action="task-claim" data-id="${task.id}">
+          ${T("Завершить демо-задание","Complete demo task")} +${fmt(task.reward)}
+        </button>`}`;
   }
-  if(modalName==="add-friend"){
-    title=T("Новый демо-друг","New demo friend");
-    content=`
-      <div class="notice">${T("Будет создан локальный вымышленный участник. Обоим начислятся только демо-монеты внутри сохранения.","A fictional local participant will be created. Both receive demo coins only within this save.")}</div>
-      <label class="small" for="friend-name">${T("Имя","Name")}</label>
-      <input id="friend-name" class="field" maxlength="24" placeholder="${T("Например, Алекс","For example, Alex")}" style="margin-top:7px">
-      <label class="row" style="margin-top:17px;font-size:13px">
-        <span>⭐ Telegram Premium ${T("(симуляция)","(simulated)")}</span>
-        <input type="checkbox" id="friend-premium" style="width:22px;height:22px">
-      </label>
-      <button class="btn wide" data-action="friend-create">${T("Создать демо-друга","Create demo friend")}</button>`;
-  }
+
   if(modalName==="wallet"){
-    title=T("Сохранить TON-адрес","Save TON address");
+    title=T("Публичный TON-адрес","Public TON address");
     content=`
-      <div class="notice">${T("Нужен только публичный адрес. Никогда не вводи seed-фразу или приватный ключ. Сохранение адреса не подтверждает владение кошельком.","Only a public address is needed. Never enter a seed phrase or private key. Saving an address does not prove wallet ownership.")}</div>
-      <p class="small">${T("Поддерживаются raw-адреса 0:… / -1:… и user-friendly адреса с проверкой CRC16.","Supports raw 0:… / -1:… addresses and user-friendly addresses with CRC16 validation.")}</p>
-      <input id="wallet-input" class="field mono" value="${escapeHTML(state.wallet)}" placeholder="EQ… / UQ… / 0:…" spellcheck="false" autocomplete="off">
+      <div class="notice">${T(
+        "Вводи только публичный адрес. Никогда не вводи seed-фразу или приватный ключ. Владение кошельком не подтверждается.",
+        "Enter only a public address. Never enter a seed phrase or private key. Wallet ownership is not verified."
+      )}</div>
+      <p class="small">${T(
+        "Поддерживаются raw-адреса 0:… / -1:… и user-friendly адреса с проверкой CRC16.",
+        "Supports raw 0:… / -1:… addresses and user-friendly addresses with CRC16 validation."
+      )}</p>
+      <input id="wallet-input" class="field mono" value="${escapeHTML(state.wallet)}"
+        placeholder="EQ… / UQ… / 0:…" spellcheck="false" autocomplete="off">
       <button class="btn wide" data-action="wallet-save">${T("Проверить и сохранить","Validate and save")}</button>`;
   }
+
   if(modalName==="reset"){
-    title=T("Удалить весь прогресс?","Delete all progress?");
-    content=`<p class="description">${T("Баланс, карты, друзья, ключи и награды будут удалены. Это действие нельзя отменить без экспортированной копии.","Balance, cards, friends, keys and rewards will be deleted. This cannot be undone without an exported backup.")}</p>
-      <button class="btn danger wide" data-action="reset">${T("Да, удалить","Yes, delete")}</button>
+    title=T("Удалить игровой прогресс?","Delete game progress?");
+    content=`
+      <p class="description">${T(
+        "Баланс, бизнесы, ключи и награды будут удалены. Фото, аватар, язык и тема останутся. Для восстановления сначала экспортируй JSON.",
+        "Balance, businesses, keys and rewards will be deleted. Images, avatar, language and theme remain. Export JSON first if you want a backup."
+      )}</p>
+      <button class="btn danger wide" data-action="reset">${T("Да, сбросить","Yes, reset")}</button>
       <button class="btn secondary wide" data-action="close">${T("Отмена","Cancel")}</button>`;
   }
+
   if(modalName==="import"){
     title=T("Импорт сохранения","Import save");
-    content=`<p class="small">${T("Выбери ранее экспортированный JSON-файл. Текущий прогресс будет заменён.","Choose a previously exported JSON file. Current progress will be replaced.")}</p>
-      <input class="field" type="file" id="import-file" accept=".json,application/json">
+    content=`
+      <p class="small">${T(
+        "Поддерживаются старые сохранения v1 и новые v2. Текущий прогресс будет заменён.",
+        "Old v1 and new v2 saves are supported. Current progress will be replaced."
+      )}</p>
+      <input id="import-file" type="file" accept=".json,application/json" class="field">
       <button class="btn wide" data-action="import-apply">${T("Загрузить сохранение","Load save")}</button>`;
   }
+
   if(modalName==="puzzle"){
     title=T("Ключ от империи","Key to the empire");
     content=puzzleHTML();
   }
 
   $("#modal-root").innerHTML=`
-    <div class="overlay" id="overlay">
-      <section class="modal" role="dialog" aria-modal="true" aria-label="${escapeHTML(title)}">
+    <div id="overlay" class="overlay">
+      <section class="modal" role="dialog" aria-modal="true"
+        aria-labelledby="modal-title">
         <div class="modal-handle"></div>
-        <div class="modal-head"><h2>${title}</h2>
-          <button class="icon-button" data-action="close" aria-label="${T("Закрыть","Close")}">×</button>
+        <div class="modal-head">
+          <h2 id="modal-title">${escapeHTML(title)}</h2>
+          <button class="icon-button" data-action="close"
+            aria-label="${T("Закрыть","Close")}">×</button>
         </div>
         ${content}
       </section>
@@ -1313,11 +2154,15 @@ function renderModal(){
   updateHUD();
 }
 
-/* -------------------- Puzzle: sliding candlestick blocks -------------------- */
+/* ---------------- Мини-игра ---------------- */
 
 function startPuzzle(){
+  rollDays();
   if(state.puzzleDay===comboDay()){
-    toast(T("Ключ за сегодня уже получен. Новый — после 15:00 МСК.","Today's key has already been claimed. Next one is available after 15:00 Moscow time."));
+    toast(T(
+      "Ключ за сегодня уже получен. Новый — после 15:00 МСК.",
+      "Today's key is already claimed. Next one is available after 15:00 Moscow time."
+    ));
     return;
   }
   puzzle={
@@ -1338,84 +2183,104 @@ function puzzleHTML(){
   if(!puzzle)return "";
   if(puzzle.finished){
     return `
-      <div style="text-align:center;font-size:75px;padding:20px">${puzzle.won?"🔑":"⌛"}</div>
-      <h3 style="text-align:center">${puzzle.won?T("Путь открыт!","Path cleared!"):T("Время вышло","Time is up")}</h3>
+      <div style="text-align:center;font-size:70px;padding:20px">${puzzle.won?"🔑":"⌛"}</div>
+      <h3 style="text-align:center">${puzzle.won?T("Путь открыт!","Path cleared!"):T("Попытка завершена","Attempt finished")}</h3>
       <p class="description" style="text-align:center">${puzzle.won?
-        T("Получен 1 игровой крипто-ключ. Он сохранён и виден в разделе «Дроп».","You earned 1 game crypto key. It is saved and shown in Airdrop."):
-        T("Можно попробовать ещё раз. Передвигай свечи только вдоль их оси.","You can try again. Candlesticks move only along their axis.")}</p>
-      ${puzzle.won?`<button class="btn wide" data-action="close">${T("Отлично","Great")}</button>`:
-        `<button class="btn wide" data-action="puzzle-retry">${T("Попробовать ещё","Try again")}</button>`}`;
+        T("Получен 1 игровой крипто-ключ.","You earned 1 game crypto key."):
+        T("Попробуй ещё раз. Блоки двигаются только вдоль своей оси.","Try again. Blocks move only along their axis.")}</p>
+      <button class="btn wide" data-action="${puzzle.won?"close":"puzzle-retry"}">
+        ${puzzle.won?T("Отлично","Great"):T("Повторить","Try again")}
+      </button>`;
   }
   return `
-    <div class="row"><strong class="gold">⏳ <span id="puzzle-timer"></span></strong><span class="small">${T("Ходов","Moves")}: ${puzzle.moves}</span></div>
-    <p class="small">${T("Выбери свечу и двигай стрелками. Проведи золотой ключ к правому выходу. Доступна клавиатура: стрелки.","Select a candlestick and move it with the arrows. Guide the gold key to the right exit. Keyboard arrow keys also work.")}</p>
+    <div class="row">
+      <strong class="gold">⏳ <span id="puzzle-timer"></span></strong>
+      <span class="small">${T("Ходов","Moves")}: ${puzzle.moves}</span>
+    </div>
+    <p class="small">${T(
+      "Выбери блок и двигай стрелками. Проведи золотой ключ к выходу справа. Работают стрелки клавиатуры.",
+      "Select a block and move it with the arrows. Guide the gold key to the right exit. Keyboard arrows also work."
+    )}</p>
     <div class="puzzle-board">
-      ${Array.from({length:36},(_,i)=>`<div class="puzzle-cell" style="--r:${Math.floor(i/6)+1};--c:${i%6+1}"></div>`).join("")}
-      ${puzzle.vehicles.map(v=>`<button class="vehicle ${v.kind==="red"?"red":v.kind==="key"?"key":""} ${puzzle.selected===v.id?"selected":""}"
-        data-action="puzzle-select" data-id="${v.id}"
-        aria-label="${v.id==="key"?T("Ключ","Key"):T("Свеча ","Candlestick ")+v.id.toUpperCase()}"
-        style="grid-column:${v.x+1}/span ${v.axis==="h"?v.len:1};grid-row:${v.y+1}/span ${v.axis==="v"?v.len:1}">
-        ${v.id==="key"?"🔑":v.axis==="v"?"↕":"↔"}
-      </button>`).join("")}
+      ${Array.from({length:36},(_,i)=>`
+        <div class="puzzle-cell" style="--r:${Math.floor(i/6)+1};--c:${i%6+1}"></div>`).join("")}
+      ${puzzle.vehicles.map(v=>`
+        <button class="vehicle ${v.kind==="red"?"red":v.kind==="key"?"key":""} ${puzzle.selected===v.id?"selected":""}"
+          data-action="puzzle-select" data-id="${v.id}"
+          aria-label="${v.id==="key"?T("Ключ","Key"):T("Блок ","Block ")+v.id}"
+          style="grid-column:${v.x+1}/span ${v.axis==="h"?v.len:1};grid-row:${v.y+1}/span ${v.axis==="v"?v.len:1}">
+          ${v.id==="key"?"🔑":v.axis==="h"?"↔":"↕"}
+        </button>`).join("")}
       <div class="puzzle-exit">➜</div>
     </div>
     <div class="arrows">
       ${[["left","←"],["up","↑"],["down","↓"],["right","→"]].map(([id,label])=>`
-        <button class="btn secondary" data-action="puzzle-move" data-id="${id}" aria-label="${id}">${label}</button>`).join("")}
+        <button class="btn secondary" data-action="puzzle-move"
+          data-id="${id}" aria-label="${id}">${label}</button>`).join("")}
     </div>
-    <p class="small" style="margin-top:14px">${T("Лимит: 60 секунд. Награда — один ключ за игровой день. Закрытие окна завершает попытку.","Time limit: 60 seconds. Reward: one key per game day. Closing the window ends the attempt.")}</p>`;
+    <p class="small" style="margin-top:13px">${T(
+      "Лимит: 60 секунд. Награда: один ключ за игровой день. Закрытие окна завершает попытку.",
+      "Time limit: 60 seconds. Reward: one key per game day. Closing the dialog ends the attempt."
+    )}</p>`;
 }
 function canPlace(vehicle,x,y){
-  if(x<0||y<0||x+(vehicle.axis==="h"?vehicle.len:1)>6||y+(vehicle.axis==="v"?vehicle.len:1)>6)return false;
-  const cells=[];
-  for(let i=0;i<vehicle.len;i++)cells.push([x+(vehicle.axis==="h"?i:0),y+(vehicle.axis==="v"?i:0)]);
-  for(const other of puzzle.vehicles){
-    if(other.id===vehicle.id)continue;
-    for(let i=0;i<other.len;i++){
-      const ox=other.x+(other.axis==="h"?i:0),oy=other.y+(other.axis==="v"?i:0);
-      if(cells.some(([cx,cy])=>cx===ox&&cy===oy))return false;
+  if(x<0 || y<0 ||
+    x+(vehicle.axis==="h"?vehicle.len:1)>6 ||
+    y+(vehicle.axis==="v"?vehicle.len:1)>6)return false;
+  for(let i=0;i<vehicle.len;i++){
+    const cx=x+(vehicle.axis==="h"?i:0);
+    const cy=y+(vehicle.axis==="v"?i:0);
+    for(const other of puzzle.vehicles){
+      if(other.id===vehicle.id)continue;
+      for(let j=0;j<other.len;j++){
+        const ox=other.x+(other.axis==="h"?j:0);
+        const oy=other.y+(other.axis==="v"?j:0);
+        if(cx===ox && cy===oy)return false;
+      }
     }
   }
   return true;
 }
 function movePuzzle(direction){
-  if(!puzzle||puzzle.finished)return;
+  if(!puzzle || puzzle.finished)return;
   if(now()>=puzzle.deadline){endPuzzle(false);return}
   const v=puzzle.vehicles.find(x=>x.id===puzzle.selected);
   if(!v)return;
-  let dx=0,dy=0;
-  if(direction==="left")dx=-1;
-  if(direction==="right")dx=1;
-  if(direction==="up")dy=-1;
-  if(direction==="down")dy=1;
-  if((v.axis==="h"&&dy)||(v.axis==="v"&&dx))return;
-  const nx=v.x+dx,ny=v.y+dy;
-  if(!canPlace(v,nx,ny)){
-    sound("error");return;
-  }
-  v.x=nx;v.y=ny;puzzle.moves++;sound("tap");
-  if(v.id==="key"&&v.x+v.len===6){endPuzzle(true);return}
+  const moves={left:[-1,0],right:[1,0],up:[0,-1],down:[0,1]};
+  if(!moves[direction])return;
+  const [dx,dy]=moves[direction];
+  if((v.axis==="h" && dy) || (v.axis==="v" && dx))return;
+  if(!canPlace(v,v.x+dx,v.y+dy)){sound("error");return}
+  v.x+=dx;
+  v.y+=dy;
+  puzzle.moves++;
+  sound();
+  if(v.id==="key" && v.x+v.len===6){endPuzzle(true);return}
   renderModal();
 }
 function endPuzzle(won){
-  if(!puzzle||puzzle.finished)return;
-  puzzle.finished=true;puzzle.won=won;
-  if(won){
-    if(state.puzzleDay!==comboDay()){
-      state.keys++;state.puzzleDay=comboDay();save();
-    }
-    sound("reward");haptic();
-  }else sound("error");
+  if(!puzzle || puzzle.finished)return;
+  puzzle.finished=true;
+  puzzle.won=won;
+  if(won && state.puzzleDay!==comboDay()){
+    state.keys++;
+    state.puzzleDay=comboDay();
+    save();
+    sound("reward");
+    haptic();
+  }else if(!won)sound("error");
   if(modalName==="puzzle")renderModal();
 }
 
-/* -------------------- TON address validation -------------------- */
+/* ---------------- Проверка TON-адресов ---------------- */
 
 function crc16(bytes){
   let crc=0;
   for(const byte of bytes){
     crc^=byte<<8;
-    for(let i=0;i<8;i++)crc=((crc&0x8000)?(crc<<1)^0x1021:crc<<1)&0xffff;
+    for(let i=0;i<8;i++){
+      crc=((crc&0x8000)?(crc<<1)^0x1021:crc<<1)&0xffff;
+    }
   }
   return crc;
 }
@@ -1427,349 +2292,583 @@ function validTONAddress(address){
     const bytes=Uint8Array.from(binary,c=>c.charCodeAt(0));
     if(bytes.length!==36)return false;
     const tag=bytes[0]&0x7f;
-    if(tag!==0x11&&tag!==0x51)return false;
-    if(bytes[1]!==0&&bytes[1]!==255)return false;
+    if(tag!==0x11 && tag!==0x51)return false;
+    if(bytes[1]!==0 && bytes[1]!==255)return false;
     const check=crc16(bytes.slice(0,34));
-    return bytes[34]===(check>>8)&&bytes[35]===(check&255);
+    return bytes[34]===(check>>8) && bytes[35]===(check&255);
   }catch{return false}
 }
 
-/* -------------------- Economy actions -------------------- */
+/* ---------------- Покупки и награды ---------------- */
 
 function buyCard(id){
+  settle(false);
   rollDays();
-  const c=CARDS.find(x=>x.id===id);
+  const c=CARD_BY_ID[id];
   if(!c)return;
   const reason=lockReason(c);
   if(reason){toast(reason);return}
   if((state.cards[id]||0)>=100)return;
-  const price=cardPrice(c);
-  if(!spend(price)){
-    toast(T("Недостаточно монет","Not enough coins"));sound("error");return;
+  if(!spend(cardPrice(c))){
+    toast(T("Недостаточно монет.","Not enough coins."));
+    sound("error");
+    return;
   }
   state.cards[id]=(state.cards[id]||0)+1;
-  if(dailyCombo().includes(id)&&!state.comboFound.includes(id)){
-    state.comboFound.push(id);
-    toast(T("Карта найдена в комбо!","A combo card was found!"));
-  }else toast(T("Карта улучшена","Card upgraded"));
-  save();sound("buy");render();
-  if(modalName==="card")renderModal();
+  profitCache=null;
+  const found=dailyCombo().includes(id) && !state.comboFound.includes(id);
+  if(found)state.comboFound.push(id);
+  save();
+  sound("buy");
+  render();
+  if(modalName)renderModal();
+  toast(found?T("Найдено направление комбо!","Combo business found!"):
+    T("Бизнес улучшен.","Business upgraded."));
 }
 function claimCombo(){
+  settle(false);
   rollDays();
-  if(state.comboClaimed||state.comboFound.length!==3)return;
-  state.comboClaimed=true;credit(5000000);save();sound("reward");
+  if(state.comboClaimed || state.comboFound.length!==3)return;
+  state.comboClaimed=true;
+  credit(5000000);
+  save();
+  sound("reward");
+  render();
+  if(modalName)renderModal();
   toast(T("Комбо собрано! +5 000 000","Combo complete! +5,000,000"));
-  render();if(modalName==="combo")renderModal();
 }
 function buyBoost(type){
+  if(!["tap","energy"].includes(type))return;
+  settle(false);
   const level=type==="tap"?state.tapLevel:state.energyLevel;
   if(level>=100)return;
-  const price=boostPrice(type);
-  if(!spend(price)){toast(T("Недостаточно монет","Not enough coins"));sound("error");return}
+  if(!spend(boostPrice(type))){
+    sound("error");
+    toast(T("Недостаточно монет.","Not enough coins."));
+    return;
+  }
   if(type==="tap")state.tapLevel++;
   else{
     state.energyLevel++;
-    state.energy=Math.min(maxEnergy(),state.energy+500);
+    state.energy=Math.min(maxEnergy(),state.energy+ENERGY_STEP);
   }
-  save();sound("buy");render();renderModal();
+  save();
+  sound("buy");
+  render();
+  renderModal();
 }
 function useFullEnergy(){
+  settle(false);
   rollDays();
-  if(state.boostUsed>=6||now()-state.boostLast<3600000)return;
+  if(state.boostUsed>=6 || now()-state.boostLast<3600000)return;
   if(state.energy>=maxEnergy()-.1){
-    toast(T("Энергия уже полная","Energy is already full"));return;
+    toast(T("Энергия уже полная.","Energy is already full."));
+    return;
   }
-  state.energy=maxEnergy();state.boostUsed++;state.boostLast=now();
-  save();sound("reward");render();renderModal();
+  state.energy=maxEnergy();
+  state.boostUsed++;
+  state.boostLast=now();
+  save();
+  sound("reward");
+  render();
+  renderModal();
 }
 function claimCheckin(){
+  settle(false);
   const info=checkinInfo();
   if(info.claimed)return;
   const reward=CHECKIN[info.next-1];
   state.checkinStreak=info.streak+1;
   state.checkinLast=info.today;
-  credit(reward);save();sound("reward");render();
+  credit(reward);
+  save();
+  sound("reward");
+  render();
   toast(T("Ежедневная награда: +","Daily reward: +")+fmt(reward));
 }
 function claimTask(id){
-  const task=TASKS.find(x=>x.id===id);
-  if(!task||state.tasks[id]||id==="video")return;
-  state.tasks[id]=true;credit(task.reward);save();sound("reward");
-  closeModal();render();
-  toast(T("Демо-награда получена: +","Demo reward claimed: +")+fmt(task.reward));
+  const task=TASKS.find(t=>t.id===id);
+  if(!task || task.id==="video" || state.tasks[id])return;
+  settle(false);
+  state.tasks[id]=true;
+  credit(task.reward);
+  save();
+  sound("reward");
+  closeModal();
+  render();
+  toast(T("Награда получена: +","Reward claimed: +")+fmt(task.reward));
 }
 function claimVideo(){
   rollDays();
   if(state.tasks.video)return;
-  if(!state.videoStart||now()-state.videoStart<3600000){
-    toast(T("Сначала дождись окончания часового таймера.","Wait for the 1-hour timer to finish first."));return;
+  if(!state.videoStart || now()-state.videoStart<3600000){
+    toast(T("Дождись окончания часового таймера.","Wait for the 1-hour timer to finish."));
+    return;
   }
   const code=($("#video-code")?.value||"").trim().toUpperCase();
-  if(code!=="HAMSTER"){toast(T("Неверный код. Демо-код: HAMSTER","Incorrect code. Demo code: HAMSTER"));sound("error");return}
-  state.tasks.video=true;credit(100000);save();sound("reward");closeModal();render();
-  toast(T("Демо-видео завершено: +100 000","Demo video completed: +100,000"));
-}
-function createFriend(){
-  if(state.friends.length>=100){toast(T("Лимит демо-друзей: 100","Demo friend limit: 100"));return}
-  const name=($("#friend-name")?.value||"").trim().slice(0,24);
-  if(!name){toast(T("Введи имя друга","Enter a friend name"));return}
-  const premium=!!$("#friend-premium")?.checked;
-  const reward=premium?25000:5000;
-  state.friends.push({name,premium,rank:0,pph:0,coins:reward});
-  credit(reward);save();sound("reward");closeModal();render();
-  toast(T("Демо-друг добавлен. Обоим +","Demo friend added. Both receive +")+fmt(reward));
-}
-function promoteFriend(index){
-  const f=state.friends[Number(index)];
-  if(!f||(f.rank||0)>=10)return;
-  f.rank=(f.rank||0)+1;
-  f.pph=(f.pph||0)+100*f.rank;
-  const reward=1000*(f.rank+1)*(f.premium?5:1);
-  f.coins=(f.coins||0)+reward;credit(reward);
-  save();sound("reward");render();
-  toast(T("Бонус за демо-лигу: +","Demo league bonus: +")+fmt(reward));
-}
-async function copyText(text){
-  try{
-    await navigator.clipboard.writeText(text);
-  }catch{
-    const input=document.createElement("textarea");
-    input.value=text;input.style.position="fixed";input.style.opacity="0";
-    document.body.appendChild(input);input.select();
-    const copied=document.execCommand("copy");input.remove();
-    if(!copied){toast(T("Копирование недоступно — выдели ссылку вручную.","Copy unavailable — select the link manually."));return}
+  if(code!=="HAMSTER"){
+    sound("error");
+    toast(T("Неверный код. Демо-код: HAMSTER","Incorrect code. Demo code: HAMSTER"));
+    return;
   }
-  toast(T("Ссылка скопирована","Link copied"));
-}
-async function shareReferral(){
-  const url=referralURL(),text=T("Присоединяйся к моей хомячьей империи!","Join my hamster empire!");
-  if(navigator.share&&location.protocol!=="file:"){
-    try{await navigator.share({title:"Hamster Empire",text,url});return}catch{}
-  }
-  window.open("https://t.me/share/url?url="+encodeURIComponent(url)+"&text="+encodeURIComponent(text),"_blank","noopener,noreferrer");
-}
-
-/* -------------------- Save export / import -------------------- */
-
-function exportSave(){
+  settle(false);
+  state.tasks.video=true;
+  credit(100000);
   save();
-  const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
+  sound("reward");
+  closeModal();
+  render();
+  toast(T("Награда за видео: +100 000","Video reward: +100,000"));
+}
+function checkRank(){
+  const rank=rankIndex();
+  if(rank===lastRenderedRank)return;
+  lastRenderedRank=rank;
+  toast(T("Новая лига: ","New league: ")+RANKS[rank][0]);
+  sound("reward");
+}
+
+/* ---------------- Экспорт и импорт ---------------- */
+
+function downloadBlob(blob,name){
   const url=URL.createObjectURL(blob);
   const anchor=document.createElement("a");
-  anchor.href=url;anchor.download="hamster-empire-save.json";anchor.click();
-  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  anchor.href=url;
+  anchor.download=name;
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+function exportSave(){
+  save();
+  const data={...state,assets};
+  downloadBlob(
+    new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),
+    "hamster-empire-business-save.json"
+  );
+}
+function exportHTML(){
+  const copy=document.documentElement.cloneNode(true);
+  copy.querySelector("#header").innerHTML="";
+  copy.querySelector("#main").innerHTML="";
+  copy.querySelector("#nav").innerHTML="";
+  copy.querySelector("#modal-root").innerHTML="";
+  copy.querySelector("#toast-root").innerHTML="";
+  copy.querySelector("body").style.overflow="";
+  copy.querySelectorAll(".float-number").forEach(node=>node.remove());
+  copy.querySelector("#embedded-assets").textContent=JSON.stringify(assets);
+  downloadBlob(
+    new Blob(["<!DOCTYPE html>\n"+copy.outerHTML],{type:"text/html;charset=utf-8"}),
+    "hamster-empire-with-photo.html"
+  );
+  toast(T("HTML с изображениями скачан.","HTML with embedded images downloaded."));
 }
 async function importSave(){
   const file=$("#import-file")?.files?.[0];
-  if(!file){toast(T("Выбери JSON-файл","Choose a JSON file"));return}
-  if(file.size>1000000){toast(T("Файл слишком большой","File is too large"));return}
+  if(!file){
+    toast(T("Выбери JSON-файл.","Choose a JSON file."));
+    return;
+  }
+  if(file.size>12*1024*1024){
+    toast(T("Файл слишком большой: максимум 12 МБ.","File too large: maximum 12 MB."));
+    return;
+  }
   try{
-    const text=await file.text(),data=JSON.parse(text);
-    if(data.version!==VERSION||typeof data.balance!=="number"||!data.cards||!Array.isArray(data.friends)){
+    const data=JSON.parse(await file.text());
+    if(!data || ![1,2].includes(data.version) ||
+      typeof data.balance!=="number" || !Number.isFinite(data.balance) ||
+      !data.cards || typeof data.cards!=="object"){
       throw new Error("Invalid save");
     }
-    data.lastSeen=now();
-    localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
-    location.reload();
-  }catch{toast(T("Не удалось загрузить корректное сохранение.","Could not load a valid save."))}
+    const imported=normalizeState(data);
+    imported.lastSeen=now();
+    if(data.assets)assets=normalizeAssets(data.assets);
+    state=imported;
+    profitCache=null;
+    settleClock=now();
+    displayedBalance=state.balance;
+    lastRenderedRank=rankIndex();
+    cipherMode=false;
+    clearCipher();
+    puzzle=null;
+    tab="home";
+    rollDays();
+    saveAssets();
+    writeSave();
+    closeModal();
+    render();
+    toast(T("Сохранение импортировано.","Save imported."));
+  }catch{
+    toast(T("Не удалось прочитать корректное сохранение.","Could not read a valid save."));
+  }
 }
 
-/* -------------------- Delegated UI events -------------------- */
+/* ---------------- Обработчики интерфейса ---------------- */
 
 document.addEventListener("click",event=>{
   if(event.target.id==="overlay"){closeModal();return}
   const button=event.target.closest("[data-action]");
-  if(!button||button.disabled)return;
-  const action=button.dataset.action,id=button.dataset.id;
+  if(!button || button.disabled)return;
+  const action=button.dataset.action;
+  const id=button.dataset.id;
+
   switch(action){
     case "tab":
-      if(tab==="home"&&id!=="home"){
-        cipherMode=false;clearTimeout(cipherTimer);cipherSymbols="";cipherLetters="";
+      if(!["home","mine","earn","airdrop"].includes(id))break;
+      if(id!=="home"){
+        cipherMode=false;
+        clearCipher();
       }
-      tab=id;render();window.scrollTo({top:0,behavior:"instant"});break;
-    case "category":mineCategory=id;renderMine();updateHUD();break;
+      tab=id;
+      render();
+      window.scrollTo({top:0,behavior:"auto"});
+      break;
+
+    case "category":
+      if(id!=="all" && !CATEGORIES.some(c=>c.id===id))break;
+      mineCategory=id;
+      renderMine();
+      updateHUD();
+      break;
+
     case "settings":openModal("settings");break;
+    case "photo":openModal("photo");break;
+    case "photo-upload":uploadPhoto();break;
+
+    case "photo-remove":
+      assets.photo="";
+      if(state.avatar==="photo")state.avatar="🐹";
+      saveAssets();
+      save();
+      render();
+      renderModal();
+      break;
+
+    case "avatar":openModal("avatar");break;
+    case "avatar-upload":uploadAvatar();break;
+
+    case "avatar-select":
+      if(![...AVATARS,"photo","custom"].includes(id))break;
+      if(id==="photo" && !assets.photo)break;
+      if(id==="custom" && !assets.avatar)break;
+      state.avatar=id;
+      save();
+      renderHeader();
+      updateHUD();
+      renderModal();
+      break;
+
     case "exchange":openModal("exchange");break;
-    case "exchange-select":state.exchange=id;save();closeModal();render();break;
-    case "close":closeModal();break;
-    case "language":state.language=id;save();render();renderModal();break;
-    case "theme":state.theme=id;save();render();renderModal();break;
-    case "sound":state.sound=!state.sound;save();if(state.sound)sound("buy");renderModal();break;
+
+    case "exchange-select":
+      if(!EXCHANGES.includes(id))break;
+      state.exchange=id;
+      save();
+      closeModal();
+      render();
+      break;
+
+    case "language":
+      if(!["ru","en"].includes(id))break;
+      state.language=id;
+      save();
+      render();
+      renderModal();
+      break;
+
+    case "theme":
+      if(!["dark","light"].includes(id))break;
+      state.theme=id;
+      save();
+      render();
+      renderModal();
+      break;
+
+    case "sound":
+      state.sound=!state.sound;
+      save();
+      if(state.sound)sound("buy");
+      renderModal();
+      break;
+
     case "nickname-save":{
       const name=($("#nickname-input")?.value||"").trim().slice(0,24);
-      if(!name){toast(T("Имя не может быть пустым","Name cannot be empty"));break}
-      state.nickname=name;save();renderHeader();updateHUD();toast(T("Имя сохранено","Name saved"));break;
+      if(!name){
+        toast(T("Имя не может быть пустым.","Name cannot be empty."));
+        break;
+      }
+      state.nickname=name;
+      save();
+      renderHeader();
+      updateHUD();
+      toast(T("Имя сохранено.","Name saved."));
+      break;
     }
+
+    case "close":closeModal();break;
     case "boosts":openModal("boosts");break;
     case "boost-buy":buyBoost(id);break;
     case "full-energy":useFullEnergy();break;
-    case "card":openModal("card",id);break;
+    case "card":if(CARD_BY_ID[id])openModal("card",id);break;
     case "card-buy":buyCard(id);break;
     case "combo":openModal("combo");break;
     case "combo-claim":claimCombo();break;
     case "cipher-toggle":toggleCipher();break;
     case "cipher-help":openModal("cipher-help");break;
+
     case "cipher-clear":
-      cipherSymbols="";cipherLetters="";clearTimeout(cipherTimer);updateCipherUI();break;
+      clearCipher();
+      updateCipherUI();
+      break;
+
     case "stat-tap":{
       const time=now();
       statTapTimes=statTapTimes.filter(t=>time-t<1200);
       statTapTimes.push(time);
-      if(statTapTimes.length>=3){statTapTimes=[];toggleCipher()}
+      if(statTapTimes.length>=3){
+        statTapTimes=[];
+        toggleCipher();
+      }
       break;
     }
+
     case "puzzle":startPuzzle();break;
     case "puzzle-retry":startPuzzle();break;
-    case "puzzle-select":if(puzzle&&!puzzle.finished){puzzle.selected=id;renderModal()}break;
+
+    case "puzzle-select":
+      if(puzzle && !puzzle.finished && puzzle.vehicles.some(v=>v.id===id)){
+        puzzle.selected=id;
+        renderModal();
+      }
+      break;
+
     case "puzzle-move":movePuzzle(id);break;
     case "checkin":claimCheckin();break;
     case "task":openModal("task",id);break;
     case "task-claim":claimTask(id);break;
+
     case "video-start":
-      if(!state.videoStart){state.videoStart=now();save();renderModal()}break;
+      rollDays();
+      if(!state.videoStart){
+        state.videoStart=now();
+        save();
+        renderModal();
+      }
+      break;
+
     case "video-claim":claimVideo();break;
-    case "copy-ref":copyText(referralURL());break;
-    case "share-ref":shareReferral();break;
-    case "add-friend":openModal("add-friend");break;
-    case "friend-create":createFriend();break;
-    case "friend-level":promoteFriend(id);break;
     case "wallet":openModal("wallet");break;
+
     case "wallet-save":{
       const address=($("#wallet-input")?.value||"").trim();
       if(!validTONAddress(address)){
+        sound("error");
         toast(T("Некорректный TON-адрес или контрольная сумма.","Invalid TON address or checksum."));
-        sound("error");break;
+        break;
       }
-      state.wallet=address;save();closeModal();render();sound("buy");
-      toast(T("Адрес сохранён. Владение не проверено.","Address saved. Ownership is not verified."));break;
+      state.wallet=address;
+      save();
+      closeModal();
+      render();
+      sound("buy");
+      toast(T("Публичный адрес сохранён.","Public address saved."));
+      break;
     }
-    case "wallet-remove":state.wallet="";save();render();break;
+
+    case "wallet-remove":
+      state.wallet="";
+      save();
+      render();
+      break;
+
     case "offline-claim":{
+      settle(false);
       const amount=state.pendingOffline;
-      state.pendingOffline=0;credit(amount);save();closeModal();sound("reward");render();
-      toast(T("Офлайн-доход: +","Offline income: +")+fmt(amount));break;
+      state.pendingOffline=0;
+      credit(amount);
+      save();
+      closeModal();
+      sound("reward");
+      render();
+      toast(T("Офлайн-доход: +","Offline earnings: +")+fmt(amount));
+      break;
     }
+
     case "reset-confirm":openModal("reset");break;
-    case "reset":
-      state=newState();displayedBalance=0;cipherMode=false;puzzle=null;
-      save();closeModal();tab="home";render();break;
+
+    case "reset":{
+      const preferences={
+        language:state.language,theme:state.theme,
+        sound:state.sound,avatar:state.avatar,nickname:state.nickname
+      };
+      state={...newState(),...preferences};
+      profitCache=null;
+      settleClock=now();
+      displayedBalance=0;
+      lastRenderedRank=0;
+      cipherMode=false;
+      clearCipher();
+      puzzle=null;
+      tab="home";
+      writeSave();
+      closeModal();
+      render();
+      break;
+    }
+
     case "export":exportSave();break;
+    case "export-html":exportHTML();break;
     case "import":openModal("import");break;
     case "import-apply":importSave();break;
   }
 });
-
+document.addEventListener("input",event=>{
+  if(event.target.id==="mine-search"){
+    mineSearch=event.target.value;
+    renderBusinessList();
+  }
+});
+document.addEventListener("change",event=>{
+  if(event.target.id==="mine-sort"){
+    mineSort=event.target.value;
+    renderBusinessList();
+  }
+});
 document.addEventListener("keydown",event=>{
-  if(event.key==="Escape"){closeModal();return}
-  if(modalName==="puzzle"&&puzzle&&!puzzle.finished){
-    const directions={ArrowLeft:"left",ArrowRight:"right",ArrowUp:"up",ArrowDown:"down"};
+  if(event.key==="Escape"){
+    if(modalName)closeModal();
+    else if(cipherMode){cipherMode=false;clearCipher();render()}
+    return;
+  }
+  if(modalName==="puzzle" && puzzle && !puzzle.finished){
+    const directions={
+      ArrowLeft:"left",ArrowRight:"right",ArrowUp:"up",ArrowDown:"down"
+    };
     if(directions[event.key]){
-      event.preventDefault();movePuzzle(directions[event.key]);
+      event.preventDefault();
+      movePuzzle(directions[event.key]);
+      return;
     }
   }
-  // Basic dialog focus containment.
-  if(event.key==="Tab"&&modalName){
-    const nodes=$$(".modal button:not(:disabled), .modal input, .modal a[href], .modal summary");
+  if(event.key==="Tab" && modalName){
+    const nodes=$$(
+      ".modal button:not(:disabled), .modal input:not(:disabled), "+
+      ".modal select, .modal a[href], .modal summary"
+    );
     if(!nodes.length)return;
     const first=nodes[0],last=nodes[nodes.length-1];
-    if(event.shiftKey&&(document.activeElement===first||!document.activeElement.closest(".modal"))){
-      event.preventDefault();last.focus();
-    }else if(!event.shiftKey&&(document.activeElement===last||!document.activeElement.closest(".modal"))){
-      event.preventDefault();first.focus();
+    const inside=document.activeElement?.closest(".modal");
+    if(event.shiftKey && (document.activeElement===first || !inside)){
+      event.preventDefault();
+      last.focus();
+    }else if(!event.shiftKey && (document.activeElement===last || !inside)){
+      event.preventDefault();
+      first.focus();
     }
   }
 });
-document.addEventListener("contextmenu",event=>event.preventDefault());
+document.addEventListener("contextmenu",event=>{
+  if(event.target.closest("#hero"))event.preventDefault();
+});
 
-/* -------------------- Time, passive income, persistence -------------------- */
-
-let lastRenderedRank=rankIndex();
+/* ---------------- Циклы и жизненный цикл страницы ---------------- */
 
 function tick(){
   if(!active)return;
-  const time=now(),seconds=Math.max(0,(time-lastTick)/1000);
-  lastTick=time;
-  const previousRank=rankIndex();
-  // Suspended foreground timers are also subject to the 3-hour cap.
-  const incomeSeconds=Math.min(seconds,3*3600);
-  credit(profitPerHour()*incomeSeconds/3600);
-  state.energy=clamp(state.energy+seconds*3,0,maxEnergy());
-  state.stats.playSeconds+=Math.min(seconds,60);
+  settle(false);
   const changed=rollDays();
   if(changed){
     render();
-    if(modalName&&modalName!=="puzzle")renderModal();
+    if(modalName)renderModal();
+    writeSave();
   }
-  if(rankIndex()!==lastRenderedRank){
-    lastRenderedRank=rankIndex();
-    if($("#hero"))$("#hero").innerHTML=hamsterSVG();
-    if(rankIndex()!==previousRank){
-      toast(T("Новая лига: ","New league: ")+RANKS[rankIndex()][0]);
-      sound("reward");
-    }
-  }
-  if(puzzle&&!puzzle.finished&&now()>=puzzle.deadline)endPuzzle(false);
+  checkRank();
+  if(puzzle && !puzzle.finished && now()>=puzzle.deadline)endPuzzle(false);
   if(modalName==="boosts"){
-    const full=$('[data-action="full-energy"]');
-    const ready=state.boostUsed<6&&now()-state.boostLast>=3600000;
-    if(full)full.disabled=!ready;
+    const button=$('[data-action="full-energy"]');
+    if(button){
+      const ready=state.boostUsed<6 && now()-state.boostLast>=3600000;
+      button.disabled=!ready;
+    }
   }
   updateHUD();
 }
-
 function frame(timestamp){
-  const dt=Math.min(.1,(timestamp-lastFrame)/1000);
+  const dt=clamp((timestamp-lastFrame)/1000,0,.1);
   lastFrame=timestamp;
   if(active){
     const smoothing=1-Math.exp(-dt*13);
     displayedBalance+=(state.balance-displayedBalance)*smoothing;
-    if(Math.abs(state.balance-displayedBalance)<.5)displayedBalance=state.balance;
-    const balanceNode=$("#balance-number");
-    if(balanceNode)balanceNode.textContent=fmt(displayedBalance);
+    if(Math.abs(state.balance-displayedBalance)<.5){
+      displayedBalance=state.balance;
+    }
+    if(timestamp-lastHUD>45){
+      setText("#balance-number",fmt(displayedBalance));
+      lastHUD=timestamp;
+    }
   }
   requestAnimationFrame(frame);
 }
-
+function suspend(){
+  if(!active)return;
+  settle(false);
+  active=false;
+  writeSave();
+  if(puzzle && !puzzle.finished)endPuzzle(false);
+  activePointers.clear();
+  clearTimeout(cipherTimer);
+  cipherSymbols="";
+  updateCipherUI();
+}
+function resume(){
+  if(active || document.hidden)return;
+  settle(true);
+  active=true;
+  lastFrame=performance.now();
+  rollDays();
+  writeSave();
+  render();
+  if(state.pendingOffline>=1)openModal("offline");
+  else if(modalName)renderModal();
+}
 document.addEventListener("visibilitychange",()=>{
-  if(document.hidden){
-    tick();
-    active=false;save();
-    if(puzzle&&!puzzle.finished)endPuzzle(false);
-    activePointers.clear();
-    clearTimeout(cipherTimer);cipherSymbols="";updateCipherUI();
-  }else{
-    accrueOffline();
-    active=true;lastTick=now();lastFrame=performance.now();
-    render();
-    if(state.pendingOffline>=1)openModal("offline");
-    else if(modalName)renderModal();
-  }
+  if(document.hidden)suspend();
+  else resume();
 });
 window.addEventListener("pagehide",()=>{
-  if(active)tick();
-  save();
+  suspend();
+  writeSave();
 });
 window.addEventListener("pageshow",event=>{
-  if(event.persisted){
-    accrueOffline();active=!document.hidden;lastTick=now();
-    render();
-    if(state.pendingOffline>=1)openModal("offline");
-  }
+  if(event.persisted)resume();
 });
-setInterval(tick,250);
-setInterval(()=>{if(active)save()},3000);
+window.addEventListener("blur",()=>{
+  activePointers.clear();
+  if($("#hero"))$("#hero").style.transform="";
+});
+
+settle(true);
+rollDays();
+lastRenderedRank=rankIndex();
+
+if(state.avatar==="photo" && !assets.photo)state.avatar="🐹";
+if(state.avatar==="custom" && !assets.avatar)state.avatar="🐹";
+
+writeSave();
+render();
+
+setInterval(tick,200);
+setInterval(()=>{if(active)save()},5000);
 requestAnimationFrame(frame);
 
-render();
-if(state.pendingOffline>=1)setTimeout(()=>openModal("offline"),300);
-
-// A referral parameter alone never triggers an unverified reward.
-if(new URLSearchParams(location.search).has("ref")){
+if(state.pendingOffline>=1){
+  setTimeout(()=>{if(!modalName)openModal("offline")},350);
+}else if(migrationNotice){
   setTimeout(()=>toast(T(
-    "Реферальная ссылка открыта. Без сервера приглашение не подтверждается.",
-    "Referral link opened. The invitation cannot be verified without a server."
-  )),600);
+    "Сохранение перенесено: 60 бизнесов, энергия 1000 +250/ур., офлайн до 1 часа.",
+    "Save migrated: 60 businesses, energy 1000 +250/level, offline up to 1 hour."
+  )),450);
 }
 </script>
 </body>
